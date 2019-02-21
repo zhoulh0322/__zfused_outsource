@@ -1,0 +1,30 @@
+[
+    {
+        "name":"主服务器",
+        "host":"http://192.168.101.88",
+        "port":8080,
+        "ztranser_host":"192.168.100.100",
+        "ztranser_port":7005,
+        "pipeline_path":"//192.168.101.88/works/tool",
+        "python_path":"//192.168.101.88/works/tool/Python",
+        "data_path":"//192.168.101.88/works/cgm"
+    },
+    {
+        "name":"RD测试(服务器数据库)",
+        "host":"http://192.168.101.88",
+        "port":8080,
+        "ztranser_host":"192.168.100.100",
+        "ztranser_port":7005,
+        "python_path":"D:/RD/dev/Python",
+        "data_path":"//192.168.101.88/works/cgm"
+    },
+    {
+        "name":"RD测试(本机数据库)",
+        "host":"http://127.0.0.1",
+        "port":8080,
+        "ztranser_host":"192.168.100.100",
+        "ztranser_port":7005,
+        "python_path":"D:/lanhua.zhou/develop/zfused_link",
+        "data_path":"//192.168.101.88/works/cgm"
+    }
+]

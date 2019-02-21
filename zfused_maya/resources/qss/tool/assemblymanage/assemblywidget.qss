@@ -1,0 +1,32 @@
+QFrame{
+    background-color: #373737;
+}
+
+QFrame#operation_widget{
+    background-color: #2B2B2B;
+}
+
+QPushButton{
+    font-family: Microsoft YaHei UI;
+    font: bold 12px;
+    background-color: #5C5C5C;
+    color: #FFFFFF;
+    border: 0px solid;
+    qproperty-iconSize: 20px;
+    Text-align: left;
+    padding-left: 10;
+    margin-left: 0px;
+}
+
+QPushButton#create_button{
+    background-color: #5D5D5D;
+    padding-left: 5;
+}
+QPushButton#create_button:hover{
+    background-color: #707070;
+    padding-left: 5;
+}
+QPushButton#create_button:pressed{
+    background-color: #1D1D1D;
+    padding-left: 5;
+}

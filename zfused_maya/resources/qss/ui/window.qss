@@ -1,0 +1,116 @@
+QMainWindow{
+    font-family: Microsoft YaHei UI;
+    font: bold 12px;
+    background-color: #444444;
+    color: #FFFFFF;
+}
+
+
+QFrame{
+    font-family: Microsoft YaHei UI;
+    font: bold 12px;
+    font: bold 12px;
+    background-color: #444444;
+    color: #FFFFFF;
+}
+
+QFrame#widget{
+    background-color: #444444;
+    color: #FFFFFF;
+    /* border: 1px solid #007ACC; */
+    border: 1px solid #53AFD9;
+}
+
+
+QFrame#title_widget{
+    background-color: #444444;
+    color: #FFFFFF;
+    border-bottom: 1px solid #BDBDBD;
+}
+
+QFrame#central_widget{
+    background-color: #2B2B2B;
+    color: #FFFFFF;
+}
+
+QFrame#tail_widget{
+    background-color: #373737;
+    color: #FFFFFF;
+    border-top: 1px solid #BDBDBD;
+}
+
+QListWidget{
+    background-color: #2B2B2B;
+}
+
+QListView{
+    background-color: #2B2B2B;
+}
+
+QPushButton{
+    font-family: Microsoft YaHei UI;
+    font: bold 11px;
+    background-color: #5D5D5D;
+    Text-align: center;
+    padding-left: 5;
+}
+
+QPushButton:hover{
+    background-color: #707070;
+    padding-left: 5;
+}
+QPushButton:pressed{
+    background-color: #1D1D1D;
+    padding-left: 5;
+}
+
+QPushButton#name_button{
+    font: bold 12px;
+    color: #CCCCCC;
+    background-color: rgba(0,0,0,0);
+    qproperty-iconSize: 20px;
+}
+
+QPushButton#min_button{
+    padding-left: 0;
+    background-color: rgba(0,0,0,0);
+    qproperty-iconSize: 15px;
+}
+QPushButton#max_button{
+    padding-left: 0;
+    background-color: rgba(0,0,0,0);
+    qproperty-iconSize: 15px;
+}
+QPushButton#close_button{
+    padding-left: 0;
+    background-color: rgba(0,0,0,0);
+    qproperty-iconSize: 15px;
+}
+
+QPushButton#title_button{
+    font: bold 14px;
+    color: #51C8B1;
+    background-color: rgba(0,0,0,0);
+    qproperty-iconSize: 25px;
+}
+
+QPushButton#logo_button{
+    font: bold 12px;
+    color: #30B8BF;
+    background-color: rgba(0,0,0,0);
+    qproperty-iconSize: 100px;
+}
+
+
+QLabel{
+    color: #AAAAAA;
+}
+
+QLineEdit{
+    background-color: #5C5C5C;
+    color: #FFFFFF;
+    font-family: Microsoft YaHei UI;
+    font: bold 12px;
+    border: 0px solid; 
+    border-bottom: 0px solid #FFFFFF;
+}

@@ -1,0 +1,104 @@
+/* frame */
+QFrame{
+  background-color: #FFFFFF;
+  color: #442342;
+}
+
+/* checkbox */
+QCheckBox{
+    font-family: Microsoft YaHei UI;
+    font: bold 12px;
+    color: #442342;
+    background-color: #FFFFFF;
+}
+
+/* button */
+QPushButton{
+    background-color: #FFFFFF;
+    font-family: Microsoft YaHei UI;
+    font: bold 12px;
+    color: #442342;
+}
+
+QComboBox {
+    background-color: #FFFFFF;
+    font-family: Microsoft YaHei UI;
+    font: bold 12px;
+    color: #442342;
+    border: 1px solid gray;
+    border-radius: 2px;
+    padding: 1px 2px 1px 2px;
+    min-width: 9em;
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 20px;
+ 
+    border-left-width: 1px;
+    border-left-color: darkgray;
+    border-left-style: solid; /* just a single line */
+    border-top-right-radius: 3px; /* same radius as the QComboBox */
+    border-bottom-right-radius: 3px;
+}
+
+QTabWidget::pane { /* The tab widget frame */
+    border-top: 1px solid #C2C7CB;
+}
+
+QTabWidget{
+    border: 0px solid #E5E5E5;
+}
+
+QTabWidget::Item{
+    border:0px solid rgb(255,0,0);
+    border-top:1px solid #5C5C5C;
+    height: 25px;
+}
+
+QTabWidget::pane { /* The tab widget frame */
+    border-top: 1px solid #C2C7CB;
+}
+
+QTabWidget::tab-bar {
+    left: 0px; /* move to the right by 5px */
+}
+
+/* Style the tab using the tab sub-control. Note that
+    it reads QTabBar _not_ QTabWidget */
+QTabBar::tab {
+    background: #E6E9ED;
+    color: #626262;
+    border: 0px solid #C4C4C3;
+    border-bottom-color: #C2C7CB; /* same as the pane color */
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    min-width: 8ex;
+    min-height: 8ex;
+    margin: 0px;
+    width: 25ex;
+}
+
+QTabBar::tab:selected, QTabBar::tab:hover {
+    background: #F5F5F5;
+}
+
+QTabBar::tab:selected {
+    border-color: #F5F5F5;
+    border-top: 1px solid #C4C4C3;
+    border-bottom-color: #C2C7CB; /* same as pane color */
+}
+
+QTabBar::tab:!selected {
+    margin-top: 2px; /* make non-selected tabs look smaller */
+}
+
+QTableWidget{
+    border: 0px solid #C4C4C3;
+}
+
+QTableWidget::Item{
+    border:0px solid rgb(255,0,0);
+    border-bottom:1px solid #5C5C5C;
+}

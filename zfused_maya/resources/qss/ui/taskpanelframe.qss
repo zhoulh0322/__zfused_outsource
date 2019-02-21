@@ -1,0 +1,9 @@
+QFrame#head_widget{
+    background-color: #444444;
+    border-bottom: 1px solid #BDBDBD;
+}
+
+QFrame#filter_widget{
+    background-color: #444444;
+    border-bottom: 1px solid #BDBDBD;
+}

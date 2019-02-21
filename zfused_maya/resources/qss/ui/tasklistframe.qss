@@ -1,0 +1,27 @@
+QLineEdit#search_line{
+    color:#ffffff;
+    border:1px solid rgb(30, 50, 50);
+    border-redius: 0px;
+}
+QLineEdit#search_line:hover{
+    border: 1px solid Cadetblue;
+}
+
+QCheckBox#working_checkbox{
+    font-size: 11px;
+    font: bold 11px arial,
+}
+
+QFrame#search_widget{
+    background-color: #444444;
+    border-bottom: 1px solid #BDBDBD;
+}
+
+QFrame#filter_widget{
+    background-color: #444444;
+    border-bottom: 1px solid #BDBDBD;
+}
+
+QListView{
+    background-color:#363636;
+}

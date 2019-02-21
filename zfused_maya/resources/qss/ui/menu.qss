@@ -1,0 +1,33 @@
+QFrame{
+    border-top: 2px solid #FF0000
+}
+
+QPushButton{
+    height: 20;
+    background-color: rgba(0, 0, 0, 0);
+    border: 0px solid;
+    qproperty-iconSize: 16px;
+    Text-align: left;
+    padding-left: 10;
+    margin: 0px;
+}
+
+QPushButton:hover{
+    height: 20;
+    background-color: rgba(100, 0, 0);
+    border: 0px solid;
+    qproperty-iconSize: 16px;
+    Text-align: left;
+    padding-left: 10;
+    margin: 0px;
+}
+
+QPushButton:pressed{
+    height: 20;
+    background-color: rgba(79, 193, 233);
+    border: 0px solid;
+    qproperty-iconSize: 16px;
+    Text-align: left;
+    padding-left: 10;
+    margin: 0px;
+}

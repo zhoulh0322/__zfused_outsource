@@ -1,0 +1,51 @@
+QMainWindow{
+    background-color: #F5F5F5;
+    color: #FFFFFF;
+    border: 1px solid #029CF7;
+    border-radius: 1px;
+}
+
+QFrame{
+    font-family: Microsoft YaHei UI;
+    background-color: #F5F5F5;
+    color: #626262;
+    font: 14px;
+}
+
+QFrame#widget{
+    background-color: #F5F5F5;
+    color: #FFFFFF;
+    border: 1px solid #029CF7;
+    border-radius: 1px;
+}
+
+QFrame#close_frame{
+    background-color: #444444;
+    color: #FFFFFF;
+    border-bottom: 1px solid #BDBDBD;
+}
+
+QPushButton{
+    font-family: Microsoft YaHei UI;
+    background-color: #F5F5F5;
+    color: #626262;
+    font: 12px;
+}
+
+QPushButton#close_button{
+    background-color: rgba(0,0,0,0);
+    qproperty-iconSize: 12px;
+    border: 0px solid #029CF7;
+}
+
+QPushButton#title_button{
+    font-family: Microsoft YaHei UI;
+    background-color: rgba(0,0,0,0);
+    color: #FFFFFF;
+    qproperty-iconSize: 12px;
+    border: 0px solid #029CF7;
+}
+
+QListView{
+    background-color:#E6E9ED;
+}

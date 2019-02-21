@@ -1,0 +1,146 @@
+[
+    {
+        "Id": 1,
+        "Name": "art",
+        "Code": "art",
+        "Color": "#81C2D6",
+        "CreateTime": "2017-04-05T00:00:00+08:00",
+        "Object": "asset",
+        "Sort": 0
+    },
+    {
+        "Id": 2,
+        "Name": "model",
+        "Code": "model",
+        "Color": "#8192D6",
+        "CreateTime": "2017-04-05T00:00:00+08:00",
+        "Object": "asset",
+        "Sort": 0
+    },
+    {
+        "Id": 3,
+        "Name": "rig",
+        "Code": "rig",
+        "Color": "#D9B3E6",
+        "CreateTime": "2017-04-05T00:00:00+08:00",
+        "Object": "asset",
+        "Sort": 0
+    },
+    {
+        "Id": 4,
+        "Name": "shader",
+        "Code": "shader",
+        "Color": "#32A5F8",
+        "CreateTime": "2017-04-05T00:00:00+08:00",
+        "Object": "asset",
+        "Sort": 0
+    },
+    {
+        "Id": 5,
+        "Name": "layout",
+        "Code": "layout",
+        "Color": "#30BA7C",
+        "CreateTime": "2017-04-05T00:00:00+08:00",
+        "Object": "shot",
+        "Sort": 0
+    },
+    {
+        "Id": 6,
+        "Name": "animation",
+        "Code": "animation",
+        "Color": "#A35015",
+        "CreateTime": "2017-04-05T00:00:00+08:00",
+        "Object": "shot",
+        "Sort": 0
+    },
+    {
+        "Id": 15,
+        "Name": "lighting",
+        "Code": "lighting",
+        "Color": "#9E1E18",
+        "CreateTime": "2017-04-04T00:00:00+08:00",
+        "Object": "shot",
+        "Sort": 0
+    },
+    {
+        "Id": 16,
+        "Name": "rending",
+        "Code": "rending",
+        "Color": "#FA6B3D",
+        "CreateTime": "2017-04-12T00:00:00+08:00",
+        "Object": "shot",
+        "Sort": 0
+    },
+    {
+        "Id": 17,
+        "Name": "scene",
+        "Code": "scene",
+        "Color": "#4A3B13",
+        "CreateTime": "2017-04-12T00:00:00+08:00",
+        "Object": "sequence",
+        "Sort": 0
+    },
+    {
+        "Id": 18,
+        "Name": "xgen",
+        "Code": "xgen",
+        "Color": "#1C5642",
+        "CreateTime": "2017-07-17T00:00:00+08:00",
+        "Object": "asset",
+        "Sort": 0
+    },
+    {
+        "Id": 19,
+        "Name": "compositing",
+        "Code": "compositing",
+        "Color": "#1C5642",
+        "CreateTime": "2017-09-15T14:34:59+08:00",
+        "Object": "shot",
+        "Sort": 0
+    },
+    {
+        "Id": 20,
+        "Name": "mattePainting",
+        "Code": "mattePainting",
+        "Color": "#779FC4",
+        "CreateTime": "2017-09-15T14:34:59+08:00",
+        "Object": "shot",
+        "Sort": 0
+    },
+    {
+        "Id": 21,
+        "Name": "shotscene",
+        "Code": "shotscene",
+        "Color": "#82AFB0",
+        "CreateTime": "2017-09-18T15:54:54+08:00",
+        "Object": "shot",
+        "Sort": 0
+    },
+    {
+        "Id": 22,
+        "Name": "shotscene.shader",
+        "Code": "shotscene.shader",
+        "Color": "#32A5F8",
+        "CreateTime": "2017-04-05T00:00:00+08:00",
+        "Object": "shot",
+        "Sort": 0
+    },
+    {
+        "Id": 23,
+        "Name": "solver",
+        "Code": "solver",
+        "Color": "#160000",
+        "CreateTime": "2018-04-25T14:32:11+08:00",
+        "Object": "asset",
+        "Sort": 0
+    },
+    {
+        "Id": 24,
+        "Name": "fx",
+        "Code": "fx",
+        "Color": "#160000",
+        "CreateTime": "2018-04-25T14:32:11+08:00",
+        "Object": "shot",
+        "Sort": 0
+    }
+]

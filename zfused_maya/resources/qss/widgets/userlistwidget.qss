@@ -1,0 +1,40 @@
+QFrame{
+    background-color: #F5F5F5;
+    color: #626262;
+    font: 14px;
+}
+
+QFrame#head_widget{
+    background-color: #FFFFFF;
+    border-bottom: 0px solid #BDBDBD;
+}
+
+QCheckBox{
+    font-family: Arial;
+    background-color: #FFFFFF;
+    color: #626262;
+    font: 13px;
+    border: 0px solid;
+    qproperty-iconSize: 30px;
+    Text-align: left;
+    padding-left: 0;
+    margin-left: 0px;
+}
+
+QLineEdit{
+    font-family: Arial;
+    background-color: #FFFFFF;
+    color: #626262;
+    font: 13px;
+    border: 0px solid;
+    qproperty-iconSize: 30px;
+    Text-align: left;
+    padding-left: 0;
+    margin-left: 0px;
+}
+
+QListView{
+    background-color: #F1F1F1;
+    color: #626262;
+    font: 14px;
+}

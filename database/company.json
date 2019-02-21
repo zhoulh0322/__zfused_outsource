@@ -1,0 +1,17 @@
+[
+    {
+        "Id": 1,
+        "Name": "\u82cf\u5dde\u661f\u8ff9\u65f6\u7a7a\u7f51\u7edc\u79d1\u6280\u6709\u9650\u516c\u53f8",
+        "Code": "XJSL"
+    },
+    {
+        "Id": 2,
+        "Name": "\u56fd\u6b66\u7ed1\u5b9a\u5916\u5305",
+        "Code": "GWRIG"
+    },
+    {
+        "Id": 3,
+        "Name": "\u54c8\u5c14\u6ee8\u54c1\u683c\u6587\u5316\u4f20\u64ad\u6709\u9650\u516c\u53f8",
+        "Code": "Pinggo"
+    }
+]

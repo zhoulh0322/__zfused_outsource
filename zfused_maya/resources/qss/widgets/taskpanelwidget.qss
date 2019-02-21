@@ -1,0 +1,258 @@
+QFrame{
+    font-family: Microsoft YaHei UI;
+    font: bold 12px;
+    background-color: #444444;
+    color: #FFFFFF;
+}
+
+QFrame#task_preview_widget{
+    background-color: #444444;
+}
+
+QFrame#name_widget{
+    background-color: #444444;
+}
+
+QFrame#receive_widget{
+    background-color: #373737;
+}
+
+QFrame#publish_widget{
+    background-color: #373737;
+}
+
+QTextEdit{
+    background-color: #2B2B2B;
+    font-family: Microsoft YaHei UI;
+    font: bold 11px;
+}
+
+QCheckBox{
+    font-family: Microsoft YaHei UI;
+    font: bold 11px;
+}
+
+/* border-top: 1px solid #BDBDBD; */
+
+QPushButton{
+    font-family: Microsoft YaHei UI;
+    font: bold 12px;
+    background-color: #5C5C5C;
+    color: #FFFFFF;
+    border: 0px solid;
+    qproperty-iconSize: 20px;
+    Text-align: left;
+    padding-left: 10;
+    margin-left: 0px;
+}
+
+QPushButton#task_link_button{
+    background-color: #777777;
+    font: bold 14px;
+    border-radius: 4px;
+    qproperty-iconSize: 24px;
+    padding-left: 10;
+    padding-right: 10;
+}
+QPushButton#task_link_button:hover{
+    background-color: #333333;
+}
+QPushButton#task_link_button:pressed{
+    background-color: #000000;
+}
+
+QPushButton#new_assembly_button{
+    Text-align: center;
+    background-color: #444444;
+    font: bold 14px;
+    qproperty-iconSize: 24px;
+}
+
+QPushButton#no_active_message_button{
+    Text-align: center;
+    background-color: #444444;
+    font: bold 14px;
+    qproperty-iconSize: 24px;
+}
+
+QPushButton#operation_name_buttons{
+    background-color: #444444;
+    padding-left: 10;
+}
+
+QPushButton#approval_to_name{
+    background-color: #444444;
+}
+
+QPushButton#approval_to_user{
+    background-color: #444444;
+}
+
+QPushButton#cc_to_name{
+    background-color: #444444;
+}
+
+QPushButton#cc_to_user{
+    background-color: #444444;
+}
+
+QPushButton#screenshot_thumbnail_button{
+    Text-align: center;
+    background-color: #5D5D5D;
+    padding-left: 5;
+}
+QPushButton#screenshot_thumbnail_button:hover{
+    background-color: #707070;
+    padding-left: 5;
+}
+QPushButton#screenshot_thumbnail_button:pressed{
+    background-color: #1D1D1D;
+    padding-left: 5;
+}
+
+QPushButton#browse_thumbnail_button{
+    Text-align: center;
+    background-color: #5D5D5D;
+    padding-left: 5;
+}
+QPushButton#browse_thumbnail_button:hover{
+    background-color: #707070;
+    padding-left: 5;
+}
+QPushButton#browse_thumbnail_button:pressed{
+    background-color: #1D1D1D;
+    padding-left: 5;
+}
+
+QPushButton#playblast_thumbnail_button{
+    Text-align: center;
+    background-color: #5D5D5D;
+    padding-left: 5;
+}
+QPushButton#playblast_thumbnail_button:hover{
+    background-color: #707070;
+    padding-left: 5;
+}
+QPushButton#playblast_thumbnail_button:pressed{
+    background-color: #1D1D1D;
+    padding-left: 5;
+}
+
+QPushButton#receive_button{
+    Text-align: center;
+    background-color: #5D5D5D;
+    padding-left: 5;
+}
+QPushButton#receive_button:hover{
+    background-color: #707070;
+    padding-left: 5;
+}
+QPushButton#receive_button:pressed{
+    background-color: #1D1D1D;
+    padding-left: 5;
+}
+
+QPushButton#publish_button{
+    Text-align: center;
+    background-color: #5D5D5D;
+    padding-left: 5;
+}
+QPushButton#publish_button:hover{
+    background-color: #707070;
+    padding-left: 5;
+}
+QPushButton#publish_button:pressed{
+    background-color: #1D1D1D;
+    padding-left: 5;
+}
+
+QTabWidget::pane { /* The tab widget frame */
+    border-top: 0px solid #C2C7CB;
+}
+
+QTabWidget{
+    font-family: Microsoft YaHei UI;
+    font: bold 11px;
+    background-color: #444444;
+}
+
+QTabWidget::tab-bar {
+    background-color: #373737;
+    left: 0px; /* move to the right by 5px */
+}
+
+/* Style the tab using the tab sub-control. Note that
+    it reads QTabBar _not_ QTabWidget */
+QTabBar::tab {
+    background: #373737;
+    color: #A4A4A4;
+    border: 0px solid #C4C4C3;
+    border-bottom-color: #C2C7CB; /* same as the pane color */
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    min-width: 10ex;
+    min-height: 8ex;
+    margin: 0px;
+}
+
+QTabBar::tab:selected, QTabBar::tab:hover {
+    background-color: #555555;
+    color: #F5F5F5;
+}
+
+QTabBar::tab:selected {
+    color: #F5F5F5;
+    border-top: 1px solid #C4C4C3;
+    border-bottom-color: #C2C7CB; /* same as pane color */
+}
+
+QTabBar::tab:!selected {
+    margin-top: 2px; /* make non-selected tabs look smaller */
+}
+
+/* attr tab widget */
+QTabBar#attr_tabbar::tab {
+    font-family: Microsoft YaHei UI;
+    font: bold 11px;
+    background: #5C5C5C;
+    color: #A4A4A4;
+    border: 0px solid #C4C4C3;
+    min-width: 30ex;
+    min-height: 6ex;
+    margin: 2px;
+    padding-left: 3;
+    padding-right: 3;
+}
+QTabBar#attr_tabbar::tab:selected, QTabBar::tab:hover {
+    background-color: #555555;
+    color: #F5F5F5;
+}
+QTabBar#attr_tabbar::tab:selected {
+    color: #F5F5F5;
+    border-bottom: 1px solid #C4C4C3;
+    border-bottom-color: #C2C7CB; /* same as pane color */
+}
+QTabBar#attr_tabbar::tab:!selected {
+    margin-bottom: 2px; /* make non-selected tabs look smaller */
+}
+
+QTableWidget::Item{
+    border:0px solid rgb(255,0,0);
+    border-bottom:1px solid #5C5C5C;
+}
+
+QHeaderView::section{
+    font: 12px;
+    color: #555555;
+    background-color: #FFFFFF;
+    height:24px;
+    border: 0px solid #567dbc;
+}
+
+QListView{
+    background-color: #2E2D2E;
+}
+
+QListView:!enabled{
+    background-color: #5C5C5C;
+}

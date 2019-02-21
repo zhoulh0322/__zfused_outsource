@@ -1,0 +1,21 @@
+[
+    {
+        "Id": 1098,
+        "Name": "shot001",
+        "Code": "shot001",
+        "ProjectId": 13,
+        "EpisodeId": 0,
+        "SequenceId": 63,
+        "TypeId": 0,
+        "Description": "",
+        "StatusId": 7,
+        "CreateTime": "2019-01-16T14:58:39+08:00",
+        "StartTime": "0001-01-01T00:00:00Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "CreateBy": 45,
+        "Thumbnail": "",
+        "FrameStart": 0,
+        "FrameEnd": 0,
+        "Active": "true"
+    }
+]

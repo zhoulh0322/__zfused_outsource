@@ -1,0 +1,182 @@
+QFrame{
+    font-family: Microsoft YaHei UI;
+    background-color: #F5F5F5;
+    color: #626262;
+    font: 14px;
+}
+
+QFrame#name_widget{
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #BDBDBD;
+}
+
+QFrame#check_widget{
+    background-color: #FFFFFF;
+    border-top: 1px solid #BDBDBD;
+}
+
+QFrame#check_name_widget{
+    background-color: #FFFFFF;
+    border-top: 1px solid #BDBDBD;
+}
+
+QFrame#attr_widget{
+    background-color: #FFFFFF;
+    border-top: 1px solid #BDBDBD;
+}
+
+QFrame#attr_head_widget{
+    background-color: #FFFFFF;
+}
+
+QPushButton{
+    font-family: Arial;
+    background-color: #F5F5F5;
+    color: #626262;
+    font: 13px;
+    border: 0px solid;
+    qproperty-iconSize: 30px;
+    Text-align: left;
+    padding-left: 0;
+    margin-left: 0px;
+}
+
+QPushButton#name_button{
+    font-family: Arial;
+    background-color: #FFFFFF;
+    color: #626262;
+    font: 14px;
+    border: 0px solid;
+    qproperty-iconSize: 24px;
+    Text-align: left;
+    padding-left: 0;
+}
+
+QPushButton#check_name_button{
+    font-family: Arial;
+    background-color: #FFFFFF;
+    color: #626262;
+    font: 14px;
+    border: 0px solid;
+    qproperty-iconSize: 24px;
+    Text-align: left;
+    padding-left: 0;
+}
+
+QPushButton#check_submit_button{
+    font-family: Arial;
+    background-color: #FFFFFF;
+    color: #626262;
+    font: 14px;
+    border: 0px solid;
+    qproperty-iconSize: 24px;
+    Text-align: left;
+    padding-left: 0;
+}
+
+QPushButton#attr_head_button{
+    font-family: Arial;
+    background-color: #FFFFFF;
+    color: #626262;
+    font: 14px;
+    border: 0px solid;
+    qproperty-iconSize: 24px;
+    Text-align: left;
+    padding-left: 0;
+}
+
+QComboBox {
+    background-color: #FFFFFF;
+    color: #555555;
+    border: 1px solid #E6E9ED;
+    border-radius: 2px;
+    padding: 2px 2px 2px 2px;
+    min-width: 10em;
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 20px;
+    border-left-width: 1px;
+    border-left-color: darkgray;
+    border-left-style: solid; 
+    border-top-right-radius: 1px; 
+    border-bottom-right-radius: 1px;
+}
+
+QComboBox QAbstractItemView{
+    border: 1px solid darkgray;
+    selection-background-color: lightgray;
+}
+
+QComboBox QAbstractItemView::item{
+    min-height: 35ex;
+    border: 1px solid darkgray;
+}
+
+
+QTabWidget::pane { /* The tab widget frame */
+    border-top: 0px solid #C2C7CB;
+}
+
+QTabWidget::tab-bar {
+    left: 0px; /* move to the right by 5px */
+}
+
+/* Style the tab using the tab sub-control. Note that
+    it reads QTabBar _not_ QTabWidget */
+QTabBar::tab {
+    background: #E6E9ED;
+    color: #626262;
+    border: 0px solid #C4C4C3;
+    border-bottom-color: #C2C7CB; /* same as the pane color */
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    min-width: 8ex;
+    min-height: 8ex;
+    margin: 0px;
+}
+
+QTabBar::tab:selected, QTabBar::tab:hover {
+    background: #F5F5F5;
+}
+
+QTabBar::tab:selected {
+    border-color: #F5F5F5;
+    border-top: 1px solid #C4C4C3;
+    border-bottom-color: #C2C7CB; /* same as pane color */
+}
+
+QTabBar::tab:!selected {
+    margin-top: 2px; /* make non-selected tabs look smaller */
+}
+
+QTableWidget{
+    border: 0px solid #C4C4C3;
+}
+
+QTableWidget::Item{
+    border:0px solid rgb(255,0,0);
+    border-bottom:1px solid #5C5C5C;
+}
+
+QHeaderView::section{
+    font: 12px;
+    color: #555555;
+    background-color: #FFFFFF;
+    height:24px;
+    border: 0px solid #567dbc;
+}
+
+QListWidget{
+    background-color: #BDBDBD;   
+}
+QListWidget:item:selected{
+    background-color:#FFAA00;
+    color:rgba(120,52,63)
+}
+QListWidget:item{
+    background-color: #FFFFFF;
+    color:rgba(120,52,63)
+}

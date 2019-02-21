@@ -1,0 +1,43 @@
+[
+    {
+        "date": "2019.02.12",
+        "content": "修改检查工具 ui 布局",
+        "author": "lanhua.zhou" 
+    },
+    {
+        "date": "2019.02.12",
+        "content": "修改场景集合方案(修复场景集合不能被参考造成的一系列错误)",
+        "author": "" 
+    },
+    {
+        "date": "2019.02.12",
+        "content": "增加动画拍屏显示 制作人员登陆账号(非计算机名)",
+        "author": ""
+    },
+    {
+        "date": "2019.02.11",
+        "content": "修复 asset management 检查不到文件bug",
+        "author": ""
+    },
+    {
+        "date": "2019.01.21",
+        "content": "修复shadingcolor获取材质球color数值溢出错误",
+        "author": ""
+    },
+    {
+        "date": "2019.01.21",
+        "content": "修复yeti上传功能的set组bug",
+        "author": ""
+    },
+    {
+        "date": "2019.01.19",
+        "content": "修复maya崩溃, project frame ui 无当前项目导致",
+        "author": ""
+    },
+
+    {
+        "date": "2019.01.19",
+        "content": "上传场景元素初始版本",
+        "author": ""
+    }
+]

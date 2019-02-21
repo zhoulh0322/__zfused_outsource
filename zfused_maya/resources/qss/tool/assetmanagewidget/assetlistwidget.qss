@@ -1,0 +1,28 @@
+QFrame{
+    background-color: #373737;
+}
+
+QFrame#search_widget{
+    background-color: #444444;
+}
+
+QPushButton{
+    font-family: Arial;
+    background-color: #444444;
+    color: #FFFFFF;
+    font: 13px;
+    border: 0px solid;
+    qproperty-iconSize: 30px;
+    Text-align: left;
+    padding-left: 0;
+    margin-left: 0px;
+}
+
+QLineEdit{
+    background-color: #5C5C5C;
+    color: #FFFFFF;
+    font-family: Microsoft YaHei UI;
+    font: bold 12px;
+    border: 0px solid; 
+    border-bottom: 0px solid #FFFFFF;
+}

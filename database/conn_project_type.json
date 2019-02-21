@@ -1,0 +1,50 @@
+[
+    {
+        "Id": 40,
+        "ProjectId": 13,
+        "TypeId": 1,
+        "Object": "asset",
+        "Active": "true",
+        "Sort": 0
+    },
+    {
+        "Id": 41,
+        "ProjectId": 13,
+        "TypeId": 2,
+        "Object": "asset",
+        "Active": "true",
+        "Sort": 0
+    },
+    {
+        "Id": 42,
+        "ProjectId": 13,
+        "TypeId": 3,
+        "Object": "asset",
+        "Active": "true",
+        "Sort": 0
+    },
+    {
+        "Id": 43,
+        "ProjectId": 13,
+        "TypeId": 4,
+        "Object": "asset",
+        "Active": "true",
+        "Sort": 0
+    },
+    {
+        "Id": 44,
+        "ProjectId": 13,
+        "TypeId": 5,
+        "Object": "asset",
+        "Active": "true",
+        "Sort": 0
+    },
+    {
+        "Id": 45,
+        "ProjectId": 13,
+        "TypeId": 10,
+        "Object": "asset",
+        "Active": "true",
+        "Sort": 0
+    }
+]

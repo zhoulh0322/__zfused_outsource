@@ -1,0 +1,38 @@
+[
+    {
+        "Id": 1,
+        "Name": "Autodesk Maya 2014",
+        "Code": "maya",
+        "Version": "2014"
+    },
+    {
+        "Id": 2,
+        "Name": "Autodesk Maya 2016",
+        "Code": "maya",
+        "Version": "2016"
+    },
+    {
+        "Id": 3,
+        "Name": "Autodesk Maya 2017",
+        "Code": "maya",
+        "Version": "2017"
+    },
+    {
+        "Id": 4,
+        "Name": "Adobe Photoshop",
+        "Code": "photoshop",
+        "Version": "2017"
+    },
+    {
+        "Id": 5,
+        "Name": "nuke",
+        "Code": "nuke",
+        "Version": "10"
+    },
+    {
+        "Id": 6,
+        "Name": "Autodesk Maya 2018",
+        "Code": "maya",
+        "Version": "2018"
+    }
+]

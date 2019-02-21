@@ -1,0 +1,257 @@
+{
+    "utility":
+        [
+            {   "name":"重载插件",
+                "code":"refresh",
+                "title":"重新登陆\nRefresh And Reload",
+                "cmd":"import zfused_login.login as login;reload(login);ui = login.Login(False);ui.show()",
+                "color":"#81C2D6",
+                "category":"通用"
+            },
+            {   "name":"修复插件",
+                "code":"reapir",
+                "title":"修复界面\nRepair",
+                "cmd":"import zfused_maya.interface.launch as launch;reload(launch);launch.repair()",
+                "color":"#81C2D6",
+                "category":"通用"
+            },
+            {   "name":"资产管理",
+                "code":"assets management",
+                "title":"资产管理\nassets management",
+                "cmd":"import zfused_maya.tool.utility.assetmanage as assetmanage;reload(assetmanage);ui = assetmanage.AssetManageWidget();ui.show()",
+                "color":"#820019",
+                "category":"文件管理"},
+            {   "name":"场景集合管理",
+                "code":"assemblys management",
+                "title":"场景集合管理\nassemblys management",
+                "cmd":"import zfused_maya.tool.utility.assemblymanage as assemblymanage;reload(assemblymanage);ui = assemblymanage.AssemblyManageWidget();ui.show()",
+                "color":"#04277B",
+                "category":"文件管理"}
+        ],
+    "animation":
+        [
+            {
+                "name": "下载",
+                "code": "download",
+                "title": "模型下载",
+                "cmd": "import zfused_maya.node.core.download_shot as ds;reload(ds);ds.mainWindow.show()",
+                "color": "#A0A0A0",
+                "category":"传输"
+            },
+            {
+                "name": "上传",
+                "code": "publish",
+                "title": "模型上传",
+                "cmd": "import zfused_maya.node.core.upload_shot as us;reload(us);us.mainWindow.show()",
+                "color": "#A0A0A0",
+                "category":"传输"
+            },
+            {   "name":"检查动画",
+                "code":"check animation file",
+                "title":"检查动画\ncheck animation file",
+                "cmd":"import zfused_maya.tool.animation.animationcheck as animationcheck;reload(animationcheck);ui = animationcheck.AnimationCheck();ui.show()",
+                "color":"#FF0000",
+                "category":"检查"},
+            {   "name":"开启/关闭屏显信息",
+                "code":"ON/OFF HUD",
+                "title":"开启/关闭屏显信息\nON/OFF HUD",
+                "cmd":"import zfused_maya.tool.animation.playblast_hud as ph;_v = ph.HUD(ph.get_maya_hud());_v.change_hud_state()",
+                "color":"#81C2D6",
+                "category":"拍屏"},
+            {   "name":"拍屏插件",
+                "code":"playblast", 
+                "title":"拍屏\nZPlayBlast",
+                "cmd":"from fmp.maya.tool.animation import splayblast;reload(splayblast);ui = splayblast.SPlayblast();ui.show()",
+                "color":"#343D46",
+                "category":"拍屏"},
+            {   "name":"previz 工具包",
+                "code":"previz tool",
+                "title":"previz 工具包\npreviz tool",
+                "cmd":"import zfused_maya.tool.animation.previz_tool as previz_tool;reload(previz_tool);previz_tool.win.show()",
+                "color":"#81C2D6",
+                "category":"previz"}
+        ],
+    "modeling":
+        [
+            {
+                "name": "下载",
+                "code": "download",
+                "title": "模型下载",
+                "cmd": "import zfused_maya.tool.modeling.download as download;reload(download);download.mainWindow.show()",
+                "color": "#A0A0A0",
+                "category":"传输"
+            },
+            {
+                "name": "上传",
+                "code": "publish",
+                "title": "模型上传",
+                "cmd": "import zfused_maya.tool.modeling.upload as upload;reload(upload);upload.mainWindow.show()",
+                "color": "#A0A0A0",
+                "category":"传输"
+            },
+            {   "name":"模型检查",
+                "code":"check model",
+                "title":"模型检查\nCheck Model",
+                "cmd":"import zfused_maya.tool.modeling.modelingcheck as modelingcheck;reload(modelingcheck);ui = modelingcheck.ModelingCheck();ui.show()",
+                "color":"#FF0000",
+                "category":"检查"},
+            {   "name":"重合点检查",
+                "code":"check_coincide_points",
+                "title":"重合点检查\ncheck coincide points",
+                "cmd":"from zfused_maya.tool.modeling import checkcoincidepoints;reload(checkcoincidepoints);checkcoincidepoints.UI()",
+                "color":"#FF0000",
+                "category":"检查"},
+            {   "name":"模型分组",
+                "code":"model arrange",
+                "title":"模型分组\nModel Arrange",
+                "cmd":"import zfused_maya.tool.modeling.modelArrange as modelArrange;reload(modelArrange);modelArrange.modelArrange.mainWindow.show()",
+                "color":"#81C2D6",
+                "category":"分组"}
+        ],
+    "rigging":
+        [
+            {
+                "name": "下载",
+                "code": "download",
+                "title": "模型下载",
+                "cmd": "import zfused_maya.tool.rigging.download as download;reload(download);download.mainWindow.show()",
+                "color": "#A0A0A0",
+                "category":"传输"
+            },
+            {
+                "name": "上传",
+                "code": "publish",
+                "title": "模型上传",
+                "cmd": "import zfused_maya.tool.rigging.upload as upload;reload(upload);upload.mainWindow.show()",
+                "color": "#A0A0A0",
+                "category":"传输"
+            },
+            {   "name":"检查绑定",
+                "code":"check rigging",
+                "title":"绑定检查\nCheck Rigging",
+                "cmd":"import zfused_maya.tool.rigging.riggingcheck as riggingcheck;reload(riggingcheck);ui = riggingcheck.RiggingCheck();ui.show()",
+                "color":"#FF0000",
+                "category":"检查"},
+            {   "name":"检查超标权重",
+                "code":"check skin weight",
+                "title":"检查超标权重\nCheckSkinWeight",
+                "cmd":"import zfused_maya.tool.rigging.checkskinweight as checkskinweight;reload(checkskinweight);checkskinweight.WBLUI().showUI()",
+                "color":"#81C2D6",
+                "category":"检查"},
+            {   "name":"传递uv",
+                "code":"transfer uv",
+                "title":"传递uv\nTransfer UV",
+                "cmd":"import zfused_maya.tool.rigging.transferuv as transferuv;reload(transferuv);transferuv.PolyTransfer().UI()",
+                "color":"#81C2D6",
+                "category":"default"}
+        ],
+    "shading":
+        [
+            {
+                "name": "下载",
+                "code": "download",
+                "title": "模型下载",
+                "cmd": "import zfused_maya.tool.shading.download as download;reload(download);download.mainWindow.show()",
+                "color": "#A0A0A0",
+                "category":"传输"
+            },
+            {
+                "name": "上传",
+                "code": "publish",
+                "title": "模型上传",
+                "cmd": "import zfused_maya.tool.shading.upload as upload;reload(upload);upload.mainWindow.show()",
+                "color": "#A0A0A0",
+                "category":"传输"
+            },
+            {   "name":"检查材质",
+                "code":"check shading",
+                "title":"检查材质\nCheck Shading",
+                "cmd":"import zfused_maya.tool.shading.shadingcheck as shadingcheck;reload(shadingcheck);ui = shadingcheck.ShadingCheck();ui.show()",
+                "color":"#FF0000",
+                "category":"检查"},
+            {   "name":"材质引擎颜色",
+                "code":"shading engine color",
+                "title":"材质引擎颜色\nshading engine color",
+                "cmd":"import zfused_maya.tool.modeling.shadingcolor as shadingcolor;reload(shadingcolor);ui = shadingcolor.ShadingColor();ui.show()",
+                "color":"#1C9FF0",
+                "category":"材质引擎"},
+            {   "name":"材质重命名工具",
+                "code":"Repair shader tool",
+                "title":"材质重命名工具(Repair shader tool)",
+                "cmd":"import zfused_maya.tool.shading.rename_shader.shader_rename_tool as srtool;reload(srtool);srtool.win.show()",
+                "color":"#81C2D6",
+                "category":"通用"}
+        ],
+    "assembly":
+        [
+            {
+                "name": "下载",
+                "code": "download",
+                "title": "模型下载",
+                "cmd": "import zfused_maya.tool.assembly.download as download;reload(download);download.mainWindow.show()",
+                "color": "#A0A0A0",
+                "category":"传输"
+            },
+            {
+                "name": "上传",
+                "code": "publish",
+                "title": "模型上传",
+                "cmd": "import zfused_maya.tool.assembly.upload as upload;reload(upload);upload.mainWindow.show()",
+                "color": "#A0A0A0",
+                "category":"传输"
+            }
+        ],
+    "rendering":
+        [
+            {
+                "name": "下载",
+                "code": "download",
+                "title": "模型下载",
+                "cmd": "print 'download'",
+                "color": "#A0A0A0",
+                "category":"传输"
+            },
+            {
+                "name": "上传",
+                "code": "publish",
+                "title": "模型上传",
+                "cmd": "print 'publish'",
+                "color": "#A0A0A0",
+                "category":"传输"
+            }
+        ],
+    "fx":
+        [
+            {
+                "name": "下载",
+                "code": "download",
+                "title": "模型下载",
+                "cmd": "print 'download'",
+                "color": "#A0A0A0",
+                "category":"传输"
+            },
+            {
+                "name": "上传",
+                "code": "publish",
+                "title": "模型上传",
+                "cmd": "print 'publish'",
+                "color": "#A0A0A0",
+                "category":"传输"
+            }
+        ],
+    "help":
+        [
+            {   "name":"帮助文档",
+                "code":"help",
+                "title":"zFused Help",
+                "cmd":"import os;import webbrowser;webbrowser.open('http://192.168.100.17/dokuwiki/doku.php')",
+                "color":"#30BA7C",
+                "category":"management"},
+            {   "name":"更新文档",
+                "code":"update",
+                "title":"zFused outsource update",
+                "cmd":"import zfused_maya.tool.document.helpwidget.helpwidget as helpwidget;reload(helpwidget);ui = helpwidget.HelpWidget();ui.show()",
+                "color":"#30BA7C",
+                "category":"documents"}
+        ]
+}
