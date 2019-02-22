@@ -13,7 +13,9 @@
         "EndTime": "0001-01-01T00:00:00Z",
         "CreateBy": 150,
         "Thumbnail": "thumbnail/c9b75321-10c4-11e9-8cad-704d7b87176f.png",
-        "Active": "true"
+        "Active": "true",
+        "Level": 0,
+        "Difficulty": 0
     },
     {
         "Id": 64,
@@ -29,7 +31,9 @@
         "EndTime": "0001-01-01T00:00:00Z",
         "CreateBy": 45,
         "Thumbnail": "thumbnail/da7ee9b0-10bb-11e9-92d9-704d7b87176f.jpg",
-        "Active": "true"
+        "Active": "true",
+        "Level": 0,
+        "Difficulty": 0
     },
     {
         "Id": 65,
@@ -45,7 +49,9 @@
         "EndTime": "0001-01-01T00:00:00Z",
         "CreateBy": 45,
         "Thumbnail": "thumbnail/e42ef611-10c7-11e9-b865-704d7b87176f.jpg",
-        "Active": "true"
+        "Active": "true",
+        "Level": 0,
+        "Difficulty": 0
     },
     {
         "Id": 66,
@@ -61,7 +67,9 @@
         "EndTime": "0001-01-01T00:00:00Z",
         "CreateBy": 45,
         "Thumbnail": "thumbnail/348dc280-10c8-11e9-997c-704d7b87176f.jpg",
-        "Active": "true"
+        "Active": "true",
+        "Level": 0,
+        "Difficulty": 0
     },
     {
         "Id": 67,
@@ -77,7 +85,9 @@
         "EndTime": "0001-01-01T00:00:00Z",
         "CreateBy": 45,
         "Thumbnail": "thumbnail/0a48319e-10d6-11e9-991f-704d7b87176f.jpg",
-        "Active": "true"
+        "Active": "true",
+        "Level": 0,
+        "Difficulty": 0
     },
     {
         "Id": 68,
@@ -93,7 +103,9 @@
         "EndTime": "0001-01-01T00:00:00Z",
         "CreateBy": 45,
         "Thumbnail": "thumbnail/eb1c0440-22ce-11e9-86e6-704d7b87176f.jpg",
-        "Active": "true"
+        "Active": "true",
+        "Level": 0,
+        "Difficulty": 0
     },
     {
         "Id": 69,
@@ -109,7 +121,9 @@
         "EndTime": "0001-01-01T00:00:00Z",
         "CreateBy": 159,
         "Thumbnail": "",
-        "Active": "true"
+        "Active": "true",
+        "Level": 0,
+        "Difficulty": 0
     },
     {
         "Id": 70,
@@ -125,7 +139,9 @@
         "EndTime": "0001-01-01T00:00:00Z",
         "CreateBy": 159,
         "Thumbnail": "",
-        "Active": "true"
+        "Active": "true",
+        "Level": 0,
+        "Difficulty": 0
     },
     {
         "Id": 71,
@@ -141,7 +157,9 @@
         "EndTime": "0001-01-01T00:00:00Z",
         "CreateBy": 159,
         "Thumbnail": "",
-        "Active": "true"
+        "Active": "true",
+        "Level": 0,
+        "Difficulty": 0
     },
     {
         "Id": 72,
@@ -157,7 +175,9 @@
         "EndTime": "0001-01-01T00:00:00Z",
         "CreateBy": 159,
         "Thumbnail": "",
-        "Active": "true"
+        "Active": "true",
+        "Level": 0,
+        "Difficulty": 0
     },
     {
         "Id": 73,
@@ -173,7 +193,9 @@
         "EndTime": "0001-01-01T00:00:00Z",
         "CreateBy": 159,
         "Thumbnail": "",
-        "Active": "true"
+        "Active": "true",
+        "Level": 0,
+        "Difficulty": 0
     },
     {
         "Id": 74,
@@ -189,7 +211,9 @@
         "EndTime": "0001-01-01T00:00:00Z",
         "CreateBy": 159,
         "Thumbnail": "",
-        "Active": "true"
+        "Active": "true",
+        "Level": 0,
+        "Difficulty": 0
     },
     {
         "Id": 75,
@@ -205,7 +229,9 @@
         "EndTime": "0001-01-01T00:00:00Z",
         "CreateBy": 159,
         "Thumbnail": "",
-        "Active": "true"
+        "Active": "true",
+        "Level": 0,
+        "Difficulty": 0
     },
     {
         "Id": 76,
@@ -221,7 +247,9 @@
         "EndTime": "0001-01-01T00:00:00Z",
         "CreateBy": 159,
         "Thumbnail": "",
-        "Active": "true"
+        "Active": "true",
+        "Level": 0,
+        "Difficulty": 0
     },
     {
         "Id": 77,
@@ -237,6 +265,8 @@
         "EndTime": "0001-01-01T00:00:00Z",
         "CreateBy": 159,
         "Thumbnail": "",
-        "Active": "true"
+        "Active": "true",
+        "Level": 0,
+        "Difficulty": 0
     }
 ]
