@@ -110,10 +110,10 @@ class CheckShader(object):
                 self.ture_mat_name[_c] = "M_{}_mat".format(mesh_filters[0])
                 if _c in self.allmats:
                     self.allmats.remove(_c)
-                else:
-                    if _c not in self.defalut_mats:
-                        _info = u"Error material type:  %s\n"%_c
-                        return _info
+                # else:
+                #     if _c not in self.defalut_mats:
+                #         _info = u"Error material type:  %s\n"%_c
+                #         return _info
                 if not self.check_filters(_c,*self.matfilters):
                     _info = u"Wrong name material node:  %s\n"%_c
                     return _info
@@ -222,9 +222,15 @@ class CheckShader(object):
                     _n = os.path.splitext(_n)[0]
                     if _n[-1].isdigit():
                         if re.findall("\.\d+",_n):
-                            _n = _n.replace(re.findall("\.\d+",_n)[-1],"")
+                            _num = len(re.findall("\.\d+",_n)[-1])
+                            _n = _n[:-_num]
+                            # _n = _n.replace(re.findall("\.\d+",_n)[-1],"")
                         else:
-                            _n = _n.replace(re.findall("\d+",_n)[-1],"")
+                            # _n = _n.replace(re.findall("\d+",_n)[-1],"")
+                            _num = len(re.findall("\d+",_n)[-1])
+                            _n = _n[:-_num]
+                        if _n.endswith("_"):
+                            _n = _n[:-1]
                     _key = "_>v<_".join([_path,str(_mode),str(_ani)])
                     file_dict[_key] = set_value(_file,_key,_n)
                 else:
@@ -258,7 +264,8 @@ class CheckShader(object):
             for i in _meshs:
                 _f = self._set_filter(i)
                 if _f[-1].isdigit():
-                    _f = _f.replace(re.findall("\d+",_f)[-1],"")
+                    _num = len(re.findall("\d+",_f)[-1])
+                    _f = _f[:-_num]
                     if _f.endswith("_"):
                         _f = _f[:-1]
                 if _f in _name:

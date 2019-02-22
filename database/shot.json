@@ -16,6 +16,8 @@
         "Thumbnail": "",
         "FrameStart": 0,
         "FrameEnd": 0,
-        "Active": "true"
+        "Active": "true",
+        "Level": 0,
+        "Difficulty": 0
     }
 ]

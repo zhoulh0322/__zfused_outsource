@@ -16,8 +16,8 @@ import zfused_maya.widgets.window as zfwin
 
 import shading_widget
 reload(shading_widget)
-import matarial_widget
-reload(matarial_widget)
+import material_widget
+reload(material_widget)
 import texture_widget
 reload(texture_widget)
 
@@ -50,7 +50,7 @@ class Win(QtWidgets.QMainWindow):
         self.toolBar.addAction(self.bar1)
         self.toolBar.addSeparator()
 
-        self.bar2=QtWidgets.QAction('matarials',self)
+        self.bar2=QtWidgets.QAction('materials',self)
         self.toolBar.addAction(self.bar2)
         self.toolBar.addSeparator()
 
@@ -61,9 +61,9 @@ class Win(QtWidgets.QMainWindow):
         if action.text() == "shading engine":
             self.shading_frame = shading_widget.ShadingWidget()
             self.setCentralWidget(self.shading_frame)
-        elif action.text() == "matarials":
-            self.matarial_frame = matarial_widget.MatarialWidget()
-            self.setCentralWidget(self.matarial_frame)
+        elif action.text() == "materials":
+            self.material_frame = material_widget.MaterialWidget()
+            self.setCentralWidget(self.material_frame)
         else:
             self.texture_frame = texture_widget.TextureWidget()
             self.setCentralWidget(self.texture_frame)

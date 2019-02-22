@@ -16,9 +16,9 @@ except ImportError:
 import maya.cmds as cmds
 import zfused_maya.core.resource as resource
 
-class MatarialWidget(QtWidgets.QFrame):
+class MaterialWidget(QtWidgets.QFrame):
     def __init__(self, parent=None):
-        super(MatarialWidget, self).__init__(parent)
+        super(MaterialWidget, self).__init__(parent)
         self.assetname = ""
         self._build()
         self.pushButton.clicked.connect(self._rename)
