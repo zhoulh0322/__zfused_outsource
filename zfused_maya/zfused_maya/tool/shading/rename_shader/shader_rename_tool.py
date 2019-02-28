@@ -15,11 +15,11 @@ import zfused_maya.core.resource as resource
 import zfused_maya.widgets.window as zfwin
 
 import shading_widget
-reload(shading_widget)
 import material_widget
-reload(material_widget)
 import texture_widget
-reload(texture_widget)
+# reload(shading_widget)
+# reload(material_widget)
+# reload(texture_widget)
 
 # from shader_widget import *
 # import zfused_maya.widgets.window as win

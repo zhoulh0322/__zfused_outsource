@@ -56,7 +56,7 @@ class ItemWidget(QtWidgets.QWidget):
             self.infoWidget.setStyleSheet("QWidget%s"%self.ERROR)
             self.showButton.setStyleSheet("QPushButton%s"%self.ERROR)
             # self.infoLineEdit.setText(info)
-            items = info.split("\n")[0:-1]
+            items = info.split("\n")[:]
             self.listWidget.clear()
             if len(items) == 1:
                 self.listWidget.addItem(items[0])

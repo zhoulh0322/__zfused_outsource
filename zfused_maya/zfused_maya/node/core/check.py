@@ -207,3 +207,28 @@ def repeat(node_type = "mesh"):
         return False, info
     else:
         return True, None
+
+
+
+def trans_in_mesh():
+    """ check mesh in mesh
+
+    """
+    _list = []
+    _meshGrp = [x for x in cmds.ls(type='transform') if ('_model_GRP' in x) and cmds.objExists(x+'.treeName')]
+    if _meshGrp:
+        _all_meshs = cmds.listRelatives(_meshGrp[0],type = "mesh",ad = 1,f = 1)
+        _all_trans = cmds.listRelatives(_all_meshs,p = 1,f = 1)
+        if _all_trans:
+            for i in _all_trans:
+                wrongtrans = cmds.listRelatives(i,ad = 1,type = "transform")
+                # print wrongtrans
+                if wrongtrans:
+                    _list.extend(wrongtrans)
+    # print (_list)
+    if _list:
+        info = u"场景存在嵌套模型\n{}".format("\n".join(_list))
+        print (info)
+        return False, info
+    else:
+        return True, None

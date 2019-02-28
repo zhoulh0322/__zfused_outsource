@@ -20,6 +20,7 @@ class MaterialWidget(QtWidgets.QFrame):
     def __init__(self, parent=None):
         super(MaterialWidget, self).__init__(parent)
         self.assetname = ""
+        self.assettype = ""
         self._build()
         self.pushButton.clicked.connect(self._rename)
         self.pushButton2.clicked.connect(self.refresh)
@@ -114,6 +115,7 @@ class MaterialWidget(QtWidgets.QFrame):
         for i in cmds.ls(type = "transform"):
             if cmds.objExists("%s.treeName"%i):
                 self.assetname = cmds.getAttr("%s.treeName"%i)
+                self.assettype = cmds.getAttr("%s.Type"%i)
 
     def _get_node(self,node,nodetype,io = False,*args):
         _c_node = node
@@ -138,7 +140,7 @@ class MaterialWidget(QtWidgets.QFrame):
 
     def _get_str(self,mesh):
         def _set_filter(meshstr):
-            _ture = meshstr.split(self.assetname)[-1]
+            _ture = meshstr.split("{}_{}".format(self.assettype,self.assetname))[-1]
             if _ture.startswith("_"):
                 _ture = _ture[1:]
             return "{}_{}".format(self.assetname,_ture)

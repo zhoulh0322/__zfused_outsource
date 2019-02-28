@@ -1,5 +1,10 @@
 [
     {
+        "date": "2019.02.25",
+        "content": "添加嵌套模型检查",
+        "author": "binglu.wang"
+    },
+    {
         "date": "2019.02.12",
         "content": "修改检查工具 ui 布局",
         "author": "lanhua.zhou" 

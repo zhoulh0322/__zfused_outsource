@@ -137,6 +137,10 @@ class ModelingCheck(checkwidget.CheckWidget):
 
         widget = checkwidget.ItemWidget(u"检查贴图命名", _check_tex_name, None, False)
         self.add_widget(widget)
+        
+        widget = checkwidget.ItemWidget(u"检查嵌套模型", check.trans_in_mesh, None, False)
+        self.add_widget(widget)
+
 
 def _check_tree_name():
     """ check tree name
