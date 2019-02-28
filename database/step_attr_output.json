@@ -1054,5 +1054,27 @@
         "Format": "mayaAscii",
         "Suffix": ".ma",
         "IsAssembly": 0
+    },
+    {
+        "Id": 102,
+        "ProjectStepId": 99,
+        "Name": "assembly_ad",
+        "Code": "assemblyDefinition",
+        "Script": "import zfused_maya.node.outputattr.assembly.publishad as publishad\r\nreload(publishad)\r\npublishad.publish_ad()",
+        "SoftwareId": 2,
+        "Format": "mayaAscii",
+        "Suffix": ".ma",
+        "IsAssembly": 0
+    },
+    {
+        "Id": 103,
+        "ProjectStepId": 99,
+        "Name": "assembly_structure",
+        "Code": "structure",
+        "Script": "import zfused_maya.node.outputattr.assembly.publishstructure as publishstructure\r\nreload(publishstructure)\r\npublishstructure.publish_structure()",
+        "SoftwareId": 2,
+        "Format": "json",
+        "Suffix": ".json",
+        "IsAssembly": 0
     }
 ]
