@@ -54,7 +54,7 @@
     {
         "Id": 5,
         "Name": "\u5b8c\u6210",
-        "Code": "fin",
+        "Code": "final",
         "Color": "#08AE63",
         "Sort": 5,
         "IsActive": 0,
