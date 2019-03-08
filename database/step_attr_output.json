@@ -924,17 +924,6 @@
         "IsAssembly": 1
     },
     {
-        "Id": 89,
-        "ProjectStepId": 90,
-        "Name": "model_uvs",
-        "Code": "uvs",
-        "Script": "import zfused_maya.node.outputattr.modeling.publishuvs as publishuvs\r\nreload(publishuvs)\r\npublishuvs.publish_uvs()",
-        "SoftwareId": 2,
-        "Format": "json",
-        "Suffix": ".json",
-        "IsAssembly": 0
-    },
-    {
         "Id": 90,
         "ProjectStepId": 96,
         "Name": "rig_low_file",
@@ -1012,17 +1001,6 @@
         "IsAssembly": 0
     },
     {
-        "Id": 97,
-        "ProjectStepId": 90,
-        "Name": "model_ad",
-        "Code": "assemblyDefinition",
-        "Script": "import zfused_maya.node.outputattr.modeling.publishad as publishad\r\nreload(publishad)\r\npublishad.publish_ad()",
-        "SoftwareId": 2,
-        "Format": "mayaBinary",
-        "Suffix": ".mb",
-        "IsAssembly": 0
-    },
-    {
         "Id": 99,
         "ProjectStepId": 93,
         "Name": "shader_proxy",
@@ -1075,6 +1053,39 @@
         "SoftwareId": 2,
         "Format": "mayaAscii",
         "Suffix": ".ma",
+        "IsAssembly": 0
+    },
+    {
+        "Id": 105,
+        "ProjectStepId": 90,
+        "Name": "model_proxy",
+        "Code": "proxy",
+        "Script": "import zfused_maya.node.outputattr.shading.redshift.publishproxy as publishproxy\r\nreload(publishproxy)\r\npublishproxy.publish_proxy()",
+        "SoftwareId": 2,
+        "Format": "rs",
+        "Suffix": ".rs",
+        "IsAssembly": 0
+    },
+    {
+        "Id": 106,
+        "ProjectStepId": 90,
+        "Name": "model_proxy_container",
+        "Code": "proxycontainer",
+        "Script": "import zfused_maya.node.outputattr.shading.redshift.publishproxycontainer as pc\r\nreload(pc)\r\npc.publish_proxy_container()",
+        "SoftwareId": 2,
+        "Format": "mayaBinary",
+        "Suffix": ".mb",
+        "IsAssembly": 1
+    },
+    {
+        "Id": 107,
+        "ProjectStepId": 90,
+        "Name": "model_ad",
+        "Code": "assemblyDefinition",
+        "Script": "import zfused_maya.node.outputattr.modeling.publishad as publishad\r\nreload(publishad)\r\npublishad.publish_ad()",
+        "SoftwareId": 2,
+        "Format": "mayaBinary",
+        "Suffix": ".mb",
         "IsAssembly": 0
     }
 ]

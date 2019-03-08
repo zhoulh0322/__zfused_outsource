@@ -83,6 +83,10 @@ class RiggingCheck(checkwidget.CheckWidget):
         widget = checkwidget.ItemWidget(u"检查贴图路径", check.texture_path, None, False)
         self.add_widget(widget)
 
+        # check rendering group
+        widget = checkwidget.ItemWidget(u"检查渲染组", _check_renderinggroup, repair_renderinggroup,False)
+        self.add_widget(widget)
+
 
 def _check_hierarchy():
     rendering = []
@@ -100,3 +104,34 @@ def _check_hierarchy():
         return False,info
     else:
         return True, None
+
+
+def _check_renderinggroup():
+    rendering = []
+    _renderingdag = [i for i in cmds.ls(dag = 1) if cmds.objExists("{}.rendering".format(i))]
+    if _renderingdag:
+        for dag in _renderingdag:
+            value = cmds.getAttr("%s.rendering"%dag)
+            if value:
+                rendering.append(dag)
+        if rendering:
+            if len(rendering) == 1:
+                return True, None
+            else:
+                info = u"存在超过一个的可渲染组，请隐藏不参加渲染的组并关闭rendering属性\n"
+                info += "\n".join(rendering)
+                return False,info
+        else:
+            info = u"没有可用渲染组，请修改rendering属性值\n"
+            info += "\n".join(_renderingdag)
+            return False,info
+
+
+def repair_renderinggroup():
+    _renderingdag = [i for i in cmds.ls(dag = 1) if cmds.objExists("{}.rendering".format(i))]
+    if _renderingdag:
+        for dag in _renderingdag:
+            _r = cmds.getAttr("%s.rendering"%dag)
+            _v = cmds.getAttr("%s.v"%dag)
+            if _r and not _v:
+                cmds.setAttr("%s.rendering"%dag,0)

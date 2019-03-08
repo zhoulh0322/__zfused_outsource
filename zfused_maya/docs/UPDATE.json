@@ -1,5 +1,10 @@
 [
     {
+        "date": "2019.03.08",
+        "content": "添加绑定阶段渲染组检查,添加场景集合切换工具",
+        "author": "binglu.wang"
+    },
+    {
         "date": "2019.02.25",
         "content": "添加嵌套模型检查",
         "author": "binglu.wang"
