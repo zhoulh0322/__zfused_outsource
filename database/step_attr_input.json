@@ -462,17 +462,6 @@
         "Mode": "direct"
     },
     {
-        "Id": 44,
-        "Name": "rig_file",
-        "Code": "file",
-        "ProjectStepId": 91,
-        "StepAttrId": 90,
-        "Script": "import zfused_maya.node.inputattr.util as util;util.receive_file(argv_task_id,argv_attr_id,argv_attr_code, argv_attr_type, argv_attr_mode,argv_attr_local)",
-        "Type": "import",
-        "IsLocal": 0,
-        "Mode": "direct"
-    },
-    {
         "Id": 45,
         "Name": "shader_file",
         "Code": "file",
