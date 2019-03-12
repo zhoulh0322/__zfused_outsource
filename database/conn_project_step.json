@@ -72,7 +72,7 @@
         "StepId": 2,
         "Object": "asset",
         "SoftwareId": 3,
-        "CheckScript": "import zfused_maya.tool.fx.fx_check as fx_check;reload(fx_check);ui = fx_check.FxCheck();ui.show()",
+        "CheckScript": "import zfused_maya.tool.fx.cfxcheck as cfxcheck\r\nreload(cfxcheck)\r\nui = cfxcheck.CfxCheck()\r\nui.show()",
         "Color": "",
         "Sort": 0,
         "Active": "true"
@@ -127,6 +127,19 @@
         "CheckScript": "import zfused_maya.tool.assembly.assemblycheck as assemblycheck\r\nreload(assemblycheck)\r\nui = assemblycheck.AssemblyCheck()\r\nui.show()",
         "Color": "",
         "Sort": 0,
+        "Active": "true"
+    },
+    {
+        "Id": 100,
+        "Name": "\u6e32\u67d3",
+        "Code": "rendering",
+        "ProjectId": 13,
+        "StepId": 16,
+        "Object": "shot",
+        "SoftwareId": 3,
+        "CheckScript": "0",
+        "Color": "",
+        "Sort": 2,
         "Active": "true"
     }
 ]

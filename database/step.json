@@ -64,8 +64,8 @@
     },
     {
         "Id": 16,
-        "Name": "rending",
-        "Code": "rending",
+        "Name": "rendering",
+        "Code": "rendering",
         "Color": "#FA6B3D",
         "CreateTime": "2017-04-12T00:00:00+08:00",
         "Object": "shot",
