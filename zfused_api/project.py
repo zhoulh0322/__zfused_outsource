@@ -15,6 +15,8 @@ PROJECT_DATABASE_FILE = "{}/database/project.json".format(DATABASE_PATH)
 PROJECT_CONFIG_DATABASE_FILE = "{}/database/project_config.json".format(DATABASE_PATH)
 PROJECT_PROFILE_DATABASE_FILE = "{}/database/project_profile.json".format(DATABASE_PATH)
 
+
+
 with open(PROJECT_DATABASE_FILE, 'r') as f:
     print("read")
     PROJECT_DATABASE = json.load(f)
