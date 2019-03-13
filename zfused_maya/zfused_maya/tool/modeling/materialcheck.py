@@ -5,14 +5,10 @@ import os
 import re
 import maya.cmds as cmds
 import time
+import zfused_maya.node.core.texture as texture
 
-TEXT_NODE = ["file", "imagePlane", "RedshiftNormalMap","RedshiftCameraMap"]
-TEXTURE_ATTR_DICT = {
-    "file" : "fileTextureName",
-    "imagePlane": "imageName",
-    "RedshiftNormalMap":"tex0",
-    "RedshiftCameraMap":"tex0",
-}
+TEXT_NODE = texture.TEXT_NODE
+TEXTURE_ATTR_DICT = texture.TEXTURE_ATTR_DICT
 
 class CheckShader(object):
     def __init__(self):

@@ -163,6 +163,14 @@ class Project(object):
         _time_text = _time_text.split("+")[0].replace("T", " ")
         return datetime.datetime.strptime(_time_text, "%Y-%m-%d %H:%M:%S")
 
+    def production_path(self):
+        """ get asset production path
+
+        rtype: str
+        """
+        _production_project_path = self.config["Root"]
+        return _production_project_path
+
     def project_step_ids(self):
         """ get asset task step id
 

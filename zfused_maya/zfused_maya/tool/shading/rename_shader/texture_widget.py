@@ -15,14 +15,10 @@ except ImportError:
 
 import maya.cmds as cmds
 import zfused_maya.core.resource as resource
+import zfused_maya.node.core.texture as texture
 
-TEXT_NODE = ["file", "imagePlane", "RedshiftNormalMap","RedshiftCameraMap"]
-TEXTURE_ATTR_DICT = {
-    "file" : "fileTextureName",
-    "imagePlane": "imageName",
-    "RedshiftNormalMap":"tex0",
-    "RedshiftCameraMap":"tex0",
-}
+TEXT_NODE = texture.TEXT_NODE
+TEXTURE_ATTR_DICT = texture.TEXTURE_ATTR_DICT
 
 class TextureWidget(QtWidgets.QFrame):
     def __init__(self, parent=None):

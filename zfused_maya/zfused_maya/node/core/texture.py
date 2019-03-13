@@ -13,14 +13,19 @@ import zfused_maya.core.filefunc as filefunc
 logger = logging.getLogger(__file__)
 
 
-TEXT_NODE = ["file", "imagePlane", "RedshiftNormalMap","RedshiftCameraMap"]
+TEXT_NODE = ["file", "imagePlane", "RedshiftNormalMap","RedshiftCameraMap",'RedshiftSprite','RedshiftEnvironment', 'RedshiftLensDistortion', 'RedshiftDomeLight', 'RedshiftIESLight', 'RedshiftLightGobo']
 TEXTURE_ATTR_DICT = {
     "file" : "fileTextureName",
     "imagePlane": "imageName",
     "RedshiftNormalMap":"tex0",
     "RedshiftCameraMap":"tex0",
+    "RedshiftSprite":"tex0",
+    "RedshiftEnvironment":"tex0",
+    "RedshiftLensDistortion":"tex0",
+    "RedshiftDomeLight":"tex0",
+    "RedshiftIESLight":"tex0",
+    "RedshiftLightGobo":"tex0"
 }
-
 
 def publish_file(files, src, dst):
     """ upload files 
