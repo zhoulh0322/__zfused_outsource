@@ -198,21 +198,8 @@ class HUD(object):
 
     # 获取图像大小
     def _get_image_size(self):
-        try:
-            # uiConfigHandle = user.UiConfig()
-            # uiConfigData = uiConfigHandle.Get()
-            # #load task
-            # project_id = uiConfigData["current_project_id"]
-            # projectHandle = api.project.Project(project_id)
-            # _size = "%sx%s"%(projectHandle.config["ImageWidth"], projectHandle.config["ImageHeight"])
-            # return _size
-            _project_id = zfused_maya.core.record.current_project_id()
-            _project_handle = zfused_api.project.Project(_project_id)
-            _size = "{}x{}".format(_project_handle.config["ImageWidth"], _project_handle.config["ImageHeight"])
-            return _size
-        except:
-            _size = "%sx%s"%(cmds.getAttr("defaultResolution.width"),cmds.getAttr("defaultResolution.height"))
-            return _size
+        _size = "%sx%s"%(cmds.getAttr("defaultResolution.width"),cmds.getAttr("defaultResolution.height"))
+        return _size
 
     def _get_show_info(self,*args):
         from collections import Counter
