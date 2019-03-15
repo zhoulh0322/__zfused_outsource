@@ -1120,5 +1120,27 @@
         "ProjectStepId": 101, 
         "Id": 110, 
         "Suffix": ".ma"
+    }, 
+    {
+        "Code": "file", 
+        "Name": "animation_file", 
+        "Script": "import zfused_maya.node.outputattr.animation.publishfile as publishfile\r\nreload(publishfile)\r\npublishfile.publish_file()", 
+        "SoftwareId": 2, 
+        "Format": "mayaAscii", 
+        "IsAssembly": 0, 
+        "ProjectStepId": 98, 
+        "Id": 112, 
+        "Suffix": ".ma"
+    }, 
+    {
+        "Code": "cache/alembiccache", 
+        "Name": "abc_cache", 
+        "Script": "import zfused_maya.node.outputattr.animation.publishabc as publishabc\r\nreload(publishabc)\r\npublishabc.publish_abc()", 
+        "SoftwareId": 2, 
+        "Format": "json", 
+        "IsAssembly": 0, 
+        "ProjectStepId": 98, 
+        "Id": 113, 
+        "Suffix": ".json"
     }
 ]

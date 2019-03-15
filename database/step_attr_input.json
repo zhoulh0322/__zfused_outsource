@@ -515,5 +515,16 @@
         "ProjectStepId": 100, 
         "Type": "reference", 
         "Id": 49
+    }, 
+    {
+        "IsLocal": 0, 
+        "Code": "cache/alembiccache", 
+        "Name": "cache_file", 
+        "StepAttrId": 113, 
+        "Script": "import zfused_maya.node.inputattr.rendering.importcache as importcache\r\nimportcache.import_cache(argv_task_id,argv_attr_id,argv_attr_code, argv_attr_type, argv_attr_mode,argv_attr_local)", 
+        "Mode": "direct", 
+        "ProjectStepId": 100, 
+        "Type": "import", 
+        "Id": 50
     }
 ]

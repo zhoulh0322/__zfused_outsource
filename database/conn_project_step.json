@@ -105,7 +105,7 @@
     }, 
     {
         "Sort": 1, 
-        "CheckScript": "0", 
+        "CheckScript": "import zfused_maya.tool.animation.animationcheck as animationcheck\r\nreload(animationcheck)\r\nui = animationcheck.AnimationCheck()\r\nui.show()", 
         "Code": "animation", 
         "Name": "\u52a8\u753b", 
         "Color": "", 
