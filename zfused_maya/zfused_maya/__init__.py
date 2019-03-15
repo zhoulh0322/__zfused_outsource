@@ -15,6 +15,15 @@ sys.path.insert(0,os.path.dirname(PATH))
 sys.path.insert(0,os.path.dirname(DIRNAME))
 sys.path.insert(0,"{}/packages".format(DIRNAME))
 
+def _get_maya_version():
+    import maya.cmds as cmds
+    version = cmds.about(q=True, version=True)
+    os = cmds.about(q=True, os=True)
+    return "maya-%s-%s" % (version, os)
+
+# plugins path
+PLUGIN_PATH = "{}/plug-ins/{}".format(os.path.dirname(DIRNAME), _get_maya_version())
+
 #RESOURCE_PATH = os.path.join(DIRNAME, "resources")
 RESOURCE_PATH = DIRNAME
 #RESOURCE_PATH = os.path.join(DIRNAME, "resources")

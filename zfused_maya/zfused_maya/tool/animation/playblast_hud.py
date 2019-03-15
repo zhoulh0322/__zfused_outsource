@@ -10,7 +10,7 @@ import getpass,time
 from functools import partial
 import zfused_maya
 import zfused_api
-
+import zfused_maya.node.core.shotmask as shotmask
 
 try:
     import zfused_login
@@ -26,6 +26,17 @@ def get_maya_hud():
         _dir = _project_handle.config["Root"]
         _file = "{}/setup/MAYA_HUD.json".format(_dir)
         print _file
+        if os.path.isfile(_file):
+            return _file
+        return None
+    return None
+
+def get_maya_shotmask():
+    _project_id = zfused_maya.core.record.current_project_id()
+    if _project_id:
+        _project_handle = zfused_api.project.Project(_project_id)
+        _dir = _project_handle.config["Root"]
+        _file = "{}/setup/MAYA_SHOTMASK.json".format(_dir)
         if os.path.isfile(_file):
             return _file
         return None
@@ -332,10 +343,25 @@ class HUD(object):
             self.color = 16
             self.AnimationHUD()
 
+            # read shot mask profile
+            _mask_json = get_maya_shotmask()
+            if _mask_json:
+                # shot mask
+                shotmask.create_mask()
+                _mask = shotmask.get_mask()
+                with open(_mask_json, 'r') as info:
+                    dataInfo = json.load(info)
+                    if dataInfo:
+                        for _key, _value in dataInfo.items():
+                            cmds.setAttr("{}.{}".format(_mask, _key), _value)
+
             HUD.viewInfoState = True
         else:
             self.removeHUD()
             self.restInitHUD()
+
+            # remove shot mask
+            shotmask.delete_mask()
 
             HUD.viewInfoState = False
 

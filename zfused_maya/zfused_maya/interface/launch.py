@@ -15,9 +15,10 @@ import maya.mel as mm
 import maya.OpenMayaUI as OpenMayaUI
 
 import zfused_maya.interface.projectinterface.projectguide as projectguide
-# import zfused_maya.interface.contentinterface.contentguide as contentguide
 import zfused_maya.interface.menuinterface.menubar as menubar
 import zfused_maya.interface.tomaya as tomaya
+
+from . import plugins
 
 logger = logging.getLogger(__name__)
 
@@ -78,3 +79,7 @@ def load():
 
     # load setting
     mm.eval("refreshPauseButtonCmd 0")
+
+
+    # plugins path
+    plugins.set_plugin_path()
