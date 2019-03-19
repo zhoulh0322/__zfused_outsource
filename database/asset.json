@@ -11150,5 +11150,39 @@
         "Active": "true",
         "Level": 0,
         "Difficulty": 0
+    },
+    {
+        "Id": 1959,
+        "Name": "\u6d77\u6d0b\u9986\u4f01\u9e45\u9986\uff08\u6d77\u76d7\u8239\uff09",
+        "Code": "penguinroomcpt",
+        "ProjectId": 13,
+        "TypeId": 4,
+        "Description": "",
+        "StatusId": 7,
+        "CreateTime": "2019-03-19T21:53:36+08:00",
+        "StartTime": "0001-01-01T00:00:00Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "CreateBy": 151,
+        "Thumbnail": "",
+        "Active": "true",
+        "Level": 0,
+        "Difficulty": 0
+    },
+    {
+        "Id": 1960,
+        "Name": "\u6d77\u6d0b\u9986\u4f01\u9e45\u5ba4",
+        "Code": "penguinroom",
+        "ProjectId": 13,
+        "TypeId": 5,
+        "Description": "",
+        "StatusId": 7,
+        "CreateTime": "2019-03-19T21:57:32+08:00",
+        "StartTime": "0001-01-01T00:00:00Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "CreateBy": 151,
+        "Thumbnail": "",
+        "Active": "true",
+        "Level": 0,
+        "Difficulty": 0
     }
 ]
