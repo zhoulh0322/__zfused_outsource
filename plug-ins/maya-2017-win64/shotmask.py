@@ -7,42 +7,6 @@
 
 """
 
-"""
-
-PLUG_IN_NAME = "shotmask.py"
-NODE_NAME = "shotmask"
-TRANSFORM_NODE_NAME = "shotmask"
-SHAPE_NODE_NAME = "shotmask_shape"
-
-def create_mask():
-    if not cmds.pluginInfo(PLUG_IN_NAME, q=True, loaded=True):
-        try:
-            cmds.loadPlugin(PLUG_IN_NAME)
-        except:
-            print("Failed to load ShotMask plug-in: {0}".format(PLUG_IN_NAME))
-            return
-
-    if not get_mask():
-        transform_node = cmds.createNode("transform", name = TRANSFORM_NODE_NAME)
-        cmds.createNode(NODE_NAME, name=SHAPE_NODE_NAME, parent=transform_node)
-
-def delete_mask():
-    mask = get_mask()
-    if mask:
-        transform = cmds.listRelatives(mask, fullPath=True, parent=True)
-        if transform:
-            cmds.delete(transform)
-        else:
-            cmds.delete(mask)
-
-def get_mask():
-    if cmds.pluginInfo(PLUG_IN_NAME, q=True, loaded=True):
-        nodes = cmds.ls(type = NODE_NAME)
-        if len(nodes) > 0:
-            return nodes[0]
-    return None
-
-"""
 
 import maya.api.OpenMaya as om
 import maya.api.OpenMayaRender as omr
@@ -267,6 +231,9 @@ class ShotMaskDrawOverride(omr.MPxDrawOverride):
 
         resolution_width = cmds.getAttr("defaultResolution.width")
 
+        _width = 0
+        _height = 0
+
         if camera.filmFit == om.MFnCamera.kHorizontalFilmFit:
             mask_width = vp_width / camera.overscan
             mask_height = mask_width / device_aspect_ratio
@@ -424,14 +391,3 @@ def uninitializePlugin(obj):
         pluginFn.deregisterNode(PLUGIN_TYPE_ID)
     except:
         om.MGlobal.displayError("Failed to unregister node: {0}".format(PLUGIN_NAME))
-
-
-if __name__ == "__main__":
-
-    cmds.file(f=True, new=True)
-
-    plugin_name = "shotmask.py"
-    cmds.evalDeferred('if cmds.pluginInfo("{0}", q=True, loaded=True): cmds.unloadPlugin("{0}")'.format(plugin_name))
-    cmds.evalDeferred('if not cmds.pluginInfo("{0}", q=True, loaded=True): cmds.loadPlugin("{0}")'.format(plugin_name))
-
-    cmds.evalDeferred('cmds.createNode("zshotmask")')
