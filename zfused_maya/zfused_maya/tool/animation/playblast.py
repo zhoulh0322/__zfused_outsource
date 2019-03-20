@@ -31,11 +31,12 @@ def read_json_file(file_path):
     with open(os.path.abspath(file_path), "r") as json_file:
         json_dict = json.load(json_file)
     return json_dict if json_dict else {}
-
 def write_json_file(json_dict, file_path):
     with open(file_path,"w") as json_file:
         json_file.write(json.dumps(json_dict,indent = 4,separators=(',',':')))
         json_file.close()
+
+
 
 class PlaybastTool(object):
     def __init__(self):
@@ -66,7 +67,7 @@ class PlaybastTool(object):
         ColumnLayout = cmds.columnLayout(parent = Window,adjustableColumn = True)
         cmds.text(label='Playbast Tools',height=30, backgroundColor=[0.5, 0.5, 0.6])
         cmds.separator(style='out')
-        cmds.frameLayout(label='Description :', collapsable=True, collapse=True,width=410,borderStyle='etchedIn')
+        cmds.frameLayout(label='Description :', collapsable=True, collapse=True,width=410)
         cmds.columnLayout(adjustableColumn=True)
         cmds.scrollField('descriptionScrollField',height=100,wordWrap=True)
         cmds.separator(style='in')
@@ -80,6 +81,18 @@ class PlaybastTool(object):
         cmds.columnLayout(adjustableColumn=True)
         qualitySlider = cmds.intSliderGrp( field=True, label='Quality', value=50 )
         ScaleSlider = cmds.floatSliderGrp( label='Scale', field=True, minValue=0.10, maxValue=1.00, fieldMinValue=0.10, fieldMaxValue=1.00, value=0.50,precision=2 )
+        
+        cmds.columnLayout(adjustableColumn=True)
+        cmds.rowColumnLayout( numberOfColumns = 2, columnWidth = [(1, 100),(2,300)])
+        file_name_text = cmds.text(height = 24,label = u'屏显文件名:')
+        file_name_textField = cmds.textField(height = 24)
+        cmds.setParent('..')
+        cmds.columnLayout(adjustableColumn=True)
+        cmds.rowColumnLayout( numberOfColumns = 2, columnWidth = [(1, 20),(2,300)])
+        cmds.text(height = 24,label = '  ')
+        approved_checkBox = cmds.checkBox(height = 24,label = u'已经通过', changeCommand = self.showHUD)
+        cmds.setParent('..')
+
         playB = cmds.button(height = 32,label = 'Playblast',command = lambda *args: self.Playblastfunction())
         #openB = cmds.button(height = 32,label = 'Open Mov',command = lambda *args: self.openMov())
         #uploadB = cmds.button(height = 32,label = 'Upload Mov',command = lambda *args: self.uploadTheFile())
@@ -90,6 +103,9 @@ class PlaybastTool(object):
         self.ShotTF = ShotTF
         self.qualitySlider = qualitySlider
         self.ScaleSlider = ScaleSlider
+        self.file_name_textField = file_name_textField
+        self.approved_checkBox = approved_checkBox
+
         self.playB = playB
         #self.uploadB = uploadB
         #self.openB = openB
@@ -98,12 +114,25 @@ class PlaybastTool(object):
         #self.setOpenB()
         #self.setUploadB(False)
 
+        # print ph.HUD._get_namewithversion()
+        _name = self._get_file_name()
+
         playblast_setup_path = SETUP_DIR + 'MAYA_PLAYBLAST.json'
         playblast_setup_dict = read_json_file(playblast_setup_path)
         qualitySlider_value = playblast_setup_dict['quality']
         ScaleSlider_value   = playblast_setup_dict['scale']
         cmds.intSliderGrp(self.qualitySlider, edit = True, value = qualitySlider_value)
         cmds.floatSliderGrp(self.ScaleSlider, edit = True, value = ScaleSlider_value)
+        cmds.textField(self.file_name_textField, edit = True, text = _name, textChangedCommand = self.showHUD)
+
+        self.showHUD()
+
+    def _get_file_name(self):
+        _file = cmds.file(q = True, sn = True)
+        if _file:
+            _name = os.path.basename(os.path.splitext(_file)[0])
+            return _name
+        return ""
 
     def SetDefaultFolder(self):
         ShotTF = self.ShotTF
@@ -175,15 +204,20 @@ class PlaybastTool(object):
         #cameraSetting = {'overscan':1, 'displayResolution':0, 'displayFilmGate':1, 'displayGateMask':1}
         cam_setup_path = SETUP_DIR + 'MAYA_CAM.json'
         cam_setup_dict = read_json_file(cam_setup_path)
-        cameraSetting = cam_setup_dict
+        cam_save_dict = {}
+        for _attr, _value in cam_setup_dict.items():
+            cam_save_dict[_attr] = getAttr(camShape + '.' + _attr)
+            setAttr(camShape + '.' + _attr, _value)
 
-        #cameraSetting = eval(cameraSetting)
-        cmds.camera(camShape,edit=1,displayResolution=cameraSetting["displayResolution"])
-        cmds.camera(camShape,edit=1,displayGateMask=cameraSetting["displayGateMask"])
-        setAttr(camShape + '.displayGateMaskOpacity', cameraSetting["displayGateMaskOpacity"])
-        setAttr(camShape + '.displayGateMaskColor', cameraSetting["displayGateMaskColor"])
-        cmds.camera(camShape,edit=1,displaySafeAction=cameraSetting["displaySafeAction"])
-        cmds.camera(camShape,edit=1,overscan=cameraSetting["overscan"])
+        # cameraSetting = cam_setup_dict
+        # #cameraSetting = eval(cameraSetting)
+        # setAttr(camShape + '.filmFit', cameraSetting["filmFit"])
+        # cmds.camera(camShape,edit=1,displayResolution=cameraSetting["displayResolution"])
+        # cmds.camera(camShape,edit=1,displayGateMask=cameraSetting["displayGateMask"])
+        # setAttr(camShape + '.displayGateMaskOpacity', cameraSetting["displayGateMaskOpacity"])
+        # setAttr(camShape + '.displayGateMaskColor', cameraSetting["displayGateMaskColor"])
+        # cmds.camera(camShape,edit=1,displaySafeAction=cameraSetting["displaySafeAction"])
+        # cmds.camera(camShape,edit=1,overscan=cameraSetting["overscan"])
         
         #cmds.camera(camShape,edit=1,displayFilmGate=cameraSetting["displayFilmGate"])
         
@@ -209,9 +243,9 @@ class PlaybastTool(object):
         if aPlayBackSliderPython:
             sound = cmds.timeControl(aPlayBackSliderPython, q = True, sound = True)
         if sound:
-            movPath = cmds.playblast(format = format, filename = folder + camTrans + '.' + format, sound = sound, forceOverwrite = 1,sequenceTime=0,clearCache=1,viewer=0,showOrnaments=1,offScreen=1,fp=4,percent =scale*100, compression=compression,quality=qualityNum,w=width,h=height)
+            movPath = cmds.playblast(format = format, filename = folder + _file_name + '.' + format, sound = sound, forceOverwrite = 1,sequenceTime=0,clearCache=1,viewer=0,showOrnaments=1,offScreen=1,fp=4,percent =scale*100, compression=compression,quality=qualityNum,w=width,h=height)
         else:
-            movPath = cmds.playblast(format = format, filename = folder + camTrans + '.' + format,                forceOverwrite = 1,sequenceTime=0,clearCache=1,viewer=0,showOrnaments=1,offScreen=1,fp=4,percent =scale*100, compression=compression,quality=qualityNum,w=width,h=height)
+            movPath = cmds.playblast(format = format, filename = folder + _file_name + '.' + format,                forceOverwrite = 1,sequenceTime=0,clearCache=1,viewer=0,showOrnaments=1,offScreen=1,fp=4,percent =scale*100, compression=compression,quality=qualityNum,w=width,h=height)
         
         # cmds.playblast(format='avi',clearCache=1,viewer=0,showOrnaments=1,offScreen = 1,
         #                             startTime = timeline[0], 
@@ -241,8 +275,16 @@ class PlaybastTool(object):
             # os.remove(movPath)
             pass
 
+        # 恢复状态
+        self.hideHUD()
+        for _attr, _value in cam_save_dict.items():
+            setAttr(camShape + '.' + _attr, _value)
 
-    def showHUD(self):
+    def get_ui_filename(self):
+        _name = cmds.textField(self.file_name_textField, query = True, text = True)
+        return _name
+
+    def showHUD(self,*args):
         # description = cmds.scrollField('descriptionScrollField',text=True,q=True)
         # try:
         #     key = self.filename.split('_')[2]
@@ -259,8 +301,12 @@ class PlaybastTool(object):
         # #import animHUD
 
         #屏显
-        _v = ph.HUD(ph.get_maya_hud())
-        _v.AnimationHUD()
+        _name = cmds.textField(self.file_name_textField, query = True, text = True)
+        _approved = cmds.checkBox(self.approved_checkBox, query = True,value = True)
+
+        _v = ph.HUD(ph.get_maya_hud(), _name, _approved)
+        _v._remove()
+        _v._show()
         
 
         # pl = displayHUD.HUD()
@@ -268,3 +314,8 @@ class PlaybastTool(object):
         # #pl.setAniType("Animation")
         # pl.AnimationHUD()
         # #pl.RefreshInfo()
+
+    def hideHUD(self,*args):
+        _v = ph.HUD(ph.get_maya_hud())
+        _v._remove()
+        _v._restore_defalut()
