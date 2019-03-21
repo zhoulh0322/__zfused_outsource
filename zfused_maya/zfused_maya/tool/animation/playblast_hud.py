@@ -136,11 +136,10 @@ class HUD(object):
         '''获取项目制作人
         '''
         try:
-            _user_id = zfused_api.zFused.USER_ID
-            _user_handle = zfused_api.user.User(_user_id)
-            return _user_handle.profile["NameEn"]
+            return zfused_login.core.record.User().name()
         except:
             return self._get_computer_user()
+
 
     def _get_computer_user(self):
         '''获取电脑账户
