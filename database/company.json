@@ -13,5 +13,10 @@
         "Id": 3,
         "Name": "\u54c8\u5c14\u6ee8\u54c1\u683c\u6587\u5316\u4f20\u64ad\u6709\u9650\u516c\u53f8",
         "Code": "Pinggo"
+    },
+    {
+        "Id": 4,
+        "Name": "\u7565\u706b\u52a8\u753b",
+        "Code": "LH"
     }
 ]
