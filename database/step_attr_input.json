@@ -526,5 +526,49 @@
         "Type": "import",
         "IsLocal": 0,
         "Mode": "direct"
+    },
+    {
+        "Id": 51,
+        "Name": "yeti_file",
+        "Code": "file",
+        "ProjectStepId": 100,
+        "StepAttrId": 91,
+        "Script": "import zfused_maya.node.inputattr.util as util;util.receive_file(argv_task_id,argv_attr_id,argv_attr_code, argv_attr_type, argv_attr_mode,argv_attr_local)",
+        "Type": "reference",
+        "IsLocal": 0,
+        "Mode": "relative"
+    },
+    {
+        "Id": 53,
+        "Name": "file",
+        "Code": "file",
+        "ProjectStepId": 102,
+        "StepAttrId": 112,
+        "Script": "import zfused_maya.node.inputattr.util as util;util.receive_file(argv_task_id,argv_attr_id,argv_attr_code, argv_attr_type, argv_attr_mode,argv_attr_local)",
+        "Type": "reference",
+        "IsLocal": 1,
+        "Mode": "direct"
+    },
+    {
+        "Id": 55,
+        "Name": "rig_file",
+        "Code": "file",
+        "ProjectStepId": 92,
+        "StepAttrId": 87,
+        "Script": "import zfused_maya.node.inputattr.util as util;util.receive_file(argv_task_id,argv_attr_id,argv_attr_code, argv_attr_type, argv_attr_mode,argv_attr_local)",
+        "Type": "reference",
+        "IsLocal": 0,
+        "Mode": "direct"
+    },
+    {
+        "Id": 56,
+        "Name": "yeti_file",
+        "Code": "file",
+        "ProjectStepId": 92,
+        "StepAttrId": 91,
+        "Script": "import zfused_maya.node.inputattr.util as util;util.receive_file(argv_task_id,argv_attr_id,argv_attr_code, argv_attr_type, argv_attr_mode,argv_attr_local)",
+        "Type": "reference",
+        "IsLocal": 0,
+        "Mode": "direct"
     }
 ]
