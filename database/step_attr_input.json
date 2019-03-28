@@ -570,5 +570,16 @@
         "Type": "reference",
         "IsLocal": 0,
         "Mode": "direct"
+    },
+    {
+        "Id": 57,
+        "Name": "rig_yeti_file",
+        "Code": "file",
+        "ProjectStepId": 102,
+        "StepAttrId": 114,
+        "Script": "import zfused_maya.node.inputattr.util as util;util.receive_file(argv_task_id,argv_attr_id,argv_attr_code, argv_attr_type, argv_attr_mode,argv_attr_local)",
+        "Type": "replace",
+        "IsLocal": 0,
+        "Mode": "relative"
     }
 ]

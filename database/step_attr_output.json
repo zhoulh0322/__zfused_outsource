@@ -1153,5 +1153,38 @@
         "Format": "mayaBinary",
         "Suffix": ".mb",
         "IsAssembly": 0
+    },
+    {
+        "Id": 115,
+        "ProjectStepId": 102,
+        "Name": "animation_file",
+        "Code": "file",
+        "Script": "import zfused_maya.node.outputattr.animation.publishfile as publishfile\r\nreload(publishfile)\r\npublishfile.publish_file()",
+        "SoftwareId": 2,
+        "Format": "mayaAscii",
+        "Suffix": ".ma",
+        "IsAssembly": 0
+    },
+    {
+        "Id": 116,
+        "ProjectStepId": 102,
+        "Name": "abc_cache",
+        "Code": "cache/alembiccache",
+        "Script": "import zfused_maya.node.outputattr.animation.publishabc as publishabc\r\nreload(publishabc)\r\npublishabc.publish_abc()",
+        "SoftwareId": 2,
+        "Format": "json",
+        "Suffix": ".json",
+        "IsAssembly": 0
+    },
+    {
+        "Id": 117,
+        "ProjectStepId": 102,
+        "Name": "yeti_cache",
+        "Code": "cache/yeticache",
+        "Script": "import zfused_maya.node.outputattr.cfx.publishcache as publishcache\r\nreload(publishcache)\r\npublishcache.publish_cache()",
+        "SoftwareId": 2,
+        "Format": "json",
+        "Suffix": ".json",
+        "IsAssembly": 0
     }
 ]
