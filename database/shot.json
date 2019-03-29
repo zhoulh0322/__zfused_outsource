@@ -14,8 +14,8 @@
         "EndTime": "0001-01-01T00:00:00Z",
         "CreateBy": 45,
         "Thumbnail": "",
-        "FrameStart": 0,
-        "FrameEnd": 0,
+        "FrameStart": 1,
+        "FrameEnd": 35,
         "Active": "true",
         "Level": 0,
         "Difficulty": 0
@@ -1968,7 +1968,7 @@
         "CreateBy": 45,
         "Thumbnail": "",
         "FrameStart": 100,
-        "FrameEnd": 0,
+        "FrameEnd": 1372,
         "Active": "true",
         "Level": 0,
         "Difficulty": 0

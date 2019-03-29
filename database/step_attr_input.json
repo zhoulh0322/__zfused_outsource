@@ -523,7 +523,7 @@
         "ProjectStepId": 100,
         "StepAttrId": 113,
         "Script": "import zfused_maya.node.inputattr.rendering.importcache as importcache\r\nimportcache.import_cache(argv_task_id,argv_attr_id,argv_attr_code, argv_attr_type, argv_attr_mode,argv_attr_local)",
-        "Type": "import",
+        "Type": "custom",
         "IsLocal": 0,
         "Mode": "direct"
     },
@@ -581,5 +581,16 @@
         "Type": "replace",
         "IsLocal": 0,
         "Mode": "relative"
+    },
+    {
+        "Id": 58,
+        "Name": "yeti_cache_file",
+        "Code": "cache/yeticache",
+        "ProjectStepId": 100,
+        "StepAttrId": 117,
+        "Script": "import zfused_maya.node.inputattr.rendering.importyeticache as importyeticache\r\nimportyeticache.import_yeti_cache(argv_task_id,argv_attr_id,argv_attr_code, argv_attr_type, argv_attr_mode,argv_attr_local)",
+        "Type": "custom",
+        "IsLocal": 0,
+        "Mode": "direct"
     }
 ]
