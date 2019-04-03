@@ -26,6 +26,9 @@ def _get_project_path():
 # 
 # global path
 SETUP_DIR = '{}/setup/'.format(_get_project_path())
+DATA_DIR = 'D:/zfused/work/BKM2/_data/'
+PLAYBLAST_JSON = DATA_DIR + 'playblast.json'
+APPROVER_LIST = ['Mike','Zhang Yang']
 
 def read_json_file(file_path):
     with open(os.path.abspath(file_path), "r") as json_file:
@@ -36,7 +39,29 @@ def write_json_file(json_dict, file_path):
         json_file.write(json.dumps(json_dict,indent = 4,separators=(',',':')))
         json_file.close()
 
+def load_version(file_name):
+    print 'load_version'
+    try:
+        if os.path.isfile(PLAYBLAST_JSON):
+            playblast_dict = read_json_file(PLAYBLAST_JSON)
+            version = playblast_dict[file_name] + 1
+        else:
+            version = 1
+    except:
+        version = 1
+    return version
 
+def save_version(file_name, version):
+    if not os.path.isdir(DATA_DIR):
+        os.mkdir(DATA_DIR)
+    if os.path.isfile(PLAYBLAST_JSON):
+        playblast_dict = read_json_file(PLAYBLAST_JSON)
+        playblast_dict[file_name] = version
+        write_json_file(playblast_dict, PLAYBLAST_JSON)
+    else:
+        playblast_dict = {}
+        playblast_dict[file_name] = version
+        write_json_file(playblast_dict, PLAYBLAST_JSON)
 
 class PlaybastTool(object):
     def __init__(self):
@@ -63,7 +88,7 @@ class PlaybastTool(object):
             cmds.deleteUI(Window,window = True)
         if cmds.windowPref(Window,exists = True) == True:
             cmds.windowPref(Window,remove = True)
-        cmds.window(Window,sizeable = False,title = 'Playblast Tool')
+        cmds.window(Window,sizeable = False,title = 'Playblast Tool', closeCommand = self.hideHUD)
         ColumnLayout = cmds.columnLayout(parent = Window,adjustableColumn = True)
         cmds.text(label='Playbast Tools',height=30, backgroundColor=[0.5, 0.5, 0.6])
         cmds.separator(style='out')
@@ -83,14 +108,21 @@ class PlaybastTool(object):
         ScaleSlider = cmds.floatSliderGrp( label='Scale', field=True, minValue=0.10, maxValue=1.00, fieldMinValue=0.10, fieldMaxValue=1.00, value=0.50,precision=2 )
         
         cmds.columnLayout(adjustableColumn=True)
-        cmds.rowColumnLayout( numberOfColumns = 2, columnWidth = [(1, 100),(2,300)])
+        cmds.rowColumnLayout( numberOfColumns = 4, columnWidth = [(1, 100), (2,100), (3, 100), (4,100)])
         file_name_text = cmds.text(height = 24,label = u'屏显文件名:')
         file_name_textField = cmds.textField(height = 24)
+        version_text = cmds.text(height = 24,label = u'          版本号:')
+        version_textField = cmds.textField(height = 24)
         cmds.setParent('..')
+
         cmds.columnLayout(adjustableColumn=True)
-        cmds.rowColumnLayout( numberOfColumns = 2, columnWidth = [(1, 20),(2,300)])
+        cmds.rowColumnLayout( numberOfColumns = 4, columnWidth = [(1, 20),(2,100),(3, 100),(2,100)])
         cmds.text(height = 24,label = '  ')
         approved_checkBox = cmds.checkBox(height = 24,label = u'已经通过', changeCommand = self.showHUD)
+        approved_text = cmds.text(height = 24,label = u'          通过人:')
+        approver_optionMenu = optionMenu(changeCommand = self.showHUD)
+        for _approver in APPROVER_LIST:
+            menuItem(label = _approver, parent = approver_optionMenu)
         cmds.setParent('..')
 
         playB = cmds.button(height = 32,label = 'Playblast',command = lambda *args: self.Playblastfunction())
@@ -104,7 +136,9 @@ class PlaybastTool(object):
         self.qualitySlider = qualitySlider
         self.ScaleSlider = ScaleSlider
         self.file_name_textField = file_name_textField
+        self.version_textField = version_textField
         self.approved_checkBox = approved_checkBox
+        self.approver_optionMenu = approver_optionMenu
 
         self.playB = playB
         #self.uploadB = uploadB
@@ -124,6 +158,8 @@ class PlaybastTool(object):
         cmds.intSliderGrp(self.qualitySlider, edit = True, value = qualitySlider_value)
         cmds.floatSliderGrp(self.ScaleSlider, edit = True, value = ScaleSlider_value)
         cmds.textField(self.file_name_textField, edit = True, text = _name, textChangedCommand = self.showHUD)
+        _version = load_version(_name)
+        cmds.textField(self.version_textField, edit = True, text = _version, textChangedCommand = self.showHUD)
 
         self.showHUD()
 
@@ -272,8 +308,12 @@ class PlaybastTool(object):
         convert_format = '.mov'
         convert_path = os.path.splitext(movPath)[0] + convert_format
         if video.convert_video(movPath, convert_path) == True:
-            # os.remove(movPath)
-            pass
+            os.remove(movPath)
+            # pass
+
+        _file_name = cmds.textField(self.file_name_textField, query = True, text = True)
+        _version = int(cmds.textField(self.version_textField, query = True, text = True))
+        save_version(_file_name, _version)
 
         # 恢复状态
         self.hideHUD()
@@ -301,10 +341,22 @@ class PlaybastTool(object):
         # #import animHUD
 
         #屏显
-        _name = cmds.textField(self.file_name_textField, query = True, text = True)
-        _approved = cmds.checkBox(self.approved_checkBox, query = True,value = True)
+        _file_name = cmds.textField(self.file_name_textField, query = True, text = True)
+        _version_str = cmds.textField(self.version_textField, query = True, text = True)
+        try:
+            _version = '_v' + '{:0>2d}'.format(int(_version_str))
+        except:
+            _version = _version_str
+        _name = _file_name + _version
+        _approved = cmds.checkBox(self.approved_checkBox, query = True, value = True)
+        _approver = cmds.optionMenu(self.approver_optionMenu, query = True, value = True)
+        print '_approver =', _approver
+        if _approved == True:
+            _approved_str = 'Approved by ' + _approver
+        else:
+            _approved_str = ''
 
-        _v = ph.HUD(ph.get_maya_hud(), _name, _approved)
+        _v = ph.HUD(ph.get_maya_hud(), _name, _approved_str)
         _v._remove()
         _v._show()
         

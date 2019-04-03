@@ -47,7 +47,7 @@ def get_maya_shotmask():
 
 class HUD(object):
     viewInfoState = False
-    def __init__(self, jsonPath,Versionname = "",Approved = False):
+    def __init__(self, jsonPath,Versionname = "",Approved = ""):
         self.jsonPath = jsonPath
         self._versionname = Versionname
         self.COMPANY   = u"苏州星龙传媒"
@@ -67,7 +67,7 @@ class HUD(object):
 
         self._set_hud_info()
         if Approved:
-            self._set_approved()
+            self._set_approved(Approved)
 
     def _set_hud_info(self):
         '''set HUD info
@@ -228,10 +228,11 @@ class HUD(object):
         _size = "%sx%s"%(cmds.getAttr("defaultResolution.width"),cmds.getAttr("defaultResolution.height"))
         return _size
 
-    def _set_approved(self):
+    def _set_approved(self,_str):
         ''' add Approved info
         '''
-        self._Approved = {"s":4,"l":"Approved","atr":False,"ba":"left","p" : 75}
+        # "Approved by Mike"
+        self._Approved = {"s":4,"l":_str,"atr":False,"ba":"left"}#,"p" : 75
         self._DefaultList.append("_Approved")
 
     def _set_show_info(self,*args):

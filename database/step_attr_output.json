@@ -952,9 +952,9 @@
         "Code": "file",
         "Script": "import zfused_maya.node.outputattr.assembly.publishfile as publishfile\r\nreload(publishfile)\r\npublishfile.publish_file()",
         "SoftwareId": 2,
-        "Format": "mayaBinary",
-        "Suffix": ".mb",
-        "IsAssembly": 0
+        "Format": "mayaAscii",
+        "Suffix": ".ma",
+        "IsAssembly": 1
     },
     {
         "Id": 93,
