@@ -9,6 +9,15 @@ import maya.cmds as cmds
 
 import logging
 
+# load gpu plugin
+_is_load = cmds.pluginInfo("sceneAssembly", query=True, loaded = True)
+if not _is_load:
+    try:
+        logger.info("load scene assembly plugin")
+        cmds.loadPlugin("sceneAssembly")
+    except Exception as e:
+        logger.error(e)
+        sys.exit()
 
 class Assembly(object):
     def __init__(self, name):

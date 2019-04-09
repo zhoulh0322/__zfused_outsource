@@ -3,6 +3,7 @@
 import sys
 import os
 import re
+import shutil
 from functools import partial
 
 try:
@@ -29,6 +30,7 @@ class TextureWidget(QtWidgets.QFrame):
         self._build()
         self._show_preview()
         self.normalMode.setChecked(True)
+        self.asCopy.setChecked(True)
         self.pushButton.clicked.connect(self._rename)
         self.pushButton2.clicked.connect(self.open_folder)
         self.pushButton3.clicked.connect(self.refresh)
@@ -100,6 +102,10 @@ class TextureWidget(QtWidgets.QFrame):
         self.fileListUI.setMaximumSize(QtCore.QSize(300, 16777215))
         self.fileListUI.setSelectionMode(QtWidgets.QAbstractItemView.ContiguousSelection)
 
+        self.asCopy = QtWidgets.QCheckBox()
+        self.asCopy.setMinimumSize(QtCore.QSize(0, 25))
+        self.asCopy.setText(u"拷贝副本")
+
         self.normalMode = QtWidgets.QRadioButton()
         self.normalMode.setMinimumSize(QtCore.QSize(0, 25))
         self.normalMode.setText(u"普通")
@@ -164,6 +170,7 @@ class TextureWidget(QtWidgets.QFrame):
         self.firlayout1.setSpacing(5)
         self.firlayout1.setContentsMargins(0, 0, 0, 0)
         self.firlayout1.addWidget(self.lineEdit)
+        self.firlayout1.addWidget(self.asCopy)
         self.firlayout1.addWidget(self.showPreview)
         self.firlayout1.addWidget(self.pushButton)
 
@@ -248,16 +255,31 @@ class TextureWidget(QtWidgets.QFrame):
         new_texname = self.lineEdit.text()
         if not item or not new_texname:
             return
-        renamedict = self._get_rename_dict(tex_c,new_texname)
+        if "<UDIM>" in new_texname or "<f>" in new_texname:
+            renamedict = self._get_rename_dict(tex_c,new_texname[:-len(re.findall("<\w+>",new_texname)[-1])])
+        else:
+            renamedict = self._get_rename_dict(tex_c,new_texname)
+        # # ========================debug=========================
+        # for _k,_v in renamedict.items():
+        #     print (_k,_v)
+        # # ========================debug=========================
         if renamedict:
             # rename tex
             info = ""
             sort_relist = sorted(renamedict.keys())
-            attrstr = renamedict[sort_relist[0]]
+            if "<UDIM>" in new_texname or "<f>" in new_texname:
+                _p,_n = os.path.split(renamedict[sort_relist[0]])
+                attrstr = "{}/{}{}".format(_p,new_texname,os.path.splitext(_n)[-1])
+            else:
+                attrstr = renamedict[sort_relist[0]]
             for _k in sort_relist:
                 try:
-                    os.rename(_k,renamedict[_k])
-                except:
+                    if self.asCopy.isChecked():
+                        shutil.copyfile(_k,renamedict[_k])
+                    else:
+                        os.rename(_k,renamedict[_k])
+                except IOError as e:
+                    print (e.errno, e.strerror)
                     info += u"重命名失败：{}\n".format(_k)
             if info:
                 info += u"贴图可能被其他程序占用\n请手动修改"
@@ -310,25 +332,65 @@ class TextureWidget(QtWidgets.QFrame):
                     _name = _name[:-1]
 
             _str = os.path.splitext(item.text())[0].split("_")[-1]
+            print (_str)
             showmode = self._get_texmode()
             if showmode == "normalMode":
                 true_tex_name = u"T_{}_{}".format(_name,_str)
             elif showmode == "tilingMode":
-                true_tex_name = u"T_{}_{}".format(_name,_str.replace(re.findall("\.\d+",_str)[-1],""))
+                # if re.findall("\d{4}",_str):
+                if "<UDIM>" in item.text().upper():
+                    true_tex_name = u"T_{}_{}<UDIM>".format(_name,_str.replace("<UDIM>",""))
+                else:
+                    if re.findall("\d{4}",_str):
+                        true_tex_name = u"T_{}_{}".format(_name,_str.replace(re.findall("\d{4}",_str)[-1],""))
+                    else:
+                        true_tex_name = u"T_{}_{}".format(_name,_str)
             else:
-                true_tex_name = u"T_{}_{}".format(_name,_str.replace(re.findall("\d+",_str)[-1],""))
+                if "<f>" in _str:
+                    true_tex_name = u"T_{}_{}<f>".format(_name,_str.replace("<f>",""))
+                else:
+                    if re.findall("\d+",_str):
+                        true_tex_name = u"T_{}_{}".format(_name,_str.replace(re.findall("\d+",_str)[-1],""))
+                    else:
+                        true_tex_name = u"T_{}_{}".format(_name,_str)
             return true_tex_name
 
+    # def _get_frametex_info(self,filename,mode):
+    #     if mode == "tilingMode":
+    #         num = re.findall("\.\d+",filename)
+    #     else:
+    #         num = re.findall("\d+",filename)
+
+    #     if num:
+    #         filterstr = filename.split(num[-1])[0]
+    #         return filterstr,num[-1]
+    #     else:
+    #         return None,None
+
+    # new
     def _get_frametex_info(self,filename,mode):
         if mode == "tilingMode":
-            num = re.findall("\.\d+",filename)
+            num = re.findall("\d{4}",filename)
         else:
             num = re.findall("\d+",filename)
         if num:
-            filterstr = filename.split(num[-1])[0]
-            return filterstr,num[-1]
+            filterstr = filename.split(num[-1])
+            _zfill = "\d{%d}"%(len(num[-1]))
+            if len(filterstr)-2 > 0:
+                return _zfill.join(filterstr).replace(_zfill,num[-1],len(filterstr)-2),num[-1]
+            else:
+                return _zfill.join(filterstr),num[-1]
         else:
-            return None,None
+            if "<UDIM>" in filename:
+                filterstr = filename.split("<UDIM>")
+                return "\d{4}".join(filterstr),None
+            elif "<udim>" in filename:
+                filterstr = filename.split("<udim>")
+                return "\d{4}".join(filterstr),None
+            # elif "<f>" in filename:
+            #     filterstr = filename.split("<f>")
+            #     return "\d+".join(filterstr),None
+        return None,None
 
     def _get_file_dict(self):
         # {"Mode":{"path":{"node"["file1","file2"],mesh:["mesh1","mesh2"],name :"name"}},}
@@ -344,27 +406,33 @@ class TextureWidget(QtWidgets.QFrame):
             else:
                 _value = {"node":[node],"name":name}
             return _value
+
         if self.Texdict:
             self.Texdict = {}
-        _files = cmds.ls(type = TEXT_NODE)
-        if _files:
-            for _file in _files:
-                _type = cmds.nodeType(_file)
-                _path = cmds.getAttr("{}.{}".format(_file,TEXTURE_ATTR_DICT[_type]))
-                if _type == "file":
-                    _mode = cmds.getAttr("%s.uvTilingMode"%_file)
-                    _ani = cmds.getAttr("%s.useFrameExtension"%_file)
-                else:
-                    _mode,_ani = None,None
-                if _path and os.path.exists(_path):#是否在ui中显示实际中不存在的贴图
+        # _files = cmds.ls(type = TEXT_NODE)
+        nodes = texture.nodes()
+        if nodes:
+            for _node_attr in nodes:
+                _node = _node_attr.split(".")[0]
+                _type = cmds.nodeType(_node)
+                # _path = cmds.getAttr(_node_attr)
+                _path = texture._get_file_full_name(_node_attr)
+                _mode,_ani = 0,0
+                if cmds.objExists("%s.uvTilingMode"%_node):
+                    _mode = cmds.getAttr("%s.uvTilingMode"%_node)
+                if cmds.objExists("%s.useFrameExtension"%_node):
+                    _ani = cmds.getAttr("%s.useFrameExtension"%_node)
+                if "<UDIM>" in os.path.basename(_path):
+                    _mode = 1
+                if _path and (os.path.exists(_path) or texture.get_udim_texfile(_path) or texture.get_frame_texfile(_path)):
                     _name = os.path.basename(_path)
                     if _mode or _ani:
                         if _mode:
-                            set_mode(_file,_path,_name,"tilingMode")
+                            set_mode(_node,_path,_name,"tilingMode")
                         if _ani:
-                            set_mode(_file,_path,_name,"sequenceMode")
+                            set_mode(_node,_path,_name,"sequenceMode")
                     else:
-                        set_mode(_file,_path,_name,"normalMode")
+                        set_mode(_node,_path,_name,"normalMode")
 
     def _get_rename_dict(self,src,dst):
         info = u"贴图名已存在\n请在末尾加入序号区分\n(纹理动画注意和序号分割开\n以免动画失效)"
@@ -377,17 +445,19 @@ class TextureWidget(QtWidgets.QFrame):
             _f = self._get_frametex_info(_s,showmode)[0]
             for _i in os.listdir(_p):
                 _temp_s = os.path.splitext(_i)[0]
-                if _temp_s[-1].isdigit():
+                # if _temp_s[-1].isdigit():
+                if re.findall("\d+",_temp_s):# 判断字符串中存在数字
                     _f2,_num = self._get_frametex_info(_temp_s,showmode)
                     if _f2 and _num and _f == _f2:
-                        newname = os.path.join(_p,"".join([dst,_num,_e]))
-                        if os.path.join(_p,_i) != newname:
+                    # if _f2 and _num and re.search(_f,_f2):
+                        newname = "{}/{}".format(_p,"".join([dst,_num,_e]))
+                        if "{}/{}".format(_p.replace("\\","/"),_i) != newname.replace("\\","/"):
                             if os.path.exists(newname):
                                 cmds.confirmDialog(title = '',message = info,button = [u"确定"])
                                 return None
-                            renamedict[os.path.join(_p,_i)] = newname
+                            renamedict["{}/{}".format(_p,_i)] = newname
         else:
-            newname = os.path.join(_p,"".join([dst,_e]))
+            newname = "{}/{}".format(_p.replace("\\","/"),"".join([dst,_e]))
             if full_tex_c != newname:
                 if os.path.exists(newname):
                     cmds.confirmDialog(title = '',message = info,button = [u"确定"])
@@ -452,7 +522,6 @@ class TextureWidget(QtWidgets.QFrame):
             self.fileListUI.clear()
         self.fileListUI.selectAll()
 
-
     def _set_mesh(self):
         def get_list(meshlist):
             templist = []
@@ -487,7 +556,6 @@ class TextureWidget(QtWidgets.QFrame):
             self.meshListUI.clear()
         cmds.select(files,r=1,ne = 1)
         self._set_true_name()
-
 
     def _set_true_name(self):
         if self.meshListUI.count() != 0:

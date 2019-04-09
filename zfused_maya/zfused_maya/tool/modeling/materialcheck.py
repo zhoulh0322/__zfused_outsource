@@ -29,11 +29,13 @@ class CheckShader(object):
         self.allmats = self._get_mat()
         self.assetname = ""
         self.assettype = ""
+        
 
     def _get_asset_name(self):
         for i in cmds.ls(type = "transform"):
             if cmds.objExists("%s.treeName"%i):
                 self.assetname = cmds.getAttr("%s.treeName"%i)
+                self.assettype = cmds.getAttr("%s.Type"%i)
 
     def _get_mat(self):
         return [i for i in cmds.ls(mat = 1) if i not in self.defalut_mats]
@@ -51,6 +53,8 @@ class CheckShader(object):
         return "{}_{}".format(self.assetname,_ture)
 
     def check_mesh(self,sg_c):
+        if cmds.referenceQuery(sg_c, isNodeReferenced = True):
+            return None,None
         mesh_c = cmds.listConnections(sg_c,scn = 1,type = "mesh")
         if not mesh_c:
             if sg_c not in self.defalut_SGs:
@@ -86,55 +90,58 @@ class CheckShader(object):
         return None,strlist
 
     def check_sg(self,sg_c,mesh_filters):
-        mesh_c = cmds.listConnections(sg_c,scn = 1,type = "mesh")
-        if mesh_c and sg_c in self.defalut_SGs:
-            _info = u"Use default material mesh:  %s\n"%"\n                            ".join(mesh_c)
-            return _info
-        if not self.check_filters(sg_c,*self.sgfilters):
-            _info = u"Wrong name SG node:  %s\n"%sg_c
-            return _info
-        true_n = [i for i in mesh_filters if i in sg_c]
-        if not true_n:
-            _info = u"SGnode isn't same with mesh:  %s\n"%sg_c
-            return _info
+        if not cmds.referenceQuery(sg_c, isNodeReferenced = True):
+            mesh_c = cmds.listConnections(sg_c,scn = 1,type = "mesh")
+            if mesh_c and sg_c in self.defalut_SGs:
+                _info = u"Use default material mesh:  %s\n"%"\n                            ".join(mesh_c)
+                return _info
+            if not self.check_filters(sg_c,*self.sgfilters):
+                _info = u"Wrong name SG node:  %s\n"%sg_c
+                return _info
+            true_n = [i for i in mesh_filters if i in sg_c]
+            if not true_n:
+                _info = u"SGnode isn't same with mesh:  %s\n"%sg_c
+                return _info
         return None
 
     def check_mat(self,sg_c,mesh_filters):
         mat_c = cmds.listConnections("%s.surfaceShader"%sg_c)
         if mat_c:
             for _c in mat_c:
-                self.ture_mat_name[_c] = "M_{}_mat".format(mesh_filters[0])
                 if _c in self.allmats:
                     self.allmats.remove(_c)
-                # else:
-                #     if _c not in self.defalut_mats:
-                #         _info = u"Error material type:  %s\n"%_c
-                #         return _info
-                if not self.check_filters(_c,*self.matfilters):
-                    _info = u"Wrong name material node:  %s\n"%_c
-                    return _info
-                true_n = [i for i in mesh_filters if i in _c.split(":")[-1]]
-                if not true_n:
-                    _info = u"Material name isn't same with mesh:  %s\n"%_c
-                    return _info
+                if not cmds.referenceQuery(_c, isNodeReferenced = True):
+                    self.ture_mat_name[_c] = "M_{}_mat".format(mesh_filters[0])
+                    # else:
+                    #     if _c not in self.defalut_mats:
+                    #         _info = u"Error material type:  %s\n"%_c
+                    #         return _info
+                    if not self.check_filters(_c,*self.matfilters):
+                        _info = u"Wrong name material node:  %s\n"%_c
+                        return _info
+                    true_n = [i for i in mesh_filters if i in _c.split(":")[-1]]
+                    if not true_n:
+                        _info = u"Material name isn't same with mesh:  %s\n"%_c
+                        return _info
         return None
 
     def check_secondary_mat(self):
         _info = []
         for _mat in self.allmats:
-            _sg = self._get_node(_mat,"shadingEngine",True,"transform","mesh")
-            if not _sg:
-                _info.append(u"Error link material:  %s\n"%_mat)
-                continue
-            if self.ture_sg_name.has_key(_sg[0]):
-                _filter = "_".join(self.ture_sg_name[_sg[0]].split("_")[1:-1])
-            else:
-                _filter = "_".join(_sg[0].split("_")[1:-1])
-            self.ture_mat_name[_mat] = "M_{}_mat".format(_filter)
-            if not self.check_filters(_mat,*self.matfilters):
-                _info.append(u"Wrong name material node:  %s\n"%_mat)
-            if not _filter in _mat.split(":")[-1]:
-                _info.append(u"Material name isn't same with mesh:  %s\n"%_mat)
+            if not cmds.referenceQuery(_mat, isNodeReferenced = True):
+                _sg = self._get_node(_mat,"shadingEngine",True,"transform","mesh")
+                if not _sg:
+                    _info.append(u"Error link material:  %s\n"%_mat)
+                    continue
+                if self.ture_sg_name.has_key(_sg[0]):
+                    _filter = "_".join(self.ture_sg_name[_sg[0]].split("_")[1:-1])
+                else:
+                    _filter = "_".join(_sg[0].split("_")[1:-1])
+                self.ture_mat_name[_mat] = "M_{}_mat".format(_filter)
+                if not self.check_filters(_mat,*self.matfilters):
+                    _info.append(u"Wrong name material node:  %s\n"%_mat)
+                if not _filter in _mat.split(":")[-1]:
+                    _info.append(u"Material name isn't same with mesh:  %s\n"%_mat)
         return _info
 
 
@@ -193,6 +200,50 @@ class CheckShader(object):
             filenode_list = list(set(filenode_list))
         return filenode_list
 
+    # def _get_file_dict(self):
+    #     file_dict = {}
+    #     self._get_asset_name()
+    #     def set_value(node,path,name):
+    #         if file_dict.has_key(path):
+    #             _value = file_dict[path]
+    #             _value["node"].append(node)
+    #         else:
+    #             _value = {"node":[node],"name":name}
+    #         return _value
+    #     _files = cmds.ls(type = TEXT_NODE)
+    #     if _files:
+    #         for _file in _files:
+    #             _type = cmds.nodeType(_file)
+    #             _path = cmds.getAttr("{}.{}".format(_file,TEXTURE_ATTR_DICT[_type]))
+    #             # if _type == "file":
+    #             #     _mode = cmds.getAttr("%s.uvTilingMode"%_file)
+    #             #     _ani = cmds.getAttr("%s.useFrameExtension"%_file)
+    #             # else:
+    #             #     _mode,_ani = None,None
+    #             if _path and os.path.exists(_path):
+    #                 _p,_n = os.path.split(_path)
+    #                 _n = os.path.splitext(_n)[0]
+    #                 if _n[-1].isdigit():
+    #                     if re.findall("\.\d+",_n):
+    #                         _num = len(re.findall("\.\d+",_n)[-1])
+    #                         _n = _n[:-_num]
+    #                         # _n = _n.replace(re.findall("\.\d+",_n)[-1],"")
+    #                     else:
+    #                         # _n = _n.replace(re.findall("\d+",_n)[-1],"")
+    #                         _num = len(re.findall("\d+",_n)[-1])
+    #                         _n = _n[:-_num]
+    #                     if _n.endswith("_"):
+    #                         _n = _n[:-1]
+    #                 _key = "_>v<_".join([_path,str(_mode),str(_ani)])
+    #                 file_dict[_key] = set_value(_file,_key,_n)
+    #             else:
+    #                 _key = "_>v<_".join([_path,str(_mode),str(_ani)])
+    #                 file_dict[_key] = set_value(_file,_key,None)
+    #                 continue
+    #     return file_dict
+
+
+
     def _get_file_dict(self):
         file_dict = {}
         self._get_asset_name()
@@ -203,17 +254,21 @@ class CheckShader(object):
             else:
                 _value = {"node":[node],"name":name}
             return _value
-        _files = cmds.ls(type = TEXT_NODE)
-        if _files:
-            for _file in _files:
-                _type = cmds.nodeType(_file)
-                _path = cmds.getAttr("{}.{}".format(_file,TEXTURE_ATTR_DICT[_type]))
-                if _type == "file":
-                    _mode = cmds.getAttr("%s.uvTilingMode"%_file)
-                    _ani = cmds.getAttr("%s.useFrameExtension"%_file)
-                else:
-                    _mode,_ani = None,None
-                if _path and os.path.exists(_path):
+        nodes = texture.nodes(True,False)
+        if nodes:
+            for _node_attr in nodes:
+                _node = _node_attr.split(".")[0]
+                # _path = cmds.getAttr(_node_attr)
+                _path = texture._get_file_full_name(_node_attr)
+                _mode,_ani = 0,0
+                if cmds.objExists("%s.uvTilingMode"%_node):
+                    _mode = cmds.getAttr("%s.uvTilingMode"%_node)
+                if cmds.objExists("%s.useFrameExtension"%_node):
+                    _ani = cmds.getAttr("%s.useFrameExtension"%_node)
+                if "<UDIM>" in os.path.basename(_path):
+                    _mode = 1
+
+                if _path and (os.path.exists(_path) or texture.get_udim_texfile(_path) or texture.get_frame_texfile(_path)):
                     _p,_n = os.path.split(_path)
                     _n = os.path.splitext(_n)[0]
                     if _n[-1].isdigit():
@@ -228,14 +283,17 @@ class CheckShader(object):
                         if _n.endswith("_"):
                             _n = _n[:-1]
                     _key = "_>v<_".join([_path,str(_mode),str(_ani)])
-                    file_dict[_key] = set_value(_file,_key,_n)
+                    file_dict[_key] = set_value(_node,_key,_n)
                 else:
                     _key = "_>v<_".join([_path,str(_mode),str(_ani)])
-                    file_dict[_key] = set_value(_file,_key,None)
+                    file_dict[_key] = set_value(_node,_key,None)
                     continue
         return file_dict
 
+
     def check_texture(self):
+        def get_check_nodes(nodes):
+            return [_i for _i in nodes if not cmds.referenceQuery(_i, inr = True)]
         file_dict = self._get_file_dict()
         _info = []
         for _path in file_dict.keys():
@@ -250,7 +308,10 @@ class CheckShader(object):
                 _info.append(u"Wrong name Texture:  %s\n"%_real_path)
                 continue
             _sgs = self._get_node(_nodes,"shadingEngine",True,"transform","mesh")
-            if not _sgs:
+            # 获取非参考节点
+            _checknodes = get_check_nodes(_nodes)
+            if _checknodes and not _sgs:
+            # if not _sgs:
                 _info.append(u"Error link file node:  %s\n"%"\n".join(_nodes))
                 continue
             _meshs  = cmds.listConnections(_sgs,scn = 1,type = "mesh")
@@ -269,10 +330,10 @@ class CheckShader(object):
             if not strlist:
                 _info.append(u"Texture name isn't same with mesh:  %s\n"%_real_path)
             texname = os.path.basename(_real_path)
-            _same = [_i for _i in file_dict.keys() if texname in _i]
+            _same = [_i for _i in file_dict.keys() if texname in _i and get_check_nodes(file_dict[_i]["node"])]
             if len(_same) > 1:
                 _showlist = [_i.split("_>v<_")[0] for _i in _same]
-                _info.append(u"Has same Texture:  %s\n"%"<==>".join(_showlist))
+                _info.append(u"Has same Texture:  %s\n"%"<==>".join(sorted(_showlist)))
         _info = list(set(_info))
         return _info
 
@@ -307,7 +368,7 @@ class CheckShader(object):
         for k,v in _dict.items():
             if k != v:
                 try:
-                    print "rename {} to {}".format(k,v)
+                    print ("rename {} to {}".format(k,v))
                     cmds.rename(k,v)
                 except:
                     pass
@@ -324,11 +385,11 @@ class CheckShader(object):
 
 if __name__ == '__main__':
     a = CheckShader()
-    time_s = time.time()
-    print a.check_shader()
-    print a.check_texture()
+    # time_s = time.time()
+    # print a.check_shader()
+    print (a.check_texture())
     # print a.repair()
     # a._get_file_dict()
-    time_e = time.time()
-    print time_e-time_s
+    # time_e = time.time()
+    # print time_e-time_s
     # a.repair()

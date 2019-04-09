@@ -37,15 +37,6 @@ class RiggingCheck(checkwidget.CheckWidget):
         checkwidget.CheckWidget.value = _is_ok
         check.Check.value = _is_ok
 
-    def show(self):
-        import zfused_maya.core.restricted as restricted
-        import maya.cmds as cmds
-        _has_per, _info = restricted.restricted()
-        if not _has_per:
-            cmds.confirmDialog(message = _info)
-            return 
-        super(RiggingCheck, self).show()
-
     def _init(self):
         self.set_title_name(u"绑定文件检查")
 
@@ -55,6 +46,10 @@ class RiggingCheck(checkwidget.CheckWidget):
         
         #check rendering hierarchy
         widget = checkwidget.ItemWidget(u"检查文件结构", _check_hierarchy, None, False)
+        self.add_widget(widget)
+
+        # 检查动画key帧 _check_ani_key_curve
+        widget = checkwidget.ItemWidget(u"检查动画key帧曲线", check.anim_curve, None, False)
         self.add_widget(widget)
 
         #check reference
@@ -78,13 +73,16 @@ class RiggingCheck(checkwidget.CheckWidget):
 
         widget = checkwidget.ItemWidget(u"检查重命名", check.repeat, None)
         self.add_widget(widget)
-        
+
+        widget = checkwidget.ItemWidget(u"检查摄像机", check.camera, clear.camera)
+        self.add_widget(widget)
+
         #check texture path
         widget = checkwidget.ItemWidget(u"检查贴图路径", check.texture_path, None, False)
         self.add_widget(widget)
 
         # check rendering group
-        widget = checkwidget.ItemWidget(u"检查渲染组", _check_renderinggroup, repair_renderinggroup,False)
+        widget = checkwidget.ItemWidget(u"检查渲染组", _check_renderinggroup, repair_renderinggroup, False)
         self.add_widget(widget)
 
 
@@ -126,12 +124,38 @@ def _check_renderinggroup():
             info += "\n".join(_renderingdag)
             return False,info
 
-
 def repair_renderinggroup():
     _renderingdag = [i for i in cmds.ls(dag = 1) if cmds.objExists("{}.rendering".format(i))]
     if _renderingdag:
         for dag in _renderingdag:
             _r = cmds.getAttr("%s.rendering"%dag)
-            _v = cmds.getAttr("%s.v"%dag)
-            if _r and not _v:
-                cmds.setAttr("%s.rendering"%dag,0)
+            _v = check.isshow(dag)
+            # _v = cmds.getAttr("%s.v"%dag)
+            if not _v:
+                # cmds.setAttr( "%s.rendering"%dag, 0 )
+                cmds.deleteAttr(dag,at = "rendering")
+
+def _check_null_reference():
+    _references = cmds.ls(rf = True)
+    _null_reference = []
+
+    if not _references:
+        return True, None
+
+    for _reference in _references:
+        cmds.referneceQuery( _reference, )
+
+    allDags = cmds.ls(dag = True)
+    for dag in allDags:
+        #print dag
+        #get 
+        if cmds.objExists("%s.rendering"%dag):
+            value = cmds.getAttr("%s.rendering"%dag)
+            if value:
+                rendering.append(dag)
+    #return rendering
+    if not rendering:
+        info = u"文件组织结构错误,请用分组共组分组整合文件\n"
+        return False,info
+    else:
+        return True, None

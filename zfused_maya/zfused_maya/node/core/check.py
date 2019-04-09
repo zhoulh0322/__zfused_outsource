@@ -107,11 +107,18 @@ def camera():
     """ check camera
 
     """
+    _extra_camera = ["facial_cam"]
     _cameras = cmds.ls(type = "camera")
     _left_cameras = list(set(_cameras) - set(["frontShape","topShape","perspShape","sideShape"]))
     if _left_cameras:
         info = "场景存在多余摄像机\n"
         for _camera in _left_cameras:
+            _is_extra = False
+            for _cam in _extra_camera:
+                if _cam in _camera:
+                    _is_extra = True
+            if _is_extra:
+                continue
             info += "{}\n".format(_camera)
         return False,info
     return True,None
@@ -227,8 +234,40 @@ def trans_in_mesh():
                     _list.extend(wrongtrans)
     # print (_list)
     if _list:
-        info = u"场景存在嵌套模型\n{}".format("\n".join(_list))
-        print (info)
+        info = "场景存在嵌套模型\n{}".format("\n".join(_list))
+        # print (info)
         return False, info
     else:
         return True, None
+
+
+def anim_curve():
+    """ check anim key curves
+
+    """
+    _curves = cmds.ls(type = ["animCurveTL", "animCurveTA", "animCurveTT", "animCurveTU"])
+    if _curves:
+        _linktrans = set(cmds.listConnections(_curves,d = 1,type = "transform"))
+        _linkshapes = cmds.listRelatives(list(_linktrans),s = 1,type = ["mesh","nurbsCurve"])
+        if _linkshapes:
+            _trans = cmds.listRelatives(list(set(_linkshapes)),p = 1)
+            info = u"场景存在错误key帧曲线\n"
+            info += "\n".join(_trans)
+            return False, info
+    return True, None
+
+
+def isshow(node):
+    _value = True
+    if cmds.getAttr("%s.v"%node) == 0:
+        _value = False
+    while True:
+        node = cmds.listRelatives(node, p = 1, f = True)
+        if not node:
+            break
+        else:
+            node = node[0]
+            if cmds.getAttr("%s.v"%node) == 0:
+                _value = False
+                break
+    return _value

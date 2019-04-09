@@ -13,6 +13,7 @@
 
 import maya.cmds as mc
 import random as rand
+import os
 import sys
 
 import spPaint3dContext as spPaint3dContext
@@ -26,6 +27,8 @@ spPaint3dVersion = 2011.1;
 
 #debug to log some operation down to the script editor
 sp3d_log = False
+
+sp3d_icon_dir = "{}/icons/".format(os.path.dirname(__file__))
 
 
 # optionVar name: (type, default value, corresponding class attribute)
@@ -463,9 +466,9 @@ class spPaint3dWin (object):
         self.uiSourceFrame = mc.frameLayout(label='Brush Geometry', cll=True, collapseCommand=lambda:self.resizeWindow('collapse', 98), expandCommand=lambda:self.resizeWindow('expand', 98), mh=5, mw=5, )
         self.uiSourceForm = mc.formLayout(numberOfDivisions=100, width=255)
         self.uiSourceList = mc.textScrollList(numberOfRows=5, allowMultiSelection=True, width=215)
-        self.uiSourceBtnAdd = mc.symbolButton(w=60, h=18, ann='Add selected object(s) to the list', image='sp3dadd.xpm', command=lambda * args:self.uiListCallback("add", "uiSourceList"))
-        self.uiSourceBtnRem = mc.symbolButton(w=60, h=18, ann='Remove selected object(s) from the list', image='sp3drem.xpm', command=lambda * args:self.uiListCallback("rem", "uiSourceList"))
-        self.uiSourceBtnClr = mc.symbolButton(w=60, h=18, ann='Clear the list', image='sp3dclr.xpm', command=lambda * args:self.uiListCallback("clr", "uiSourceList"))
+        self.uiSourceBtnAdd = mc.symbolButton(w=60, h=18, ann='Add selected object(s) to the list', image='{}/sp3dadd.xpm'.format(sp3d_icon_dir), command=lambda * args:self.uiListCallback("add", "uiSourceList"))
+        self.uiSourceBtnRem = mc.symbolButton(w=60, h=18, ann='Remove selected object(s) from the list', image='{}/sp3drem.xpm'.format(sp3d_icon_dir), command=lambda * args:self.uiListCallback("rem", "uiSourceList"))
+        self.uiSourceBtnClr = mc.symbolButton(w=60, h=18, ann='Clear the list', image='{}/sp3dclr.xpm'.format(sp3d_icon_dir), command=lambda * args:self.uiListCallback("clr", "uiSourceList"))
         
         mc.formLayout(self.uiSourceForm, edit=True, attachForm=[(self.uiSourceList, 'top', 0)], attachControl=[(self.uiSourceBtnAdd, 'top', 3, self.uiSourceList), (self.uiSourceBtnRem, 'left', 5, self.uiSourceBtnAdd), (self.uiSourceBtnRem, 'top', 3, self.uiSourceList), (self.uiSourceBtnClr, 'left', 5, self.uiSourceBtnRem), (self.uiSourceBtnClr, 'top', 3, self.uiSourceList)])
         
@@ -507,9 +510,9 @@ class spPaint3dWin (object):
         self.uiTargetFrame = mc.frameLayout(label='Target Surface(s)', cll=True, collapseCommand=lambda:self.resizeWindow('collapse', 98), expandCommand=lambda:self.resizeWindow('expand', 98), mh=5, mw=5, )
         self.uiTargetForm = mc.formLayout(numberOfDivisions=100, width=255)
         self.uiTargetList = mc.textScrollList(numberOfRows=5, allowMultiSelection=True, width=215)
-        self.uiTargetBtnAdd = mc.symbolButton(w=60, h=18, ann='Add selected object(s) to the list', image='sp3dadd.xpm', command=lambda * args:self.uiListCallback("add", "uiTargetList"))
-        self.uiTargetBtnRem = mc.symbolButton(w=60, h=18, ann='Remove selected object(s) from the list', image='sp3drem.xpm', command=lambda * args:self.uiListCallback("rem", "uiTargetList"))
-        self.uiTargetBtnClr = mc.symbolButton(w=60, h=18, ann='Clear the list', image='sp3dclr.xpm', command=lambda * args:self.uiListCallback("clr", "uiTargetList"))
+        self.uiTargetBtnAdd = mc.symbolButton(w=60, h=18, ann='Add selected object(s) to the list', image='{}/sp3dadd.xpm'.format(sp3d_icon_dir), command=lambda * args:self.uiListCallback("add", "uiTargetList"))
+        self.uiTargetBtnRem = mc.symbolButton(w=60, h=18, ann='Remove selected object(s) from the list', image='{}/sp3drem.xpm'.format(sp3d_icon_dir), command=lambda * args:self.uiListCallback("rem", "uiTargetList"))
+        self.uiTargetBtnClr = mc.symbolButton(w=60, h=18, ann='Clear the list', image='{}/sp3dclr.xpm'.format(sp3d_icon_dir), command=lambda * args:self.uiListCallback("clr", "uiTargetList"))
         
         mc.formLayout(self.uiTargetForm, edit=True, attachForm=[(self.uiTargetList, 'top', 0)], attachControl=[(self.uiTargetBtnAdd, 'top', 3, self.uiTargetList), (self.uiTargetBtnRem, 'left', 5, self.uiTargetBtnAdd), (self.uiTargetBtnRem, 'top', 3, self.uiTargetList), (self.uiTargetBtnClr, 'left', 5, self.uiTargetBtnRem), (self.uiTargetBtnClr, 'top', 3, self.uiTargetList)])
         
@@ -520,11 +523,11 @@ class spPaint3dWin (object):
         #----------------------
         self.uiPaintFrame = mc.frameLayout(label='Paint', cll=True, collapseCommand=lambda:self.resizeWindow('collapse', 61), expandCommand=lambda:self.resizeWindow('expand', 61), mh=5, mw=5, )
         self.uiPaintForm = mc.formLayout(numberOfDivisions=100, width=255)
-        self.uiPaintDupSCB = mc.symbolCheckBox(w=52, h=18, ann='Duplicate: Instance or Copy', ofi='sp3dduplicate.xpm', oni='sp3dinstance.xpm', changeCommand=lambda * args:self.uiCheckBoxCallback("instance", args))
-        self.uiPaintRandSCB = mc.symbolCheckBox(w=52, h=18, ann='Object distribution: Random or Sequential', ofi='sp3dsequence.xpm', oni='sp3drandom.xpm', changeCommand=lambda * args:self.uiCheckBoxCallback("random", args))
-        self.uiPaintAlignSCB = mc.symbolCheckBox(w=100, h=18, ann='Align generated objects to the target surface', ofi='sp3dalignoff.xpm', oni='sp3dalign.xpm', changeCommand=lambda * args:self.uiCheckBoxCallback("align", args))
-        self.uiPaintCtxBtn = mc.symbolButton(w=105, h=28, ann='Paint', image='sp3dpaint.xpm', command=lambda * args:self.genericContextCallback("PaintCtx"))
-        self.uiPlaceCtxBtn = mc.symbolButton(w=105, h=28, ann='Place', image='sp3dplace.xpm', command=lambda * args:self.genericContextCallback("PlaceCtx"))
+        self.uiPaintDupSCB = mc.symbolCheckBox(w=52, h=18, ann='Duplicate: Instance or Copy', ofi='{}/sp3dduplicate.xpm'.format(sp3d_icon_dir), oni='{}/sp3dinstance.xpm'.format(sp3d_icon_dir), changeCommand=lambda * args:self.uiCheckBoxCallback("instance", args))
+        self.uiPaintRandSCB = mc.symbolCheckBox(w=52, h=18, ann='Object distribution: Random or Sequential', ofi='{}/sp3dsequence.xpm'.format(sp3d_icon_dir), oni='{}/sp3drandom.xpm'.format(sp3d_icon_dir), changeCommand=lambda * args:self.uiCheckBoxCallback("random", args))
+        self.uiPaintAlignSCB = mc.symbolCheckBox(w=100, h=18, ann='Align generated objects to the target surface', ofi='{}/sp3dalignoff.xpm'.format(sp3d_icon_dir), oni='{}/sp3dalign.xpm'.format(sp3d_icon_dir), changeCommand=lambda * args:self.uiCheckBoxCallback("align", args))
+        self.uiPaintCtxBtn = mc.symbolButton(w=105, h=28, ann='Paint', image='{}/sp3dpaint.xpm'.format(sp3d_icon_dir), command=lambda * args:self.genericContextCallback("PaintCtx"))
+        self.uiPlaceCtxBtn = mc.symbolButton(w=105, h=28, ann='Place', image='{}/sp3dplace.xpm'.format(sp3d_icon_dir), command=lambda * args:self.genericContextCallback("PlaceCtx"))
         
         mc.formLayout(self.uiPaintForm, edit=True,
                         attachForm=[(self.uiPaintDupSCB, 'top', 0)],

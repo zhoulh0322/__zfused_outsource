@@ -4,6 +4,7 @@
 """ 贴图文件操作集合 """
 
 import os
+import re
 import logging
 import shutil
 import maya.cmds as cmds
@@ -12,8 +13,8 @@ import zfused_maya.core.filefunc as filefunc
 
 logger = logging.getLogger(__file__)
 
+TEXT_NODE = ["file"]
 
-TEXT_NODE = ["file", "imagePlane", "RedshiftNormalMap","RedshiftCameraMap",'RedshiftSprite','RedshiftEnvironment', 'RedshiftLensDistortion', 'RedshiftDomeLight', 'RedshiftIESLight', 'RedshiftLightGobo']
 TEXTURE_ATTR_DICT = {
     "file" : "fileTextureName",
     "imagePlane": "imageName",
@@ -26,6 +27,41 @@ TEXTURE_ATTR_DICT = {
     "RedshiftIESLight":"tex0",
     "RedshiftLightGobo":"tex0"
 }
+
+TEX_SUFFIX = ['.als',
+              '.avi',
+              '.bmp',
+              '.cin',
+              '.dds',
+              '.eps',
+              '.exr',
+              '.gif',
+              '.iff',
+              '.jpeg',
+              '.jpg',
+              '.pic',
+              '.pict',
+              '.png',
+              '.pntg',
+              '.psd',
+              '.qt',
+              '.qtif',
+              '.rla',
+              '.sgi',
+              '.svg',
+              '.swf',
+              '.swft',
+              '.tga',
+              '.tif',
+              '.yuv']
+
+
+
+
+
+
+
+
 
 def publish_file(files, src, dst):
     """ upload files 
@@ -96,47 +132,54 @@ def change_node_path(nodes, src, dst):
     """
     _file_nodes = nodes
     #if _file_nodes:
-    for _file_node in _file_nodes:
+    for _file_node_attr in _file_nodes:
+        _file_node = _file_node_attr.split(".")[0]
         _type = cmds.nodeType(_file_node)
-        _ori_file_texture_path = cmds.getAttr("{}.{}".format(_file_node,TEXTURE_ATTR_DICT[_type]))
+        _ori_file_texture_path = _get_file_full_name(_file_node_attr)
         _file_texture_path = _ori_file_texture_path
         _extend_file = _file_texture_path.split(src)[-1]
         if _extend_file.startswith("/"):
             _extend_file = _extend_file[1::]
         _new_file_text_path = "%s/%s"%(dst, _extend_file)
         # 锁定节点色彩空间，防止替换贴图时色彩空间设置丢失
-        if _type =="file" and not cmds.getAttr("{}.ignoreColorSpaceFileRules".format(_file_node)):
+        if _type == "file" and not cmds.getAttr("{}.ignoreColorSpaceFileRules".format(_file_node)):
             cmds.setAttr("{}.ignoreColorSpaceFileRules".format(_file_node), 1)
         while True:
             # _file_name = cmds.getAttr("{}.{}".format(_file_node,TEXTURE_ATTR_DICT[_type]))
-            cmds.setAttr("{}.{}".format(_file_node,TEXTURE_ATTR_DICT[_type]), _new_file_text_path, type = 'string')
-            if cmds.getAttr("{}.{}".format(_file_node,TEXTURE_ATTR_DICT[_type])) == _new_file_text_path:
+            cmds.setAttr(_file_node_attr, _new_file_text_path, type = 'string')
+            # print()
+            if _get_file_full_name(_file_node_attr) == _new_file_text_path:
                 break
         # 取消色彩空间锁定
-        if _type =="file":
+        if _type == "file":
             cmds.setAttr("{}.ignoreColorSpaceFileRules".format(_file_node), 0)
 
 def error_nodes():
     """get error file node
-       判断file节点是否错误,填入错误贴图地址
+       判断 file 节点是否错误,填入错误贴图地址
     
     :rtype: list
     """
     _all_files = cmds.file(query=1, list=1, withoutCopyNumber=1)
+
     _all_files_dict = {}
     for _file in _all_files:
         _file_dir_name = os.path.dirname(_file)
         _, _file_suffix = os.path.splitext(_file)
-        _all_files_dict[_file] = [_file_dir_name, _file_suffix]
-    _file_nodes = cmds.ls(type = TEXT_NODE)
+        _all_files_dict[_file] = [ _file_dir_name, _file_suffix ]
+    _file_nodes = cmds.ls( type = TEXT_NODE )
     _error_nodes = []
     for _file_node in _file_nodes:
         _type = cmds.nodeType(_file_node)
         _is_reference = cmds.referenceQuery(_file_node, isNodeReferenced = True)
-        _is_lock = cmds.getAttr("{}.{}".format(_file_node,TEXTURE_ATTR_DICT[_type]), l = True)
-        if _is_reference and _is_lock:
+
+        # _is_lock = cmds.getAttr("{}.{}".format(_file_node,TEXTURE_ATTR_DICT[_type]), l = True)
+        # if _is_reference and _is_lock:
+        #     continue
+        if _is_reference:
             continue
-        _file_name = cmds.getAttr("{}.{}".format(_file_node,TEXTURE_ATTR_DICT[_type]))
+
+        _file_name = _get_file_full_name("{}.{}".format(_file_node,TEXTURE_ATTR_DICT[_type]))
         _node_dir_name = os.path.dirname(_file_name)
         _, _node_suffix = os.path.splitext(_file_name)
         _is_error = True
@@ -148,145 +191,82 @@ def error_nodes():
             _error_nodes.append(_file_node)
     return _error_nodes
 
-def nodes():
+# def nodes():
+#     """ 获取file节点
+
+#     :rtype: list
+#     """
+#     _file_nodes = cmds.ls(type = TEXT_NODE)
+#     _result_nodes = []
+#     for _file_node in _file_nodes:
+#         _type = cmds.nodeType(_file_node)
+#         _is_reference = cmds.referenceQuery(_file_node, isNodeReferenced = True)
+#         _is_lock = cmds.getAttr("{}.{}".format(_file_node,TEXTURE_ATTR_DICT[_type]), l = True)
+#         if _is_reference and _is_lock:
+#             continue
+#         _result_nodes.append(_file_node)
+#     return _result_nodes
+
+def nodes(withAttribute = True,ignoreReference = True):
     """ 获取file节点
 
     :rtype: list
     """
-    _file_nodes = cmds.ls(type = TEXT_NODE)
-    _result_nodes = []
-    for _file_node in _file_nodes:
-        _type = cmds.nodeType(_file_node)
-        _is_reference = cmds.referenceQuery(_file_node, isNodeReferenced = True)
-        _is_lock = cmds.getAttr("{}.{}".format(_file_node,TEXTURE_ATTR_DICT[_type]), l = True)
-        if _is_reference and _is_lock:
-            continue
-        _result_nodes.append(_file_node)
-    return _result_nodes
+    _list = []
+    cmds.filePathEditor(rf = 1)
+    item = cmds.filePathEditor(query=True, listFiles="", unresolved=False, withAttribute=True)
+    if item:
+        files = item[0::2]
+        nodes = item[1::2]
+        for _file,_node_attr in zip(files,nodes):
+            _node = _node_attr.split(".")[0]
+            if os.path.splitext(_file)[-1].lower() in TEX_SUFFIX:
+                _is_reference = cmds.referenceQuery(_node, isNodeReferenced = True)
+
+                # _is_lock = cmds.getAttr(_node_attr, l = True)
+                # if _is_reference and _is_lock:
+                #     continue
+                if _is_reference and ignoreReference:
+                    continue
+
+                if withAttribute:
+                    _list.append(_node_attr)
+                else:
+                    _list.append(_node)
+    return _list
 
 def files():
-    """ get texture file
-    
-    :rtype: list
-    """
-    _all_files = cmds.file(query=1, list=1, withoutCopyNumber=1)
-    _all_files_dict = {}
-    for _file in _all_files:
-        _file_dir_name = os.path.dirname(_file)
-        _, _file_suffix = os.path.splitext(_file)
-        _all_files_dict[_file] = [_file_dir_name, _file_suffix]
-    _file_nodes = cmds.ls(type = TEXT_NODE)
     _texture_files = []
-    for _file_node in _file_nodes: 
-        _type = cmds.nodeType(_file_node)
-        _is_reference = cmds.referenceQuery(_file_node, isNodeReferenced = True)
-        _is_lock = cmds.getAttr("{}.{}".format(_file_node,TEXTURE_ATTR_DICT[_type]), l = True)
-        if _is_reference and _is_lock:
-            continue
-        _file_name = cmds.getAttr("{}.{}".format(_file_node,TEXTURE_ATTR_DICT[_type]))
-        # print _file_node,_file_name
-        _node_dir_name = os.path.dirname(_file_name)
-        _, _node_suffix = os.path.splitext(_file_name)
-        if _file_name in _all_files_dict:
-            for _file in _all_files:
-                # _file_dir_name = os.path.dirname(_file)
-                # _, _file_suffix = os.path.splitext(_file)
-                _file_dir_name,_file_suffix = _all_files_dict[_file]
-                if _node_dir_name == _file_dir_name and _node_suffix == _file_suffix:
-                    if _file not in _texture_files:
-                        _texture_files.append(_file)
-        else:
-            _texture_files.append(_file_name)
-    return _texture_files
+    _nodes = nodes()
+    if _nodes:
+        for _node_attr in _nodes:
+            _node = _node_attr.split(".")[0]
+            _path = _get_file_full_name(_node_attr)
+            _is_reference = cmds.referenceQuery(_node, isNodeReferenced = True)
+            # _is_lock = cmds.getAttr(_node_attr, l = True)
+            # if _is_reference and _is_lock:
+            #     continue
+            if _is_reference:
+                continue
+            _mode,_ani = 0,0
+            if cmds.objExists("%s.uvTilingMode"%_node):
+                _mode = cmds.getAttr("%s.uvTilingMode"%_node)
+            if cmds.objExists("%s.useFrameExtension"%_node):
+                _ani = cmds.getAttr("%s.useFrameExtension"%_node)
+            if "<UDIM>" in os.path.basename(_path):
+                _mode = 1
+            if not _mode and not _ani:
+                _texture_files.append(_path)
+            else:
+                if _mode:
+                    _texture_files.extend(get_udim_texfile(_path,False))
+                if _ani:
+                    _texture_files.extend(get_frame_texfile(_path,False))
 
-# def node_files():
-#     """ get node-file
-#     """
 
-#     _node_files = {}
+    return list(set(_texture_files))
 
-#     """
-#     _all_files = cmds.file(query=1, list=1, withoutCopyNumber=1)
-#     _all_files_dict = {}
-#     for _file in _all_files:
-#         _file_dir_name = os.path.dirname(_file)
-#         _, _file_suffix = os.path.splitext(_file)
-#         _all_files_dict[_file] = [_file_dir_name, _file_suffix]
-#     _file_nodes = cmds.ls(type = "file")
 
-#     for _file_node in _file_nodes:
-#         _texture_files = []
-#         _is_reference = cmds.referenceQuery(_file_node, isNodeReferenced = True)
-#         _is_lock = cmds.getAttr("{}.fileTextureName".format(_file_node), l = True)
-#         if _is_reference and _is_lock:
-#             continue
-#         _file_name = cmds.getAttr("{}.fileTextureName".format(_file_node))
-#         _node_dir_name = os.path.dirname(_file_name)
-#         _, _node_suffix = os.path.splitext(_file_name)
-        
-#         for _file in _all_files:
-#             # _file_dir_name = os.path.dirname(_file)
-#             # _, _file_suffix = os.path.splitext(_file)
-#             _file_dir_name, _file_suffix = _all_files_dict[_file]
-#             if _node_dir_name == _file_dir_name and _node_suffix == _file_suffix:
-#                 if _file not in _texture_files:
-#                     _texture_files.append(_file)
-        
-#         _node_files[_file_node] = _texture_files 
-#     """
-#     import glob
-
-#     files = cmds.ls(type=["file", "imagePlane"])
-
-#     for i in files:
-#         result = []
-#         if cmds.objectType(i) == "file":
-#             #animated ?
-#             testAnimated = cmds.getAttr("{0}.useFrameExtension".format(i))
-#             is_udim = cmds.getAttr("{}.uvTilingMode".format(i))
-#             if testAnimated or is_udim != 0:
-#                 # Find the path
-#                 fullpath= cmds.getAttr("{0}.fileTextureName".format(i))
-
-#                 # Replace /path/img.padding.ext by /path/img.*.ext
-#                 image = fullpath.split("/")[-1]
-#                 imagePattern = image.split(".")
-#                 imagePattern[1] = "*"
-#                 imagePattern = ".".join(imagePattern)
-
-#                 # You could have done a REGEX with re module with a pattern name.padding.ext
-#                 # We join the path with \\ in order to be Linux/Windows/Apple format
-#                 folderPath = "\\".join(fullpath.split("/")[:-1] + [imagePattern])
-
-#                 # Find all image on disk
-#                 result+=(glob.glob(folderPath))
-#             else:
-#                 result.append(cmds.getAttr("{0}.fileTextureName".format(i)))
-
-#         elif cmds.objectType(i) == "imagePlane":
-#             #animated ?
-#             testAnimated = cmds.getAttr("{0}.useFrameExtension".format(i))
-#             if testAnimated:
-#                 # Find the path
-#                 fullpath= cmds.getAttr("{0}.imageName".format(i))
-#                 # Replace /path/img.padding.ext by /path/img.*.ext
-#                 image = fullpath.split("/")[-1]
-#                 imagePattern = image.split(".")
-#                 imagePattern[1] = "*"
-#                 imagePattern = ".".join(imagePattern)
-
-#                 # You could have done a REGEX with re module with a pattern name.padding.ext
-#                 # We join the path with \\ in order to be Linux/Windows/Apple format
-#                 folderPath = "\\".join(fullpath.split("/")[:-1] + [imagePattern])
-
-#                 # Find all image on disk
-#                 result+=(glob.glob(folderPath))
-#             else:
-#                 result.append(cmds.getAttr("{0}.imageName".format(i)))
-
-#         _node_files[i] = result
-
-#     return _node_files
 
 def paths(text_files):
     """ 获取文件路径交集
@@ -335,3 +315,74 @@ def paths(text_files):
     return _value
 
 
+def get_udim_texfile(filepath,boolean = True):
+    '''get udim file
+    '''
+    filelist = []
+    _path,_name = os.path.split(filepath)
+    if os.path.exists(_path):
+        _str,_suffix = os.path.splitext(_name)
+        if "<UDIM>" in _str:
+            _ele = _str.split("<UDIM>")
+            _check_str = "\d{4}".join(_ele)
+            for _i in os.listdir(_path):
+                if re.search(r"{}{}".format(_check_str,_suffix),_i):
+                    filelist.append("{}/{}".format(_path,_i))
+        else:
+            _udim = re.findall("\d{4}",_str)
+            if _udim:
+                ele = _str.split(_udim[-1])
+                _check_str = _udim[-1].join(ele[:-1])
+                for _j in os.listdir(_path):
+                    if re.search(r"%s\d{4}%s"%(_check_str,_suffix),_j):
+                        filelist.append("{}/{}".format(_path,_j))
+    if filelist:
+        if boolean:
+            return True
+        else:
+            return filelist
+    else:
+        if boolean:
+            return False
+        else:
+            return [filepath]
+
+def get_frame_texfile(filepath,boolean = True):
+    '''get frame file
+    '''
+    filelist = []
+    _path,_name = os.path.split(filepath)
+    if os.path.exists(_path):
+        _str,_suffix = os.path.splitext(_name)
+        if "<f>" in _str:
+            _ele = _str.split("<f>")
+            _check_str = "\d+".join(_ele)
+            for _i in os.listdir(_path):
+                if re.search("{}{}".format(_check_str,_suffix),_i):
+                    filelist.append(r"{}/{}".format(_path,_i))
+        else:
+            _f = re.findall("\d+",_str)
+            if _f:
+                ele = _str.split(_f[-1])
+                _check_str = _f[-1].join(ele[:-1])
+                for _j in os.listdir(_path):
+                    if re.search(r"%s\d{4}%s"%(_check_str,_suffix),_j):
+                        filelist.append("{}/{}".format(_path,_j))
+    if filelist:
+        if boolean:
+            return True
+        else:
+            return filelist
+    else:
+        if boolean:
+            return False
+        else:
+            return [filepath]
+
+
+def _get_file_full_name(file_node):
+    _path = cmds.getAttr(file_node)
+    if "" not  in os.path.splitdrive(_path):
+        return _path
+    workpath = cmds.workspace(q = 1,fn = 1)
+    return r"{}/{}".format(workpath,_path)
