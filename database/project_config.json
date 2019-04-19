@@ -142,5 +142,17 @@
         "Review": "X:/BKM2",
         "LocalRoot": "D:/zfused/work/BKM2",
         "LocalPublish": "D:/zfused/publish/BKM2"
+    },
+    {
+        "Id": 13,
+        "ProjectId": 14,
+        "Fps": 24,
+        "ImageWidth": 1920,
+        "ImageHeight": 1080,
+        "Root": "P:/WDCG",
+        "Publish": "P:/backup/WDCG",
+        "Review": "P:/WDCG",
+        "LocalRoot": "D:/zfused/work/WDCG",
+        "LocalPublish": "D:/zfused/publish/WDCG"
     }
 ]

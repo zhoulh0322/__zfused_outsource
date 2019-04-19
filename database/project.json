@@ -52,7 +52,7 @@
         "Id": 9,
         "Name": "\u7ef4\u4eac\u4eba",
         "Code": "ViKing",
-        "StatusId": 3,
+        "StatusId": 6,
         "IsOutsource": 0
     },
     {
@@ -66,7 +66,7 @@
         "Id": 11,
         "Name": "\u865a\u62df\u5076\u50cf",
         "Code": "virtual",
-        "StatusId": 3,
+        "StatusId": 5,
         "IsOutsource": 0
     },
     {
@@ -80,6 +80,13 @@
         "Id": 13,
         "Name": "\u8d1d\u80af\u718a2",
         "Code": "BKM2",
+        "StatusId": 3,
+        "IsOutsource": 0
+    },
+    {
+        "Id": 14,
+        "Name": "\u95ee\u9053CG",
+        "Code": "WDCG",
         "StatusId": 3,
         "IsOutsource": 0
     }
