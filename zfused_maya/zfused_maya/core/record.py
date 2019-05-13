@@ -15,16 +15,22 @@ logger = logging.getLogger(__name__)
 def current_project_id():
     _interface = Interface()
     _project_id = _interface.get("current_project_id")
-    if _project_id:
-        return _project_id
-    return 0
+    return _project_id if _project_id else 0
 
 def current_task_id():
     _interface = Interface()
     _task_id = _interface.get("current_task_id")
-    if _task_id:
-        return _task_id
-    return 0
+    return _task_id if _task_id else 0
+
+def current_project_step_id():
+    _interface = Interface()
+    _project_step_id = _interface.get("current_project_step_id")
+    return _project_step_id if _project_step_id else 0
+
+def current_link():
+    _interface = Interface()
+    _link = _interface.get("current_link")
+    return _link if _link else ()
 
 def _cache_dir():
     USER_CACHE_DIR = None
