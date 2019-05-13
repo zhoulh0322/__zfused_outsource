@@ -43,34 +43,6 @@ def arrange_info(info,_dict = {}):
         _dict[_asset][_ns].append(_path)
     return _dict
 
-def load_asset(cacheinfo,step,_dict = {}):
-    _interpath = "maya2017/file"
-    def get_assets():
-        import zfused_maya.core.record as record
-        _assets = {}
-        _project_id = record.current_project_id()
-        _project_assets = zfused_api.asset.project_assets([_project_id])
-        # print _project_assets
-        for _asset in _project_assets:
-            asset = zfused_api.asset.Asset(_asset["Id"])
-            _assets[asset.code()] =asset.production_path()
-        return _assets
-
-    _assets = get_assets()
-    for item in cacheinfo:
-        _assetname = item[0]
-        if _assetname in _assets:
-            if _assetname in _dict:
-                _dict[_assetname]["namespace"].append(item[1])
-            else:
-                _dict[_assetname] = {}
-                _dict[_assetname]["namespace"] = [item[1]]
-                _production_path = "/".join([_assets[_assetname],step,_interpath])
-                _dict[_assetname]["path"] = "{}/{}.mb".format(_production_path,_assetname)
-            cmds.file(_dict[_assetname]["path"],r = 1,iv = 1,mergeNamespacesOnClash = 1,ns = item[1])
-    return _dict
-
-
 def import_yeti_cache(output_link_object, output_link_id,  output_attr_id, input_link_object, input_link_id, input_attr_id):
     # 思路：
     # 镜头打开后查询json信息，如果有，根据json信息对比文件中的元素领取yeti材质文件，然后附缓存
@@ -95,13 +67,13 @@ def import_yeti_cache(output_link_object, output_link_id,  output_attr_id, input
     # get shot info
     # _elements = element.scene_elements()
     # _asset_dict = element.get_asset(_elements,_file_title)
-    _info = get_cache_info(_output_link_production_file)
-    if not _info:
+    _jsoninfo = get_cache_info(_output_link_production_file)
+    if not _jsoninfo:
         return
-    _asset_dict = load_asset(_info,_file_title)
+    _asset_dict,_realinfo = yeticache.load_asset(_jsoninfo,_file_title)
     if not _asset_dict:
         return
-    _info = arrange_info(_info)
+    _info = arrange_info(_realinfo)
 
     # merge yeti cache
     for _asset in _info:

@@ -33,35 +33,6 @@ def get_cache_info(cache_file):
         info.close()
     return dataInfo
 
-def load_asset(cacheinfo,step,_dict = {}):
-    _interpath = "maya2017/file"
-    def get_assets():
-        import zfused_maya.core.record as record
-        _assets = {}
-        _project_id = record.current_project_id()
-        _project_assets = zfused_api.asset.project_assets([_project_id])
-        # print _project_assets
-        for _asset in _project_assets:
-            asset = zfused_api.asset.Asset(_asset["Id"])
-            _assets[asset.code()] =asset.production_path()
-        return _assets
-
-    _assets = get_assets()
-    for item in cacheinfo:
-        _assetname = item[0]
-        if _assetname in _assets:
-            if _assetname in _dict:
-                _dict[_assetname]["namespace"].append(item[1])
-            else:
-                _dict[_assetname] = {}
-                _dict[_assetname]["namespace"] = [item[1]]
-                _production_path = "/".join([_assets[_assetname],step,_interpath])
-                _dict[_assetname]["path"] = "{}/{}.mb".format(_production_path,_assetname)
-            cmds.file(_dict[_assetname]["path"],r = 1,iv = 1,mergeNamespacesOnClash = 1,ns = item[1])
-    return _dict
-
-
-
 def import_cache(output_link_object, output_link_id,  output_attr_id, input_link_object, input_link_id, input_attr_id):
     '''import alembic cache
     '''
@@ -110,13 +81,15 @@ def import_cache(output_link_object, output_link_id,  output_attr_id, input_link
     _info = get_cache_info( _output_link_production_file )
     if not _info:
         return
-    _asset_dict = load_asset(_info,_file_title)
+    _asset_dict = alembiccache.load_asset(_info,_file_title)
     if not _asset_dict:
         return
 
     # merge alembic cache
     for item in _info:
         _asset,_ns,_node,_path = item
+        # 修正嵌套空间名
+        _ns = item[1].split(":")[-1]
         try:
             if _asset and _asset in _asset_dict and _asset_dict[_asset]["namespace"]:
                 _tex_ns = _asset_dict[_asset]["namespace"][0]

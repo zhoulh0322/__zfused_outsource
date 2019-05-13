@@ -7,6 +7,7 @@ import os
 import maya.cmds as cmds
 import zfused_maya.core.filefunc as filefunc
 import zfused_maya.node.core.element as element
+import zfused_maya.node.core.assets as assets
 
 def publish_file(files, src, dst):
     """ upload files 
@@ -236,3 +237,22 @@ def remove_cache(blendshapenodes):
     _node = cmds.blendShape("blendShape1",q = 1,t = 1)
     _ns = set([i[:-(len(i.split(":")[-1])+1)] for i in _node])
     # cmds.delete("abc_hidegrp")
+
+def load_asset(cacheinfo,step,_dict = {}):
+    '''资产领取(外包端适用)
+    '''
+    _interpath = "maya2017/file"
+    _assets = assets.get_assets()
+    for item in cacheinfo:
+        _assetname = item[0]
+        if _assetname in _assets:
+            _ns = item[1].split(":")[-1]
+            if _assetname in _dict:
+                _dict[_assetname]["namespace"].append(_ns)
+            else:
+                _dict[_assetname] = {}
+                _dict[_assetname]["namespace"] = [_ns]
+                _production_path = "/".join([_assets[_assetname],step,_interpath])
+                _dict[_assetname]["path"] = "{}/{}.mb".format(_production_path,_assetname)
+            cmds.file(_dict[_assetname]["path"],r = 1,iv = 1,mergeNamespacesOnClash = 1,ns = _ns)
+    return _dict

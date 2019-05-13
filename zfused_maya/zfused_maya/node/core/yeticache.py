@@ -4,6 +4,7 @@
 """ yeti缓存操作集合 """
 
 import os
+import re
 import logging
 import shutil
 import maya.cmds as cmds
@@ -12,6 +13,7 @@ import zfused_api
 import zfused_maya.core.filefunc as filefunc
 import zfused_maya.core.record as record
 import zfused_maya.node.core.element as element
+import zfused_maya.node.core.assets as assets
 
 logger = logging.getLogger(__file__)
 
@@ -87,6 +89,49 @@ def get_asset_list():
 def import_cache(path,texfile):
     cmds.setAttr("{}.fileMode".format(texfile),1)
     cmds.setAttr("{}.cacheFileName".format(texfile),path,type = "string")
+
+def load_asset(cacheinfo,step,_dict = {}):
+    '''资产领取(外包端适用)
+    '''
+    def get_ns(nameSpace):
+        # 生成空间名
+        index = 0
+        _namespaces = list(set(cmds.namespaceInfo(r = 1, lon = 1)) - set(["shared","UI"]))
+        while True:
+            if nameSpace in _namespaces:
+                index += 1
+                if nameSpace[-1].isdigit():
+                    _num = re.findall("\d+",nameSpace)[-1]
+                    nameSpace = "{}{}".format(nameSpace[:-len(_num)],index)
+                else:
+                    nameSpace = "{}{}".format(nameSpace,index)
+            else:
+                return nameSpace
+
+    _interpath = "maya2017/file"
+    temp_dict = {}
+    _assets = assets.get_assets()
+    for i,item in enumerate(cacheinfo):
+        _assetname = item[0]
+        if _assetname in _assets:
+            # set real namespace
+            if item[1] in temp_dict:
+                _ns = temp_dict[item[1]]
+                cacheinfo[i][1] = temp_dict[item[1]]
+            else:
+                _ns = get_ns(item[1].split(":")[-1])
+                temp_dict[item[1]] = _ns
+                cacheinfo[i][1] = _ns
+
+            if _assetname in _dict:
+                _dict[_assetname]["namespace"].append(_ns)
+            else:
+                _dict[_assetname] = {}
+                _dict[_assetname]["namespace"] = [_ns]
+                _production_path = "/".join([_assets[_assetname],step,_interpath])
+                _dict[_assetname]["path"] = "{}/{}.mb".format(_production_path,_assetname)
+                cmds.file(_dict[_assetname]["path"],r = 1,iv = 1,mergeNamespacesOnClash = 1,ns = _ns)
+    return _dict,cacheinfo
 
 if __name__ == '__main__':
     get_cache_info()

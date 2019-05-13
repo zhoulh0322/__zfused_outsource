@@ -123,6 +123,7 @@ def publish_abc():
         logger.info("create publish dir {}".format(_publish_path))
         os.makedirs(_publish_path)
     try:
+        print(_alljob)
         cmds.AbcExport(j = _alljob)
         for _k,_v in upload_dict.items():
             _result = filefunc.publish_file(_k,_v,True)

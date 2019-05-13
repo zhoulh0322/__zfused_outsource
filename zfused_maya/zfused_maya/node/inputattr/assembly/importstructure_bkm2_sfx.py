@@ -29,6 +29,7 @@ def write_json_file(json_dict, file_path):
         json_file.close()
 
 def build_structure(parent_node_list, parent):
+    _parent_name = parent
     _current_project_id = record.current_project_id()
     for parent_node in parent_node_list:
         node_type = parent_node['node_type']
@@ -44,31 +45,36 @@ def build_structure(parent_node_list, parent):
             if not _assets:
                 node_type = "transform"
             else:
-                node_type = "assemblyReference"
+                node_type = "proxycontainer"
                 _asset_handle = zfused_api.asset.Asset(_assets[0]["Id"])
                 _production_path = _asset_handle.production_path()
-                _proxy_file = "{}/model/maya2017/assemblyDefinition/{}.mb".format(_production_path, _asset_handle.file_code())
-                # _gpu_file = "{}/shader/redshift/maya2017/gpu/{}.abc".format(_production_path, _asset_handle.file_code())
-        if parent == '':
-            if node_type == "assemblyReference":
+                _proxy_file = "{}/shader/redshift/maya2017/proxy/{}.rs".format(_production_path, _asset_handle.file_code())
+                _gpu_file = "{}/shader/redshift/maya2017/gpu/{}.abc".format(_production_path, _asset_handle.file_code())
+                
+        if _parent_name == '':
+            if node_type == "proxycontainer":
                 #cmds.file(_proxy_file, i = True)
-                # _node_name,_,_ = proxycontainer.create_rs_container(_proxy_file ,_gpu_file, False)
-                _assembly = assembly.create_assembly_reference(name, _proxy_file)
-                _node_name = _assembly.name()
+                _node_name,_,_ = proxycontainer.create_rs_container(_proxy_file ,_gpu_file, False)
             else:
                 _node_name = cmds.createNode(node_type, name = name, parent = "")
         else:
-            if node_type == "assemblyReference":
-                _assembly = assembly.create_assembly_reference(name, _proxy_file)
-                _node_name = _assembly.name()
-                cmds.parent(_node_name, parent)
+            if node_type == "proxycontainer":
+                _node_name, _rs_node, _dag_container = proxycontainer.create_rs_container(_proxy_file, _gpu_file, False)
+                _node_name = cmds.parent(_node_name, _parent_name)[0]
             else:
-                _node_name = cmds.createNode(node_type, name = name, parent = parent)
+                #  --------------------------------------------------------------------------
+                if name == _parent_name:
+                    name = "{}_dup_01".format(name)
+                _node_name = cmds.createNode(node_type, name = name, parent = _parent_name)
             #_node_name = cmds.createNode(node_type, name = name, parent = parent)
+        # _node_name = 
         for attr_name, attr_info in attr.items():
             attr_value = attr_info['static_data']
             cmds.setAttr(_node_name + '.' + attr_name, attr_value)
-        build_structure(child, _node_name)
+        #print("child create parent {}".format(_node_name))
+        #print(child)
+        if child:
+            build_structure(child, _node_name)
 
 def import_structure(output_link_object, output_link_id,  output_attr_id, input_link_object, input_link_id, input_attr_id):
     """ 导入场景结构
