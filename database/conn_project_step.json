@@ -167,5 +167,18 @@
         "Color": "",
         "Sort": 1,
         "Active": "true"
+    },
+    {
+        "Id": 106,
+        "Name": "\u573a\u666f\u7279\u6548",
+        "Code": "fx/sfx",
+        "ProjectId": 13,
+        "StepId": 24,
+        "Object": "shot",
+        "SoftwareId": 3,
+        "CheckScript": "import zfused_maya.tool.fx.cfxshotcheck as cfxshotcheck\nreload(cfxshotcheck)\nui = cfxshotcheck.CfxShotCheck()\nui.show()",
+        "Color": "",
+        "Sort": 1,
+        "Active": "true"
     }
 ]

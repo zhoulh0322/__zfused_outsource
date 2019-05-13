@@ -1186,5 +1186,49 @@
         "Format": "json",
         "Suffix": ".json",
         "IsAssembly": 0
+    },
+    {
+        "Id": 118,
+        "ProjectStepId": 98,
+        "Name": "element_structure",
+        "Code": "structure",
+        "Script": "import zfused_maya.node.outputattr.assembly.publishstructure as publishstructure\r\nreload(publishstructure)\r\npublishstructure.publish_structure()",
+        "SoftwareId": 2,
+        "Format": "json",
+        "Suffix": ".json",
+        "IsAssembly": 0
+    },
+    {
+        "Id": 119,
+        "ProjectStepId": 93,
+        "Name": "shader_gpu",
+        "Code": "gpu",
+        "Script": "import zfused_maya.node.outputattr.modeling.publishgpu as publishgpu\r\nreload(publishgpu)\r\npublishgpu.publish_gpu()",
+        "SoftwareId": 2,
+        "Format": "GPU",
+        "Suffix": ".abc",
+        "IsAssembly": 2
+    },
+    {
+        "Id": 120,
+        "ProjectStepId": 93,
+        "Name": "shader_proxy_container",
+        "Code": "proxycontainer",
+        "Script": "import zfused_maya.node.outputattr.shading.redshift.publishproxycontainer as pc\r\nreload(pc)\r\npc.publish_proxy_container()",
+        "SoftwareId": 2,
+        "Format": "mayaBinary",
+        "Suffix": ".mb",
+        "IsAssembly": 1
+    },
+    {
+        "Id": 121,
+        "ProjectStepId": 98,
+        "Name": "neat",
+        "Code": "neat",
+        "Script": "import zfused_maya.node.outputattr.animation.publishneat as publishneat\r\nreload(publishneat)\r\npublishneat.publish_neat()",
+        "SoftwareId": 2,
+        "Format": "mayaAscii",
+        "Suffix": ".ma",
+        "IsAssembly": 0
     }
 ]
