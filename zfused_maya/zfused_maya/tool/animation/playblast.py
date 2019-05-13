@@ -17,6 +17,7 @@ import zfused_api
 import zfused_maya.core.record as record
 import zfused_maya.tool.animation.playblast_hud as ph
 import zfused_maya.core.video as video
+import zfused_maya.node.core as core
 
 def _get_project_path():
     _project_id = record.current_project_id()
@@ -125,7 +126,7 @@ class PlaybastTool(object):
             menuItem(label = _approver, parent = approver_optionMenu)
         cmds.setParent('..')
 
-        playB = cmds.button(height = 32,label = 'Playblast',command = lambda *args: self.Playblastfunction())
+        playB = cmds.button(height = 32,label = u'拍屏   最终版需要把界面缩放设置成125%',command = lambda *args: self.check_interface())
         #openB = cmds.button(height = 32,label = 'Open Mov',command = lambda *args: self.openMov())
         #uploadB = cmds.button(height = 32,label = 'Upload Mov',command = lambda *args: self.uploadTheFile())
         cmds.setParent('..')
@@ -223,8 +224,24 @@ class PlaybastTool(object):
         print movPath
         os.system(movPath)
 
+    def check_interface(self):
+        print 'check_interface'
+        self.Playblastfunction()
+        # interfaceScalingValue = optionVar(query = 'interfaceScalingValue')
+        # interfaceScalingMode  = optionVar(query = 'interfaceScalingMode')
+        # if interfaceScalingValue != 1.25 or interfaceScalingMode != 1:
+        #     optionVar(floatValue = ('interfaceScalingValue', 1.25))
+        #     optionVar(floatValue = ('interfaceScalingMode', 1))
+        #     confirmDialog(title = u'界面要缩放', message = u'改了界面缩放到1.25', button = u'需要重启maya')
+        # else:
+        #     self.Playblastfunction()
+
+
+    #@core.viewportOff
     def Playblastfunction(self):
+        print 'Playblastfunction'
         self.showHUD()
+        print 'showHUD'
         folder = self.GetFolder()
         qualityNum = self.GetQuality()
         scale = self.GetScale()
@@ -243,7 +260,21 @@ class PlaybastTool(object):
         cam_save_dict = {}
         for _attr, _value in cam_setup_dict.items():
             cam_save_dict[_attr] = getAttr(camShape + '.' + _attr)
+            if _attr == "filmFit":
+                if getAttr(camShape + '.' + _attr) == 3 or getAttr(camShape + '.' + _attr) == 2:
+                    continue
             setAttr(camShape + '.' + _attr, _value)
+        print 'cam_setup'
+
+        renderer_save_dict = {}
+        _viewport_list = list(set(getPanel(type = 'modelPanel')).intersection(set(getPanel(visiblePanels = True))))
+        for _viewport in _viewport_list:
+            _renderer = modelEditor(_viewport, query =True, rendererName = True)
+            renderer_save_dict[_viewport] = _renderer
+            modelEditor(_viewport, edit =True, rendererName = 'base_OpenGL_Renderer')
+        print 'renderer'
+
+        
 
         # cameraSetting = cam_setup_dict
         # #cameraSetting = eval(cameraSetting)
@@ -271,18 +302,28 @@ class PlaybastTool(object):
         # get current file name
         _file_name = cmds.file(q = True, sn = True, shn = True)
         _file_name = os.path.splitext(_file_name)[0]
+        print '_file_name =', _file_name
 
         # compression = u'IYUV 编码解码器'
         sound = None
         import maya.mel as mm
+        print 'import maya.mel as mm'
         aPlayBackSliderPython = mm.eval('$temVar=$gPlayBackSlider')
+        print 'aPlayBackSliderPython'
         if aPlayBackSliderPython:
             sound = cmds.timeControl(aPlayBackSliderPython, q = True, sound = True)
+        print 'sound =', sound
+
         if sound:
-            movPath = cmds.playblast(format = format, filename = folder + _file_name + '.' + format, sound = sound, forceOverwrite = 1,sequenceTime=0,clearCache=1,viewer=0,showOrnaments=1,offScreen=1,fp=4,percent =scale*100, compression=compression,quality=qualityNum,w=width,h=height)
+            sound_path = getAttr(sound + '.filename')
+            if os.path.isfile(sound_path):
+                movPath = cmds.playblast(format = format, filename = folder + _file_name + '.' + format, sound = sound, forceOverwrite = 1,sequenceTime=0,clearCache=1,viewer=0,showOrnaments=1,offScreen=1,fp=4,percent =scale*100, compression=compression,quality=qualityNum,w=width,h=height)
+            else:
+                movPath = cmds.playblast(format = format, filename = folder + _file_name + '.' + format,                forceOverwrite = 1,sequenceTime=0,clearCache=1,viewer=0,showOrnaments=1,offScreen=1,fp=4,percent =scale*100, compression=compression,quality=qualityNum,w=width,h=height)
         else:
-            movPath = cmds.playblast(format = format, filename = folder + _file_name + '.' + format,                forceOverwrite = 1,sequenceTime=0,clearCache=1,viewer=0,showOrnaments=1,offScreen=1,fp=4,percent =scale*100, compression=compression,quality=qualityNum,w=width,h=height)
+            movPath = cmds.playblast(format = format, filename = folder + _file_name + '.' + format,                    forceOverwrite = 1,sequenceTime=0,clearCache=1,viewer=0,showOrnaments=1,offScreen=1,fp=4,percent =scale*100, compression=compression,quality=qualityNum,w=width,h=height)
         
+        print 'movPath =', movPath
         # cmds.playblast(format='avi',clearCache=1,viewer=0,showOrnaments=1,offScreen = 1,
         #                             startTime = timeline[0], 
         #                             endTime = timeline[1],
@@ -319,6 +360,8 @@ class PlaybastTool(object):
         self.hideHUD()
         for _attr, _value in cam_save_dict.items():
             setAttr(camShape + '.' + _attr, _value)
+        for _viewport, _renderer in renderer_save_dict.items():
+            modelEditor(_viewport, edit =True, rendererName = _renderer)
 
     def get_ui_filename(self):
         _name = cmds.textField(self.file_name_textField, query = True, text = True)
@@ -371,3 +414,12 @@ class PlaybastTool(object):
         _v = ph.HUD(ph.get_maya_hud())
         _v._remove()
         _v._restore_defalut()
+        
+        # remove shotmask
+        import zfused_maya.node.core.shotmask as shotmask
+        try:
+            shotmask.delete_mask()
+        except:
+            pass
+
+
