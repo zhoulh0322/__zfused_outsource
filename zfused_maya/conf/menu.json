@@ -26,32 +26,48 @@
                 "title":"场景集合管理\nassemblys management",
                 "cmd":"import zfused_maya.tool.utility.assemblymanage as assemblymanage;reload(assemblymanage);ui = assemblymanage.AssemblyManageWidget();ui.show()",
                 "color":"#04277B",
-                "category":"文件管理"}
-        ],
-    "animation":
-        [
+                "category":"文件管理"
+            },
             {
                 "name": "下载",
                 "code": "download",
                 "title": "模型下载",
-                "cmd": "import zfused_maya.node.core.download_shot as ds;reload(ds);ds.mainWindow.show()",
+                "cmd": "import zfused_maya.tool.utility.receivewidget as receivewidget;reload(receivewidget);ui = receivewidget.receivewidget.ReceiveWidget(); ui.show()",
                 "color": "#A0A0A0",
                 "category":"传输"
             },
             {
                 "name": "上传",
                 "code": "publish",
-                "title": "模型上传",
-                "cmd": "import zfused_maya.node.core.upload_shot as us;reload(us);us.mainWindow.show()",
+                "title": "上传面板",
+                "cmd": "import zfused_maya.tool.utility.publishwidget as publishwidget;reload(publishwidget);ui = publishwidget.publishwidget.PublishWidget(); ui.show()",
                 "color": "#A0A0A0",
                 "category":"传输"
-            },
+            }
+        ],
+    "animation":
+        [
             {   "name":"检查动画",
                 "code":"check animation file",
                 "title":"检查动画\ncheck animation file",
                 "cmd":"import zfused_maya.tool.animation.animationcheck as animationcheck;reload(animationcheck);ui = animationcheck.AnimationCheck();ui.show()",
                 "color":"#FF0000",
                 "category":"检查"},
+
+            {   "name"    :"动作库 - 本地端",
+                "code"    :"pos library local", 
+                "title"   :"Pos library\n本地端",
+                "cmd"     :"import zfused_maya.tool.animation.poslibrary.local as poslibrary_local;reload(poslibrary_local);poslibrary_local.Ui()",
+                "color"   :"#343D46",
+                "category":"动作库"},
+            
+            {   "name"    :"动作库 - 服务端", 
+                "code"    :"pos library server",
+                "title"   :"Pos library\n服务端",
+                "cmd"     :"import zfused_maya.tool.animation.poslibrary.server as poslibrary_server;reload(poslibrary_server);poslibrary_server.Ui()",
+                "color"   :"#343D46",
+                "category":"动作库"},
+            
             {   "name":"开启/关闭屏显信息",
                 "code":"ON/OFF HUD",
                 "title":"开启/关闭屏显信息\nON/OFF HUD",
@@ -75,22 +91,6 @@
         ],
     "modeling":
         [
-            {
-                "name": "下载",
-                "code": "download",
-                "title": "模型下载",
-                "cmd": "import zfused_maya.tool.modeling.download as download;reload(download);download.mainWindow.show()",
-                "color": "#A0A0A0",
-                "category":"传输"
-            },
-            {
-                "name": "上传",
-                "code": "publish",
-                "title": "模型上传",
-                "cmd": "import zfused_maya.tool.modeling.upload as upload;reload(upload);upload.mainWindow.show()",
-                "color": "#A0A0A0",
-                "category":"传输"
-            },
             {   "name":"模型检查",
                 "code":"check model",
                 "title":"模型检查\nCheck Model",
@@ -120,22 +120,6 @@
         ],
     "rigging":
         [
-            {
-                "name": "下载",
-                "code": "download",
-                "title": "模型下载",
-                "cmd": "import zfused_maya.tool.rigging.download as download;reload(download);download.mainWindow.show()",
-                "color": "#A0A0A0",
-                "category":"传输"
-            },
-            {
-                "name": "上传",
-                "code": "publish",
-                "title": "模型上传",
-                "cmd": "import zfused_maya.tool.rigging.upload as upload;reload(upload);upload.mainWindow.show()",
-                "color": "#A0A0A0",
-                "category":"传输"
-            },
             {   "name":"检查绑定",
                 "code":"check rigging",
                 "title":"绑定检查\nCheck Rigging",
@@ -157,22 +141,6 @@
         ],
     "shading":
         [
-            {
-                "name": "下载",
-                "code": "download",
-                "title": "模型下载",
-                "cmd": "import zfused_maya.tool.shading.download as download;reload(download);download.mainWindow.show()",
-                "color": "#A0A0A0",
-                "category":"传输"
-            },
-            {
-                "name": "上传",
-                "code": "publish",
-                "title": "模型上传",
-                "cmd": "import zfused_maya.tool.shading.upload as upload;reload(upload);upload.mainWindow.show()",
-                "color": "#A0A0A0",
-                "category":"传输"
-            },
             {   "name":"检查材质",
                 "code":"check shading",
                 "title":"检查材质\nCheck Shading",
@@ -194,22 +162,6 @@
         ],
     "assembly":
         [
-            {
-                "name": "下载",
-                "code": "download",
-                "title": "模型下载",
-                "cmd": "import zfused_maya.tool.assembly.download as download;reload(download);download.mainWindow.show()",
-                "color": "#A0A0A0",
-                "category":"传输"
-            },
-            {
-                "name": "上传",
-                "code": "publish",
-                "title": "模型上传",
-                "cmd": "import zfused_maya.tool.assembly.upload as upload;reload(upload);upload.mainWindow.show()",
-                "color": "#A0A0A0",
-                "category":"传输"
-            },
             {   "name": "场景集合显示切换",
                 "code": "convert assembly",
                 "title": "场景集合显示切换\n convert assembly",
@@ -220,41 +172,9 @@
         ],
     "rendering":
         [
-            {
-                "name": "下载",
-                "code": "download",
-                "title": "模型下载",
-                "cmd": "print 'download'",
-                "color": "#A0A0A0",
-                "category":"传输"
-            },
-            {
-                "name": "上传",
-                "code": "publish",
-                "title": "模型上传",
-                "cmd": "print 'publish'",
-                "color": "#A0A0A0",
-                "category":"传输"
-            }
         ],
     "fx":
         [
-            {
-                "name": "下载",
-                "code": "download",
-                "title": "模型下载",
-                "cmd": "print 'download'",
-                "color": "#A0A0A0",
-                "category":"传输"
-            },
-            {
-                "name": "上传",
-                "code": "publish",
-                "title": "模型上传",
-                "cmd": "print 'publish'",
-                "color": "#A0A0A0",
-                "category":"传输"
-            }
         ],
     "help":
         [
