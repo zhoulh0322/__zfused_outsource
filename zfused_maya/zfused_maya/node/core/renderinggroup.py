@@ -5,11 +5,10 @@
 from __future__ import print_function
 
 import maya.cmds as cmds
-
 import logging
+import zfused_maya.node.core.check as check
 
 logger = logging.getLogger(__name__)
-
 
 
 def set_node_attr(node):
@@ -24,14 +23,12 @@ def nodes():
     """ get rendering node
 
     :rtype: list
-    """      
+    """
     _is_rendering = []
-    _all_dags = cmds.ls(dag = True)
-    for _dag in _all_dags:
-        #print dag
-        #get 
-        if cmds.objExists("%s.rendering"%_dag):
-            value = cmds.getAttr("%s.rendering"%_dag)
-            if value:
-                _is_rendering.append(_dag)
+    _renderingdag = [i for i in cmds.ls(dag = 1, l = True) if cmds.objExists("{}.rendering".format(i))]
+    for _dag in _renderingdag:
+        _value = cmds.getAttr("%s.rendering"%_dag)
+        # _isshow = check.isshow(_dag)
+        if _value:
+            _is_rendering.append(_dag)
     return _is_rendering
