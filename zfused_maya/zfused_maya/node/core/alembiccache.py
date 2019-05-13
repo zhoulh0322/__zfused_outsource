@@ -5,9 +5,8 @@
 
 import os
 import maya.cmds as cmds
-
 import zfused_maya.core.filefunc as filefunc
-
+import zfused_maya.node.core.element as element
 
 def publish_file(files, src, dst):
     """ upload files 
@@ -147,3 +146,93 @@ def paths(alembic_files):
     _set(_set_list, _value)  
 
     return _value
+
+
+def create_frame_cache(_path,startTime,endTime,grpname,*args):
+    if isinstance(grpname,list):
+        roots = ''.join(["-root %s "%i for i in grpname])
+    else:
+        roots = "-root %s "%grpname
+    # 导出附加参数
+    if args:
+        exOptions = ''.join([" -%s"%j for j in args])
+    else:
+        exOptions = ''
+    joborder = "-frameRange %s %s %s -dataFormat hdf %s -file %s"%(startTime,endTime,exOptions,roots,_path)
+    return joborder
+
+def import_cache(asset,namespace,node,path,texfile = None):
+    # def get_ns(nameSpace):
+    #     # 自动生成空间名序号,暂不使用
+    #     index = 0
+    #     _namespaces = list(set(cmds.namespaceInfo(r = 1, lon = 1)) - set(["shared","UI"]))
+    #     while True:
+    #         if nameSpace in _namespaces:
+    #             if nameSpace[-1].isdigit():
+    #                 _num = re.findall("\d+",nameSpace)[-1]
+    #                 nameSpace = "{}{}".format(nameSpace[:-len(_num)],int(_num)+index)
+    #             else:
+    #                 nameSpace = "{}{}".format(nameSpace,index)
+    #             index += 1
+    #         else:
+    #             return nameSpace
+    def connect_usedattr(src,dst):
+        """connect transform attr
+        """
+        abc_trans = list(set(cmds.listRelatives(src,ad = 1,type = "transform")) | set([src]))
+        tex_trans = list(set(cmds.listRelatives(dst,ad = 1,type = "transform")) | set([dst]))
+        for _s,_d in zip(sorted(abc_trans),sorted(tex_trans)):
+            _usedattr = cmds.listConnections(_s,p = 1,c = 1,d = 0)
+            if _usedattr:
+                for _i in _usedattr[0::2]:
+                    _attrname = _i.split(_s)[-1]
+                    cmds.connectAttr(_i,"{}{}".format(_d,_attrname))
+                    print ("connect attr:{} to {}".format(_i,"{}{}".format(_d,_attrname)))
+
+    _grp_name = "abc_hidegrp"
+    # create abc_grp
+    if not cmds.objExists(_grp_name):
+        _grp = cmds.createNode("transform",n = _grp_name)
+        cmds.setAttr("{}.hiddenInOutliner".format(_grp),1)
+        cmds.setAttr("{}.v".format(_grp),0)
+    else:
+        _grp = _grp_name
+
+    if asset:
+        # load alembic file
+        _newns = "abc_{}".format(namespace)
+        # _newns = get_ns(namespace)
+        cmds.file(path,i = 1,iv = 1,ra = 1,mergeNamespacesOnClash = 0,ns = _newns,pr = 1,ifr = 1,itr = "override",type = "Alembic")
+        _abcnode = "{}:{}".format(_newns,node)
+        cmds.parent(_abcnode,_grp)
+        cmds.setAttr("{}.t".format(_abcnode),lock = 1)
+        cmds.setAttr("{}.r".format(_abcnode),lock = 1)
+        cmds.setAttr("{}.s".format(_abcnode),lock = 1)
+        if not cmds.objExists(texfile):
+            raise 
+        _bsnode = cmds.blendShape(_abcnode,texfile)
+        cmds.setAttr("{}.{}".format(_bsnode[-1],node),1)
+        cmds.setAttr("{}.origin".format(_bsnode[-1]),0)
+        connect_usedattr(_abcnode,texfile)
+    else:
+        cmds.file(path,i = 1,iv = 1,ra = 1,mergeNamespacesOnClash = 1,ns = ":",pr = 1,ifr = 1,itr = "override",type = "Alembic")
+        cmds.setAttr("{}.t".format(namespace),lock = 1)
+        cmds.setAttr("{}.r".format(namespace),lock = 1)
+        cmds.setAttr("{}.s".format(namespace),lock = 1)
+    return True
+
+def remove_cache(blendshapenodes):
+    '''移除abc缓存
+    '''
+    for blendshapenode in blendshapenodes:
+        _grp = cmds.blendShape(blendshapenode,q = 1,g = 1)
+        _trans = cmds.listRelatives(_grp,p = 1,type = "transform")
+        _shape = set(cmds.listRelatives(_trans,s = 1,type = "mesh")) - set(_grp)
+        _orishape = cmds.ls(list(_shape), io=1, fl=1)
+        for i in _orishape:
+            cmds.setAttr("{}.intermediateObject".format(i),0)
+        # cmds.delete(_grp)
+    _abc_grps = cmds.listRelatives("abc_hidegrp",c = 1,type = "transform")
+    _node = cmds.blendShape("blendShape1",q = 1,t = 1)
+    _ns = set([i[:-(len(i.split(":")[-1])+1)] for i in _node])
+    # cmds.delete("abc_hidegrp")
