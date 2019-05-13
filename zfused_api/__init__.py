@@ -4,3 +4,8 @@ from . import asset
 from . import types
 from . import step
 from . import software
+from . import shot
+from . import sequence
+from . import objects
+from . import inputattr
+from . import outputattr
