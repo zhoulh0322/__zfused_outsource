@@ -23,7 +23,7 @@ import record
 
 # will ???
 REPLACE = {
-    "P:":"C:/ClusterStorage/Volume1/Shares/Workspace",
+    # "P:":"C:/ClusterStorage/Volume1/Shares/Workspace",
 }
 
 logger = logging.getLogger(__name__)
@@ -56,6 +56,12 @@ def publish_file(src, dst, del_src = False):
 
     :rtype: bool
     """
+    _dst_path = os.path.dirname(dst)
+    if not os.path.isdir(_dst_path):
+        os.makedirs(_dst_path)
+    shutil.copy(src, dst)
+    return True
+
     _resource = zfused_maya.resource()
     _publish_exe = _resource.get("plugins/ztranser", "client.exe")
     if not os.path.isfile(_publish_exe):
