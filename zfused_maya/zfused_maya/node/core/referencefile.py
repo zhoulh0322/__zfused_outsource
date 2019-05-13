@@ -72,16 +72,22 @@ def nodes(is_local = True):
 
     :rtype: list
     """
-    _file_nodes = cmds.ls(type = "reference")
+    # _file_nodes = list(set(cmds.ls(type = "reference")) - set(["sharedReferenceNode", "_UNKNOWN_REF_NODE_"])) 
+    _file_nodes = cmds.ls(rf = True)
     _result_nodes = []
     for _file_node in _file_nodes:
-        _has_attr = cmds.objExists("{}.is_local".format(_file_node))
-        if not _has_attr:
-            continue
-        _is_local = cmds.getAttr("{}.is_local".format(_file_node))
-        if _is_local == "false":
-            continue
-        _result_nodes.append(_file_node)
+        try:
+            if cmds.referenceQuery(_file_node, p = True, rfn = True):
+                continue
+            _has_attr = cmds.objExists("{}.is_local".format(_file_node))
+            if not _has_attr:
+                continue
+            _is_local = cmds.getAttr("{}.is_local".format(_file_node))
+            if _is_local == "false":
+                continue
+            _result_nodes.append(_file_node)
+        except:
+            pass
     return _result_nodes
 
 def files():
