@@ -93,7 +93,7 @@ def import_structure(output_link_object, output_link_id,  output_attr_id, input_
     if not os.path.exists(_attr_file):
         return False
 
-    print(_attr_file)
+    # print(_attr_file)
     _datas = read_json_file(_attr_file)
     build_structure(_datas, "")
 
