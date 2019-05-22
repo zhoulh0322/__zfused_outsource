@@ -260,19 +260,16 @@ class PlaybastTool(object):
         cam_save_dict = {}
         for _attr, _value in cam_setup_dict.items():
             cam_save_dict[_attr] = getAttr(camShape + '.' + _attr)
-            if _attr == "filmFit":
-                if getAttr(camShape + '.' + _attr) == 3 or getAttr(camShape + '.' + _attr) == 2:
-                    continue
             setAttr(camShape + '.' + _attr, _value)
         print 'cam_setup'
 
         renderer_save_dict = {}
         _viewport_list = list(set(getPanel(type = 'modelPanel')).intersection(set(getPanel(visiblePanels = True))))
-        for _viewport in _viewport_list:
-            _renderer = modelEditor(_viewport, query =True, rendererName = True)
-            renderer_save_dict[_viewport] = _renderer
-            modelEditor(_viewport, edit =True, rendererName = 'base_OpenGL_Renderer')
-        print 'renderer'
+        #for _viewport in _viewport_list:
+        #    _renderer = modelEditor(_viewport, query =True, rendererName = True)
+        #    renderer_save_dict[_viewport] = _renderer
+        #    modelEditor(_viewport, edit =True, rendererName = 'base_OpenGL_Renderer')
+        #print 'renderer'
 
         
 
@@ -360,8 +357,8 @@ class PlaybastTool(object):
         self.hideHUD()
         for _attr, _value in cam_save_dict.items():
             setAttr(camShape + '.' + _attr, _value)
-        for _viewport, _renderer in renderer_save_dict.items():
-            modelEditor(_viewport, edit =True, rendererName = _renderer)
+        #for _viewport, _renderer in renderer_save_dict.items():
+        #    modelEditor(_viewport, edit =True, rendererName = _renderer)
 
     def get_ui_filename(self):
         _name = cmds.textField(self.file_name_textField, query = True, text = True)
