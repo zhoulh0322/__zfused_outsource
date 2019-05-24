@@ -240,23 +240,6 @@ def trans_in_mesh():
     else:
         return True, None
 
-
-def anim_curve():
-    """ check anim key curves
-
-    """
-    _curves = cmds.ls(type = ["animCurveTL", "animCurveTA", "animCurveTT", "animCurveTU"])
-    if _curves:
-        _linktrans = set(cmds.listConnections(_curves,d = 1,type = "transform"))
-        _linkshapes = cmds.listRelatives(list(_linktrans),s = 1,type = ["mesh","nurbsCurve"])
-        if _linkshapes:
-            _trans = cmds.listRelatives(list(set(_linkshapes)),p = 1)
-            info = u"场景存在错误key帧曲线\n"
-            info += "\n".join(_trans)
-            return False, info
-    return True, None
-
-
 def isshow(node):
     _value = True
     if cmds.getAttr("%s.v"%node) == 0:
@@ -271,3 +254,28 @@ def isshow(node):
                 _value = False
                 break
     return _value
+
+def color_set():
+    '''顶点着色
+    '''
+    _color_set = []
+    _dags = cmds.ls(dag = 1)
+    if not _dags:
+        return True, None
+    for _dag in _dags:
+        _set = cmds.polyColorSet(_dag,q = 1,acs = 1)
+        if _set:
+            _color_set.extend(_set)
+    if _color_set:
+        info = "场景存在顶点着色\n{}".format("\n".join(_color_set))
+        return False ,info
+    else:
+        return True, None
+
+def intermediate_shape():
+    sel = cmds.ls(io = 1,type = "mesh")
+    if sel:
+        info = "场景存在转换的中间模型\n{}".format("\n".join(sel))
+        return False ,info
+    else:
+        return True, None

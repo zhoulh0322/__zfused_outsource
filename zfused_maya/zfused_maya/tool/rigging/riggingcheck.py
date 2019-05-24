@@ -11,14 +11,15 @@ class RiggingCheck(checkwidget.CheckWidget):
     def __init__(self):
         super(RiggingCheck, self).__init__()
         self._init()
-        self._check_all()
-        self.recheck_button.clicked.connect(self._check_all)
+        # self._check_all()
+        # self.recheck_button.clicked.connect(self._check_all)
+        cmds.delete(cmds.ls(typ="nodeGraphEditorInfo"))
 
     @classmethod
     def Reset(cls):
         cls.value = False
     
-    def _check_all(self):
+    def _check_all_del(self):
         _is_ok = True
         for widget in self.allCheckWidget:
             if self.auto_clear():
@@ -49,7 +50,7 @@ class RiggingCheck(checkwidget.CheckWidget):
         self.add_widget(widget)
 
         # 检查动画key帧 _check_ani_key_curve
-        widget = checkwidget.ItemWidget(u"检查动画key帧曲线", check.anim_curve, None, False)
+        widget = checkwidget.ItemWidget(u"检查动画key帧曲线", anim_curve, None, False)
         self.add_widget(widget)
 
         #check reference
@@ -84,7 +85,9 @@ class RiggingCheck(checkwidget.CheckWidget):
         # check rendering group
         widget = checkwidget.ItemWidget(u"检查渲染组", _check_renderinggroup, repair_renderinggroup, False)
         self.add_widget(widget)
-
+        # check null_reference
+        widget = checkwidget.ItemWidget(u"检查无用Reference节点", _check_null_reference, _repair_null_reference, False)
+        self.add_widget(widget)
 
 def _check_hierarchy():
     rendering = []
@@ -135,27 +138,46 @@ def repair_renderinggroup():
                 # cmds.setAttr( "%s.rendering"%dag, 0 )
                 cmds.deleteAttr(dag,at = "rendering")
 
-def _check_null_reference():
-    _references = cmds.ls(rf = True)
-    _null_reference = []
 
+def _check_null_reference():
+    _references = cmds.ls(rf=True)
+    _null_reference = []
     if not _references:
         return True, None
-
+    info = u"存在无用的reference节点:\n\n"
     for _reference in _references:
-        cmds.referneceQuery( _reference, )
-
-    allDags = cmds.ls(dag = True)
-    for dag in allDags:
-        #print dag
-        #get 
-        if cmds.objExists("%s.rendering"%dag):
-            value = cmds.getAttr("%s.rendering"%dag)
-            if value:
-                rendering.append(dag)
-    #return rendering
-    if not rendering:
-        info = u"文件组织结构错误,请用分组共组分组整合文件\n"
-        return False,info
-    else:
+        try:
+            cmds.referenceQuery(_reference, f=1)
+        except:
+            info += _reference + "\n"
+            _null_reference.append(_reference)
+    if len(_null_reference) == 0:
         return True, None
+    return False, info
+
+def _repair_null_reference():
+    _references = cmds.ls(rf=True)
+    for _reference in _references:
+        try:
+            cmds.referenceQuery(_reference, f=1)
+        except:
+            cmds.lockNode(_reference, l=0)
+            cmds.delete(_reference)
+            print((u"成功删除节点：" + _reference))
+
+
+def anim_curve():
+    """ check anim key curves
+
+    """
+    _curves = cmds.ls(type = ["animCurveTL", "animCurveTA", "animCurveTT", "animCurveTU"])
+    if _curves:
+        if cmds.listConnections(_curves,d = 1,type = "transform"):
+            _linktrans = set(cmds.listConnections(_curves,d = 1,type = "transform"))
+            _linkshapes = cmds.listRelatives(list(_linktrans),s = 1,type = ["mesh","nurbsCurve"])
+            if _linkshapes:
+                _trans = cmds.listRelatives(list(set(_linkshapes)),p = 1)
+                info = u"场景存在错误key帧曲线\n"
+                info += "\n".join(_trans)
+                return False, info
+    return True, None

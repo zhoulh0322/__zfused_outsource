@@ -68,7 +68,7 @@ def publish_cache():
         os.makedirs(_publish_path)
     try:
         _pgnodes = yeticache.nodes()
-        _info,_batch = yeticache.get_cache_info(_pgnodes, 4, _production_path, _publish_path)
+        _info,_batch = yeticache.get_upload_info(_pgnodes, 4, _production_path, _publish_path)
         _publish_dict = {}
         for _k,_v in _batch.items():
             _publish_dict[_v[0]] = _v[1]

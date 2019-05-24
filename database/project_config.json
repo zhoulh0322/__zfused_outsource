@@ -154,5 +154,17 @@
         "Review": "P:/WDCG",
         "LocalRoot": "D:/zfused/work/WDCG",
         "LocalPublish": "D:/zfused/publish/WDCG"
+    },
+    {
+        "Id": 14,
+        "ProjectId": 15,
+        "Fps": 24,
+        "ImageWidth": 1920,
+        "ImageHeight": 1080,
+        "Root": "P:/island",
+        "Publish": "P:/backup/island",
+        "Review": "P:/island",
+        "LocalRoot": "D:/zfused/work/island",
+        "LocalPublish": "D:/zfused/publish/island"
     }
 ]

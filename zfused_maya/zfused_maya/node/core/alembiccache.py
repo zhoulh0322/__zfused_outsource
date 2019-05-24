@@ -148,8 +148,9 @@ def paths(alembic_files):
 
     return _value
 
-
 def create_frame_cache(_path,startTime,endTime,grpname,*args):
+    '''生成创建缓存命令
+    '''
     if isinstance(grpname,list):
         roots = ''.join(["-root %s "%i for i in grpname])
     else:
@@ -163,6 +164,8 @@ def create_frame_cache(_path,startTime,endTime,grpname,*args):
     return joborder
 
 def import_cache(asset,namespace,node,path,texfile = None):
+    '''导入缓存
+    '''
     # def get_ns(nameSpace):
     #     # 自动生成空间名序号,暂不使用
     #     index = 0
@@ -177,6 +180,7 @@ def import_cache(asset,namespace,node,path,texfile = None):
     #             index += 1
     #         else:
     #             return nameSpace
+
     def connect_usedattr(src,dst):
         """connect transform attr
         """
@@ -211,8 +215,8 @@ def import_cache(asset,namespace,node,path,texfile = None):
         cmds.setAttr("{}.s".format(_abcnode),lock = 1)
         if not cmds.objExists(texfile):
             raise 
-        _bsnode = cmds.blendShape(_abcnode,texfile)
-        cmds.setAttr("{}.{}".format(_bsnode[-1],node),1)
+        _bsnode = cmds.blendShape(_abcnode,texfile,w = (0,1.0))
+        # cmds.setAttr("{}.{}".format(_bsnode[-1],node),1)
         cmds.setAttr("{}.origin".format(_bsnode[-1]),0)
         connect_usedattr(_abcnode,texfile)
     else:
@@ -222,21 +226,97 @@ def import_cache(asset,namespace,node,path,texfile = None):
         cmds.setAttr("{}.s".format(namespace),lock = 1)
     return True
 
-def remove_cache(blendshapenodes):
-    '''移除abc缓存
+def remove_cache(*args):
+    '''移除缓存的bs连接
+        传入要移除的模型名(传入大组名或任意含有空间名的模型)
+        没有传入值移除全部缓存
+        附：blendShape常用查询命令
+            t #获取所有变形模型
+            g #获取所有被变形模型
+            dt #获取所有变形器节点和groupid
+            w #查询权重属性
+            en #查询封套属性（envelope属性，一般不改）
     '''
-    for blendshapenode in blendshapenodes:
-        _grp = cmds.blendShape(blendshapenode,q = 1,g = 1)
-        _trans = cmds.listRelatives(_grp,p = 1,type = "transform")
-        _shape = set(cmds.listRelatives(_trans,s = 1,type = "mesh")) - set(_grp)
-        _orishape = cmds.ls(list(_shape), io=1, fl=1)
-        for i in _orishape:
-            cmds.setAttr("{}.intermediateObject".format(i),0)
-        # cmds.delete(_grp)
-    _abc_grps = cmds.listRelatives("abc_hidegrp",c = 1,type = "transform")
-    _node = cmds.blendShape("blendShape1",q = 1,t = 1)
-    _ns = set([i[:-(len(i.split(":")[-1])+1)] for i in _node])
-    # cmds.delete("abc_hidegrp")
+    def get_removeinfo(nodes,*args):
+        list1,list2,list3 = [],[],[]
+        for _node in nodes:
+            _deformednodes = cmds.blendShape(_node,q = 1,g = 1)
+            _trans = cmds.listRelatives(_deformednodes,p = 1,type = "transform")
+            _ns = set([cmds.referenceQuery(i,ns = 1) for i in _trans])
+            if args and _ns not in args:
+                continue
+            orishape = set(cmds.listRelatives(_trans,s = 1))-set(cmds.listRelatives(_trans,s = 1,ni = 1))
+            list1.extend(orishape)
+            list2.extend(_deformednodes)
+            list2.extend(cmds.blendShape(_node,q = 1,dt = 1))
+            list2.append(_node)
+            _target = cmds.blendShape(_node,q = 1,t = 1)
+            if _target:
+                _grp = get_cache_grp(_target)
+                list2.append(_grp)
+                _remove_ns = get_namespace(_grp)
+                if _remove_ns:
+                    list3.append(_remove_ns)
+        return list1,list2,list3
+
+    def get_cache_grp(node):
+        while True:
+            if "abc_hidegrp" in cmds.listRelatives(node,p = 1):
+                return node
+            else:
+                node = cmds.listRelatives(node,p = 1)[0]
+
+    def get_namespace(node):
+        _ns = node[:-len(node.split(":")[-1])-1]
+        if cmds.namespace(ex = _ns):
+            return _ns
+        return None
+
+    bsnodes = cmds.ls(type = "blendShape")
+    if not bsnodes:
+        return
+    bsnodes = [i for i in bsnodes if not cmds.referenceQuery(i,inr = 1)]
+    _filters = []
+    if args:
+        _filters = [cmds.referenceQuery(i,ns = 1) for i in args]
+    _orifiles,_removefiles,_namespacefiles = get_removeinfo(bsnodes,*_filters)
+    if _removefiles:
+        cmds.delete(_removefiles)
+    if _orifiles:
+        for _orifile in _orifiles:
+            cmds.setAttr("{}.intermediateObject".format(_orifile),0)
+    if _namespacefiles:
+        for _namespacefile in _namespacefiles:
+            cmds.namespace(rm = _namespacefile,mnr = 1)
+
+def get_meshattr(group):
+    _info = {}
+    _trans = cmds.ls(group, dag = True, type = "transform")
+    if not _trans:
+        return _info
+    for _tran in _trans:
+        shapes = cmds.listRelatives(_tran,s = 1,ni = 1)
+        if shapes:
+            _attrs = cmds.listAttr(shapes[0],fp = 1,o = 1)
+            if _attrs:
+                _info[_tran] = {}
+                for _attr in _attrs:
+                    _info[_tran][_attr] = [cmds.getAttr("{}.{}".format(shapes[0],_attr)),cmds.getAttr("{}.{}".format(shapes[0],_attr),type = 1)]
+                    # print (cmds.getAttr("{}.{}".format(shapes[0],_attr)))
+    return _info
+
+def set_meshattr(group,info):
+    _trans = cmds.ls(group, dag = True, type = "transform")
+    for _tran in _trans:
+        shapes = cmds.listRelatives(_tran,s = 1,ni = 1)
+        if shapes:
+            if _tran in info:
+                attr_info = info[_tran]
+                for k,v in attr_info.items():
+                    _v,_t = v
+                    cmds.setAttr("{}.{}".format(shapes[0],k),_v,type = _t)
+            else:
+                print (">>>>>>>>>>>>>>>>>>>>>{} is not found".format(_tran))
 
 def load_asset(cacheinfo,step,_dict = {}):
     '''资产领取(外包端适用)

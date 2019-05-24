@@ -42,8 +42,8 @@ def set_resolution_size():
     _width,_height = _project_handle.config["ImageWidth"], _project_handle.config["ImageHeight"]
     cmds.setAttr("defaultResolution.width", _width)
     cmds.setAttr("defaultResolution.height", _height)
-
-def import_cache(output_link_object, output_link_id,  output_attr_id, input_link_object, input_link_id, input_attr_id):
+    
+def import_cfx_cache(output_link_object, output_link_id,  output_attr_id, input_link_object, input_link_id, input_attr_id):
     '''import alembic cache
     '''
 
@@ -96,6 +96,8 @@ def import_cache(output_link_object, output_link_id,  output_attr_id, input_link
     if not _asset_dict:
         return
 
+    # remove anicache
+    alembiccache.remove_cache()
     # merge alembic cache
     for item in _info:
         _asset,_ns,_node,_path = item

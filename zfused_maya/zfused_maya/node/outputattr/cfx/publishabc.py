@@ -18,7 +18,6 @@ import zfused_maya.node.core.renderinggroup as renderinggroup
 import zfused_maya.node.core.yeticache as yeticache
 import zfused_maya.node.core.displaylayer as displaylayer
 
-
 __all__ = ["publish_abc"]
 logger = logging.getLogger(__name__)
 
@@ -116,19 +115,19 @@ def publish_abc():
     _alljob = []
     _json_info = []
     upload_dict = {}
-    get_cam_info(_abc_suffix,_file_code,_start_frame,_end_frame,_alljob,_json_info,upload_dict)
+    # get_cam_info(_abc_suffix,_file_code,_start_frame,_end_frame,_alljob,_json_info,upload_dict)
     get_asset_info(renderdag,_abc_suffix,_file_code,_start_frame,_end_frame,_alljob,_json_info,upload_dict)
 
     if not os.path.isdir(_publish_path):
         logger.info( "create publish dir {}".format(_publish_path) )
         os.makedirs( _publish_path )
     try:
-        cmds.AbcExport(j = _alljob)
-        for _k,_v in upload_dict.items():
-            _result = filefunc.publish_file(_k,_v,True)
         with open(_publish_json_file,"w") as info:
             json.dump(_json_info, info,indent = 4,separators=(',',':'))
         _result = filefunc.publish_file(_publish_json_file,_production_json_file,True)
+        cmds.AbcExport(j = _alljob)
+        for _k,_v in upload_dict.items():
+            _result = filefunc.publish_file(_k,_v,True)
     except Exception as e:
         logger.error(e)
         return False

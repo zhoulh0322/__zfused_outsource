@@ -42,8 +42,8 @@ def create_cache(yetiNode,path,startFrame,endFrame,frameSample):
         os.makedirs(os.path.split(path)[0])
     cmds.pgYetiCommand(yetiNode,writeCache = path,range = [startFrame, endFrame], samples = frameSample,updateViewport = 0, generatePreview = 0)
 
-def get_cache_info(nodes,frameLevel,publish_path,local_path,childfolder = True):
-    """ get yetiinfo
+def get_upload_info(nodes,frameLevel,publish_path,local_path,childfolder = True):
+    """ get yeti info
 
     """
     _json_info = []
@@ -59,15 +59,17 @@ def get_cache_info(nodes,frameLevel,publish_path,local_path,childfolder = True):
         cachename = node[len(_nsname)+1:]
         if _nsname in assetlist:
             _assetname = assetlist[_nsname]
+            # 短空间名
+            short_ns = _nsname.split(":")[-1]
             if childfolder:
-                _webpath ="{}/{}/{}/{}.%0{}d.fur".format(publish_path,_assetname,cachename,cachename,frameLevel)
-                _localpath ="{}/{}/{}/{}.%0{}d.fur".format(local_path,_assetname,cachename,cachename,frameLevel)
+                _webpath ="{}/{}/{}/{}.%0{}d.fur".format(publish_path,short_ns,cachename,cachename,frameLevel)
+                _localpath ="{}/{}/{}/{}.%0{}d.fur".format(local_path,short_ns,cachename,cachename,frameLevel)
             else:
-                _webpath ="{}/{}/{}.%0{}d.fur".format(publish_path,_assetname,cachename,frameLevel)
-                _localpath ="{}/{}/{}.%0{}d.fur".format(local_path,_assetname,cachename,frameLevel)
+                _webpath ="{}/{}/{}.%0{}d.fur".format(publish_path,short_ns,cachename,frameLevel)
+                _localpath ="{}/{}/{}.%0{}d.fur".format(local_path,short_ns,cachename,frameLevel)
             tempinfo = []
             tempinfo.append(_assetname)#assetname
-            tempinfo.append(_nsname)#namespacename
+            tempinfo.append(short_ns)#namespacename
             tempinfo.append(node.split("{}:".format(_nsname))[-1])#nodename
             tempinfo.append(_webpath)#cachepath
             _json_info.append(tempinfo)

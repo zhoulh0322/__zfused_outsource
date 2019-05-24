@@ -47,10 +47,17 @@ def camera():
     """ clear camera
 
     """
+    _extra_camera = ["facial_cam"]
     allCameras = cmds.ls(type = "camera")
     initCameras = list(set(allCameras) - set(["frontShape","topShape","perspShape","sideShape"]))
     if initCameras:
         for camera in initCameras:
+            _is_extra = False
+            for _cam in _extra_camera:
+                if _cam in _camera:
+                    _is_extra = True
+            if _is_extra:
+                continue
             cameraTrans = cmds.listRelatives(camera, parent = True)
             try:
                 cmds.lockNode(cameraTrans, lock = False)
@@ -142,10 +149,30 @@ def namespace():
                                 logger.warning(e)
 
 def reference():
-    _refnode = cmds.ls(typ="reference")
-    for _i in _refnode:
-        _getlinknode = cmds.listConnections(_i)
-        if _getlinknode == None:
-            cmds.lockNode(_i,l=0)
-            cmds.delete(_i)
-            #print ("deleted referenceNode: "+_i)
+    _reference_nodes = cmds.ls(typ="reference")
+    for _reference_node in _reference_nodes:
+        try:
+            _reference_file = cmds.referenceQuery(_reference_node, f = True)
+            _getlinknode = cmds.listConnections(_reference_node)
+            if _getlinknode == None and not _reference_file:
+                cmds.lockNode(_reference_node, l=0)
+                cmds.delete(_reference_node)
+                #print ("deleted referenceNode: "+_i)
+        except Exception as e:
+            print(e)
+
+def color_set():
+    '''顶点着色
+    '''
+    _color_set = []
+    _dags = cmds.ls(dag = 1)
+    if _dags:
+        for _dag in _dags:
+            if cmds.polyColorSet(_dag,q = 1,acs = 1):
+                cmds.polyColorSet(_dag,e = 1,d = 1)
+
+def intermediate_shape():
+    sel = cmds.ls(io = 1,type = "mesh")
+    if sel:
+        cmds.delete(sel)
+

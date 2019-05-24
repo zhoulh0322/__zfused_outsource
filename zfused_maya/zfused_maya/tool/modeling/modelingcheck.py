@@ -141,6 +141,11 @@ class ModelingCheck(checkwidget.CheckWidget):
         widget = checkwidget.ItemWidget(u"检查嵌套模型", check.trans_in_mesh, None, False)
         self.add_widget(widget)
 
+        widget = checkwidget.ItemWidget(u"检查顶点着色", check.color_set, clear.color_set, False)
+        self.add_widget(widget)
+
+        widget = checkwidget.ItemWidget(u"检查中间转换模型", check.intermediate_shape, clear.intermediate_shape, False)
+        self.add_widget(widget)
 
 def _check_tree_name():
     """ check tree name

@@ -123,13 +123,12 @@ def publish_abc():
         logger.info("create publish dir {}".format(_publish_path))
         os.makedirs(_publish_path)
     try:
-        print(_alljob)
-        cmds.AbcExport(j = _alljob)
-        for _k,_v in upload_dict.items():
-            _result = filefunc.publish_file(_k,_v,True)
         with open(_publish_json_file,"w") as info:
             json.dump(_json_info, info,indent = 4,separators=(',',':'))
         _result = filefunc.publish_file(_publish_json_file,_production_json_file,True)
+        cmds.AbcExport(j = _alljob)
+        for _k,_v in upload_dict.items():
+            _result = filefunc.publish_file(_k,_v,True)
     except Exception as e:
         logger.error(e)
         return False

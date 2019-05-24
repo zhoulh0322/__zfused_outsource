@@ -11,6 +11,7 @@ import maya.cmds as cmds
 import zfused_api
 import zfused_maya.node.core.element as element
 import zfused_maya.node.core.yeticache as yeticache
+import zfused_maya.node.core.displaylayer as displaylayer
 
 __all__ = ["import_yeti_cache"]
 logger = logging.getLogger(__name__)
@@ -61,7 +62,6 @@ def import_yeti_cache(output_link_object, output_link_id,  output_attr_id, input
     _suffix = _output_attr_handle.suffix()
     _attr_code = _output_attr_handle.code()
     _output_link_production_file = "{}/{}/{}/{}/{}{}".format( _output_link_production_path, _step_code, _software_code, _attr_code, _file_code, _suffix )
-
     if not os.path.exists(_output_link_production_file):
         return False
     # get shot info

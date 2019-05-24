@@ -467,7 +467,7 @@
         "Code": "file",
         "ProjectStepId": 93,
         "StepAttrId": 83,
-        "Script": "import zfused_maya.node.inputattr.util as util;util.receive_file(argv_task_id,argv_attr_id,argv_attr_code, argv_attr_type, argv_attr_mode,argv_attr_local)",
+        "Script": "import zfused_maya.node.inputattr.util as util;util.receive_file(output_link_object, output_link_id,  output_attr_id, input_link_object, input_link_id, input_attr_id)",
         "Type": "reference",
         "IsLocal": 0,
         "Mode": "direct"
@@ -478,7 +478,7 @@
         "Code": "file",
         "ProjectStepId": 96,
         "StepAttrId": 83,
-        "Script": "import zfused_maya.node.inputattr.util as util;util.receive_file(argv_task_id,argv_attr_id,argv_attr_code, argv_attr_type, argv_attr_mode,argv_attr_local)",
+        "Script": "import zfused_maya.node.inputattr.util as util;util.receive_file(output_link_object, output_link_id,  output_attr_id, input_link_object, input_link_id, input_attr_id)",
         "Type": "reference",
         "IsLocal": 0,
         "Mode": "direct"
@@ -489,7 +489,7 @@
         "Code": "file",
         "ProjectStepId": 97,
         "StepAttrId": 88,
-        "Script": "import zfused_maya.node.inputattr.util as util;util.receive_file(argv_task_id,argv_attr_id,argv_attr_code, argv_attr_type, argv_attr_mode,argv_attr_local)",
+        "Script": "import zfused_maya.node.inputattr.util as util;util.receive_file(output_link_object, output_link_id,  output_attr_id, input_link_object, input_link_id, input_attr_id)",
         "Type": "reference",
         "IsLocal": 0,
         "Mode": "direct"
@@ -500,7 +500,7 @@
         "Code": "file",
         "ProjectStepId": 91,
         "StepAttrId": 83,
-        "Script": "import zfused_maya.node.inputattr.util as util;util.receive_file(argv_task_id,argv_attr_id,argv_attr_code, argv_attr_type, argv_attr_mode,argv_attr_local)",
+        "Script": "import zfused_maya.node.inputattr.util as util;util.receive_file(output_link_object, output_link_id,  output_attr_id, input_link_object, input_link_id, input_attr_id)",
         "Type": "reference",
         "IsLocal": 0,
         "Mode": "direct"
@@ -511,7 +511,7 @@
         "Code": "file",
         "ProjectStepId": 100,
         "StepAttrId": 93,
-        "Script": "import zfused_maya.node.inputattr.util as util;util.receive_file(argv_task_id,argv_attr_id,argv_attr_code, argv_attr_type, argv_attr_mode,argv_attr_local)",
+        "Script": "import zfused_maya.node.inputattr.util as util;util.receive_file(output_link_object, output_link_id,  output_attr_id, input_link_object, input_link_id, input_attr_id)",
         "Type": "reference",
         "IsLocal": 0,
         "Mode": "relative"
@@ -533,7 +533,7 @@
         "Code": "file",
         "ProjectStepId": 100,
         "StepAttrId": 91,
-        "Script": "import zfused_maya.node.inputattr.util as util;util.receive_file(argv_task_id,argv_attr_id,argv_attr_code, argv_attr_type, argv_attr_mode,argv_attr_local)",
+        "Script": "import zfused_maya.node.inputattr.util as util;util.receive_file(output_link_object, output_link_id,  output_attr_id, input_link_object, input_link_id, input_attr_id)",
         "Type": "reference",
         "IsLocal": 0,
         "Mode": "relative"
@@ -544,7 +544,7 @@
         "Code": "neat",
         "ProjectStepId": 102,
         "StepAttrId": 121,
-        "Script": "import zfused_maya.node.inputattr.util as util;util.receive_file(argv_task_id,argv_attr_id,argv_attr_code, argv_attr_type, argv_attr_mode,argv_attr_local)",
+        "Script": "import zfused_maya.node.inputattr.util as util;util.receive_file(output_link_object, output_link_id,  output_attr_id, input_link_object, input_link_id, input_attr_id)",
         "Type": "reference",
         "IsLocal": 1,
         "Mode": "direct"
@@ -555,7 +555,7 @@
         "Code": "file",
         "ProjectStepId": 92,
         "StepAttrId": 87,
-        "Script": "import zfused_maya.node.inputattr.util as util;util.receive_file(argv_task_id,argv_attr_id,argv_attr_code, argv_attr_type, argv_attr_mode,argv_attr_local)",
+        "Script": "import zfused_maya.node.inputattr.util as util;util.receive_file(output_link_object, output_link_id,  output_attr_id, input_link_object, input_link_id, input_attr_id)",
         "Type": "reference",
         "IsLocal": 0,
         "Mode": "direct"
@@ -566,7 +566,7 @@
         "Code": "file",
         "ProjectStepId": 92,
         "StepAttrId": 91,
-        "Script": "import zfused_maya.node.inputattr.util as util;util.receive_file(argv_task_id,argv_attr_id,argv_attr_code, argv_attr_type, argv_attr_mode,argv_attr_local)",
+        "Script": "import zfused_maya.node.inputattr.util as util;util.receive_file(output_link_object, output_link_id,  output_attr_id, input_link_object, input_link_id, input_attr_id)",
         "Type": "reference",
         "IsLocal": 0,
         "Mode": "direct"
@@ -577,7 +577,7 @@
         "Code": "file",
         "ProjectStepId": 102,
         "StepAttrId": 114,
-        "Script": "import zfused_maya.node.inputattr.util as util;util.receive_file(argv_task_id,argv_attr_id,argv_attr_code, argv_attr_type, argv_attr_mode,argv_attr_local)",
+        "Script": "import zfused_maya.node.inputattr.util as util;util.receive_file(output_link_object, output_link_id,  output_attr_id, input_link_object, input_link_id, input_attr_id)",
         "Type": "replace",
         "IsLocal": 0,
         "Mode": "relative"
@@ -610,7 +610,7 @@
         "Code": "file",
         "ProjectStepId": 106,
         "StepAttrId": 93,
-        "Script": "import zfused_maya.node.inputattr.util as util;util.receive_file(argv_task_id,argv_attr_id,argv_attr_code, argv_attr_type, argv_attr_mode,argv_attr_local)",
+        "Script": "import zfused_maya.node.inputattr.util as util;util.receive_file(output_link_object, output_link_id,  output_attr_id, input_link_object, input_link_id, input_attr_id)",
         "Type": "reference",
         "IsLocal": 0,
         "Mode": "relative"
@@ -621,7 +621,7 @@
         "Code": "cache/alembiccache",
         "ProjectStepId": 106,
         "StepAttrId": 113,
-        "Script": "import zfused_maya.node.inputattr.rendering.importcache as importcache\r\nimportcache.import_cache(argv_task_id,argv_attr_id,argv_attr_code, argv_attr_type, argv_attr_mode,argv_attr_local)",
+        "Script": "import zfused_maya.node.inputattr.rendering.importcache as importcache\r\nimportcache.import_cache(output_link_object, output_link_id,  output_attr_id, input_link_object, input_link_id, input_attr_id)",
         "Type": "custom",
         "IsLocal": 0,
         "Mode": "direct"
@@ -632,7 +632,7 @@
         "Code": "file",
         "ProjectStepId": 106,
         "StepAttrId": 91,
-        "Script": "import zfused_maya.node.inputattr.util as util;util.receive_file(argv_task_id,argv_attr_id,argv_attr_code, argv_attr_type, argv_attr_mode,argv_attr_local)",
+        "Script": "import zfused_maya.node.inputattr.util as util;util.receive_file(output_link_object, output_link_id,  output_attr_id, input_link_object, input_link_id, input_attr_id)",
         "Type": "reference",
         "IsLocal": 0,
         "Mode": "relative"
@@ -643,7 +643,7 @@
         "Code": "cache/yeticache",
         "ProjectStepId": 106,
         "StepAttrId": 117,
-        "Script": "import zfused_maya.node.inputattr.rendering.importyeticache as importyeticache\r\nimportyeticache.import_yeti_cache(argv_task_id,argv_attr_id,argv_attr_code, argv_attr_type, argv_attr_mode,argv_attr_local)",
+        "Script": "import zfused_maya.node.inputattr.rendering.importyeticache as importyeticache\r\nimportyeticache.import_yeti_cache(output_link_object, output_link_id,  output_attr_id, input_link_object, input_link_id, input_attr_id)",
         "Type": "custom",
         "IsLocal": 0,
         "Mode": "direct"
@@ -654,7 +654,7 @@
         "Code": "structure",
         "ProjectStepId": 106,
         "StepAttrId": 113,
-        "Script": "import zfused_maya.node.inputattr.assembly.importstructure_bkm2_sfx as importstructure\r\nimportstructure.import_structure(argv_task_id,argv_attr_id,argv_attr_code, argv_attr_type, argv_attr_mode,argv_attr_local)",
+        "Script": "import zfused_maya.node.inputattr.assembly.importstructure_bkm2_sfx as importstructure\r\nimportstructure.import_structure(output_link_object, output_link_id,  output_attr_id, input_link_object, input_link_id, input_attr_id)",
         "Type": "custom",
         "IsLocal": 0,
         "Mode": "direct"
@@ -665,7 +665,29 @@
         "Code": "structure",
         "ProjectStepId": 102,
         "StepAttrId": 113,
-        "Script": "import zfused_maya.node.inputattr.assembly.importstructure_bkm2_sfx as importstructure\r\nimportstructure.import_structure(argv_task_id,argv_attr_id,argv_attr_code, argv_attr_type, argv_attr_mode,argv_attr_local)",
+        "Script": "import zfused_maya.node.inputattr.assembly.importstructure_bkm2_sfx as importstructure\r\nimportstructure.import_structure(output_link_object, output_link_id,  output_attr_id, input_link_object, input_link_id, input_attr_id)",
+        "Type": "custom",
+        "IsLocal": 0,
+        "Mode": "direct"
+    },
+    {
+        "Id": 66,
+        "Name": "rig_file",
+        "Code": "file",
+        "ProjectStepId": 107,
+        "StepAttrId": 87,
+        "Script": "import zfused_maya.node.inputattr.util as util;util.receive_file(output_link_object, output_link_id,  output_attr_id, input_link_object, input_link_id, input_attr_id)",
+        "Type": "reference",
+        "IsLocal": 0,
+        "Mode": "direct"
+    },
+    {
+        "Id": 68,
+        "Name": "cache_file",
+        "Code": "cache/alembiccache",
+        "ProjectStepId": 100,
+        "StepAttrId": 130,
+        "Script": "import zfused_maya.node.inputattr.rendering.importcfxcache as importcache\r\nimportcache.import_cfx_cache(output_link_object, output_link_id,  output_attr_id, input_link_object, input_link_id, input_attr_id)",
         "Type": "custom",
         "IsLocal": 0,
         "Mode": "direct"
