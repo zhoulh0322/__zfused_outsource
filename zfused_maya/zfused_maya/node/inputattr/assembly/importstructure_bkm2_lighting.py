@@ -17,12 +17,12 @@ import zfused_maya.node.core.alembiccache as alembiccache
 import zfused_maya.node.core.proxycontainer as proxycontainer
 
 
-def read_json_file(file_path):
+def read_json_file( file_path ):
     with open(os.path.abspath(file_path), "r") as json_file:
         json_dict = json.load(json_file)
     return json_dict if json_dict else {}
 
-def write_json_file(json_dict, file_path):
+def write_json_file( json_dict, file_path ):
     with open(file_path,"w") as json_file:
         json_file.write(json.dumps(json_dict, indent = 4, separators=(',',':')))
         json_file.close()
