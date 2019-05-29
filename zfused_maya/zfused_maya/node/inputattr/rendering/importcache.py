@@ -43,10 +43,9 @@ def set_resolution_size():
     cmds.setAttr("defaultResolution.width", _width)
     cmds.setAttr("defaultResolution.height", _height)
 
-def import_cache(output_link_object, output_link_id,  output_attr_id, input_link_object, input_link_id, input_attr_id):
-    '''import alembic cache
+def import_cache( output_link_object, output_link_id,  output_attr_id, input_link_object, input_link_id, input_attr_id ):
+    ''' import alembic cache
     '''
-
     _file_title = "shader/redshift"
 
     _output_attr_handle = zfused_api.outputattr.OutputAttr(output_attr_id)
