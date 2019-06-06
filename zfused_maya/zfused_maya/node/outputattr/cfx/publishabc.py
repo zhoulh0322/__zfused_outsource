@@ -59,13 +59,17 @@ def publish_abc():
         _assets = yeticache.get_asset_list()
         fixmeshname.fix_deformed_mesh_name("_rendering", renderdag)
         for _dag in renderdag:
-            _ns = cmds.referenceQuery(_dag,ns = 1,shn = 1)
+            _ns = cmds.referenceQuery(_dag,ns = 1)
+            if _ns.startswith(":"):
+                _ns = _ns[1:]
             if _ns in _assets:
-                _production_file = "{}/{}.{}".format(_production_path,_ns,abcSuffix)
-                _publish_file = "{}/{}.{}".format(_publish_path,_ns,abcSuffix)
+                _sns = cmds.referenceQuery(_dag,ns = 1,shn = 1)
+                _production_file = "{}/{}.{}".format(_production_path,_sns,abcSuffix)
+                _publish_file = "{}/{}.{}".format(_publish_path,_sns,abcSuffix)
                 _joborder = alembiccache.create_frame_cache(_publish_file,startFrame,endFrame,_dag,*EXPORTATTR)
                 _job.append(_joborder)
-                _json.append([_assets[_ns],_ns,_dag.split(":")[-1],_production_file])# 依次是：assetname,namespace,nodename,cachepath
+                # 依次是：assetname,namespace,nodename,cachepath
+                _json.append([_assets[_ns],_sns,_dag.split(":")[-1],_production_file])
                 _dict[_publish_file] = _production_file
 
     # _attr_code = "cache/anicache"
@@ -117,7 +121,7 @@ def publish_abc():
     upload_dict = {}
     # get_cam_info(_abc_suffix,_file_code,_start_frame,_end_frame,_alljob,_json_info,upload_dict)
     get_asset_info(renderdag,_abc_suffix,_file_code,_start_frame,_end_frame,_alljob,_json_info,upload_dict)
-
+    
     if not os.path.isdir(_publish_path):
         logger.info( "create publish dir {}".format(_publish_path) )
         os.makedirs( _publish_path )
