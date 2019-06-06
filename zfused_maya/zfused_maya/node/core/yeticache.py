@@ -79,13 +79,34 @@ def get_upload_info(nodes,frameLevel,publish_path,local_path,childfolder = True)
             continue
     return _json_info,_local_info
 
+# inside
+# def get_asset_list():
+#     _dict = {}
+#     import zfused_maya.node.core.element as element
+#     _elements = element.scene_elements()
+#     for _element in _elements:
+#         _link_handle = zfused_api.objects.Objects(_element["link_object"], _element["link_id"])
+#         _dict[_element["namespace"]] = _link_handle.code()
+#     return _dict
+
+# outside
 def get_asset_list():
     _dict = {}
-    import zfused_maya.node.core.element as element
-    _elements = element.scene_elements()
-    for _element in _elements:
-        _link_handle = zfused_api.objects.Objects(_element["link_object"], _element["link_id"])
-        _dict[_element["namespace"]] = _link_handle.code()
+    _rendering_groups = []
+    _groups = cmds.ls(dag = True)
+    for _group in _groups:
+        if cmds.objExists("{}.rendering".format(_group)):
+            _is_rendering = cmds.getAttr("{}.rendering".format(_group))
+            if _is_rendering:
+                _rendering_groups.append(_group)
+    for _redering in _rendering_groups:
+        if cmds.referenceQuery(_redering, isNodeReferenced = True):
+            _ns = cmds.referenceQuery(_redering, ns = True)
+            if _ns.startswith(":"):
+                _ns = _ns[1:]
+            filepath = cmds.referenceQuery(_redering, f = True)
+            _name = os.path.splitext(os.path.basename(filepath))[0]
+            _dict[_ns] = _name
     return _dict
 
 def import_cache(path,texfile):

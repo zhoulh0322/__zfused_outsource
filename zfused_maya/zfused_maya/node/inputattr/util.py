@@ -28,36 +28,69 @@ def receive_file(argv_task_id, argv_attr_id, argv_attr_code, argv_attr_type, arg
     
     :rtype: bool
     """
-    if not argv_task_id:
-        return
-    _task_handle = zfused_api.task.Task(argv_task_id)
-    _version_id = _task_handle.last_version_id()
-    if not _version_id:
-        return
-    _version_handle = zfused_api.version.Version(_version_id)
-    _production_file = _version_handle.production_file()
 
+def receive_file(output_link_object, output_link_id,  output_attr_id, input_link_object, input_link_id, input_attr_id):
+    '''import alembic cache
+    '''
+
+    _file_title = "shader/redshift"
+
+    _output_attr_handle = zfused_api.outputattr.OutputAttr(output_attr_id)
+    _project_step_id = _output_attr_handle.data["ProjectStepId"]
+    _project_step_handle = zfused_api.step.ProjectStep(_project_step_id)
+    _step_code = _project_step_handle.code()
+    _software_code = zfused_api.software.Software(_project_step_handle.data["SoftwareId"]).code()
+
+    _output_link_handle = zfused_api.objects.Objects(output_link_object, output_link_id)
+    _output_link_production_path = _output_link_handle.production_path()
+    _output_link_publish_path = _output_link_handle.publish_path()
+    _file_code = _output_link_handle.file_code()
+    _suffix = _output_attr_handle.suffix()
+    _attr_code = _output_attr_handle.code()
+    _output_link_production_file = "{}/{}/{}/{}/{}{}".format( _output_link_production_path, _step_code, _software_code, _attr_code, _file_code, _suffix )
+    if not os.path.exists(_output_link_production_file):
+        return False
+    print( _output_link_production_file )
+
+    # if not argv_task_id:
+    #     return
+    # _task_handle = zfused_api.task.Task(argv_task_id)
+    # _version_id = _task_handle.last_version_id()
+    # if not _version_id:
+    #     return
+    # _version_handle = zfused_api.version.Version(_version_id)
+    # _production_file = _version_handle.production_file()
+    _production_file = _output_link_production_file
+
+    _input_attr_handle = zfused_api.inputattr.InputAttr(input_attr_id)
+    _project_step_id = _input_attr_handle.data["ProjectStepId"]
+    _project_step_handle = zfused_api.step.ProjectStep(_project_step_id)
+    _step_code = _project_step_handle.code()
+    _software_code = zfused_api.software.Software(_project_step_handle.data["SoftwareId"]).code()
+    _input_link_handle = zfused_api.objects.Objects(input_link_object, input_link_id)
+    _input_link_work_path = _input_link_handle.work_path()
+
+    argv_attr_type = _input_attr_handle.data["Type"]
+    argv_attr_local = _input_attr_handle.data["IsLocal"]
     # type 
     if argv_attr_type == "reference":
         if argv_attr_local:
             # reference local file
             #  download file
-            _current_task_id = record.current_task_id()
-            _current_task_handle = zfused_api.task.Task(_current_task_id)
-            _local_file = "{}/reference/{}".format(_current_task_handle.work_path(), os.path.basename(_production_file))
+            _local_file = "{}/reference/{}".format(_input_link_work_path, os.path.basename(_production_file))
             _local_dir = os.path.dirname(_local_file)
             if not os.path.isdir(_local_dir):
                 os.makedirs(_local_dir)
             # copy file
             filefunc.receive_file(_production_file, _local_file)
-            rf = cmds.file(_local_file, r = True, ns = _task_handle.file_code())
+            rf = cmds.file(_local_file, r = True, ns = _file_code)
             rfn = cmds.referenceQuery(rf, rfn = True)
-            attr.set_node_attr(rfn, argv_attr_id, _version_id, "true")
+            # attr.set_node_attr(rfn, argv_attr_id, _version_id, "true")
         else:
             # reference server file
-            rf = cmds.file(_production_file, r = True, ns = _task_handle.file_code())
+            rf = cmds.file(_production_file, r = True, ns = _file_code)
             rfn = cmds.referenceQuery(rf, rfn = True)
-            attr.set_node_attr(rfn, argv_attr_id, _version_id, "false")
+            # attr.set_node_attr(rfn, argv_attr_id, _version_id, "false")
     elif argv_attr_type == "import":
         rf = cmds.file(_production_file, i = True, namespace = ":", ra = True, ignoreVersion = True, mergeNamespacesOnClash = True, options = "v=0;", pr = True)
     elif argv_attr_type == "open":
@@ -88,7 +121,7 @@ def receive_file(argv_task_id, argv_attr_id, argv_attr_code, argv_attr_type, arg
     # elif argv_attr_type == "import":
 
     # frame
-    _link_handle = zfused_api.objects.Objects( _task_handle.data["Object"], _task_handle.data["LinkId"])
+    _link_handle = zfused_api.objects.Objects( input_link_object, input_link_id )
     if isinstance( _link_handle, zfused_api.shot.Shot ):
         # start frame and end frame
         _start_frame = _link_handle.start_frame()
