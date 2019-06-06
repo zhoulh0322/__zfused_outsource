@@ -101,8 +101,7 @@ def publish_file(link_object, link_id, project_step_id):
 
     # open new file
     # 打开空文件
-    
-    # cmds.file(new = True, f = True)
+    cmds.file(new = True, f = True)
 
     # 上传结果ui
     cmds.confirmDialog(message = u"上传成功")
