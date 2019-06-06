@@ -126,13 +126,16 @@ def load_asset(cacheinfo,step,_dict = {}):
                 cacheinfo[i][1] = _ns
 
             if _assetname in _dict:
-                _dict[_assetname]["namespace"].append(_ns)
+                if _ns not in _dict[_assetname]["namespace"]:
+                    _dict[_assetname]["namespace"].append(_ns)
+                    cmds.file(_dict[_assetname]["path"],r = 1,iv = 1,mergeNamespacesOnClash = 1,ns = _ns)
             else:
                 _dict[_assetname] = {}
                 _dict[_assetname]["namespace"] = [_ns]
                 _production_path = "/".join([_assets[_assetname],step,_interpath])
                 _dict[_assetname]["path"] = "{}/{}.mb".format(_production_path,_assetname)
                 cmds.file(_dict[_assetname]["path"],r = 1,iv = 1,mergeNamespacesOnClash = 1,ns = _ns)
+    print(">>>>>>>>>>>",_dict)
     return _dict,cacheinfo
 
 if __name__ == '__main__':
