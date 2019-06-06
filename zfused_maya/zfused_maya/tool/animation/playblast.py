@@ -263,13 +263,17 @@ class PlaybastTool(object):
             setAttr(camShape + '.' + _attr, _value)
         print 'cam_setup'
 
-        renderer_save_dict = {}
+        #renderer_save_dict = {}
+        viewport_display_nurbsSurfaces_dict = {}
         _viewport_list = list(set(getPanel(type = 'modelPanel')).intersection(set(getPanel(visiblePanels = True))))
-        #for _viewport in _viewport_list:
-        #    _renderer = modelEditor(_viewport, query =True, rendererName = True)
-        #    renderer_save_dict[_viewport] = _renderer
-        #    modelEditor(_viewport, edit =True, rendererName = 'base_OpenGL_Renderer')
-        #print 'renderer'
+        for _viewport in _viewport_list:
+            #_renderer = modelEditor(_viewport, query =True, rendererName = True)
+            #renderer_save_dict[_viewport] = _renderer
+            #modelEditor(_viewport, edit =True, rendererName = 'base_OpenGL_Renderer')
+            viewport_display_nurbsSurfaces_dict[_viewport] = modelEditor(_viewport, query = True, nurbsSurfaces = True)
+            modelEditor(_viewport, edit = True, nurbsSurfaces = False)
+        print 'viewport'
+        print viewport_display_nurbsSurfaces_dict
 
         
 
@@ -359,6 +363,8 @@ class PlaybastTool(object):
             setAttr(camShape + '.' + _attr, _value)
         #for _viewport, _renderer in renderer_save_dict.items():
         #    modelEditor(_viewport, edit =True, rendererName = _renderer)
+        for _viewport, _nurbsSurfaces in viewport_display_nurbsSurfaces_dict.items():
+            modelEditor(_viewport, edit = True, nurbsSurfaces = _nurbsSurfaces)
 
     def get_ui_filename(self):
         _name = cmds.textField(self.file_name_textField, query = True, text = True)
