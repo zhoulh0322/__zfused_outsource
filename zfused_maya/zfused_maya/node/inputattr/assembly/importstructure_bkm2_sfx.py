@@ -70,6 +70,9 @@ def build_structure(parent_node_list, parent):
         # _node_name = 
         for attr_name, attr_info in attr.items():
             attr_value = attr_info['static_data']
+            if node_type == "proxycontainer":
+                if attr_name in ["rpx", "rpy", "rpz", "spx", "spy", "spz"]:
+                    continue
             cmds.setAttr(_node_name + '.' + attr_name, attr_value)
         #print("child create parent {}".format(_node_name))
         #print(child)
