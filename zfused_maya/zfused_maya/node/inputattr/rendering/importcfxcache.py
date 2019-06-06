@@ -92,10 +92,10 @@ def import_cfx_cache(output_link_object, output_link_id,  output_attr_id, input_
     _info = get_cache_info( _output_link_production_file )
     if not _info:
         return
-    _asset_dict = alembiccache.load_asset(_info,_file_title)
+    _asset_dict = alembiccache.load_asset(_info,_file_title,False)
     if not _asset_dict:
         return
-
+        
     # remove anicache
     alembiccache.remove_cache()
     # merge alembic cache
