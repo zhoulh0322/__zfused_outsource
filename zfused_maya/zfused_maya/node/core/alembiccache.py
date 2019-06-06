@@ -318,9 +318,10 @@ def set_meshattr(group,info):
             else:
                 print (">>>>>>>>>>>>>>>>>>>>>{} is not found".format(_tran))
 
-def load_asset(cacheinfo,step,_dict = {}):
+def load_asset(cacheinfo,step,load = True):
     '''资产领取(外包端适用)
     '''
+    _dict = {}
     _interpath = "maya2017/file"
     _assets = assets.get_assets()
     for item in cacheinfo:
@@ -334,5 +335,6 @@ def load_asset(cacheinfo,step,_dict = {}):
                 _dict[_assetname]["namespace"] = [_ns]
                 _production_path = "/".join([_assets[_assetname],step,_interpath])
                 _dict[_assetname]["path"] = "{}/{}.mb".format(_production_path,_assetname)
-            cmds.file(_dict[_assetname]["path"],r = 1,iv = 1,mergeNamespacesOnClash = 1,ns = _ns)
+            if load:
+                cmds.file(_dict[_assetname]["path"],r = 1,iv = 1,mergeNamespacesOnClash = 1,ns = _ns)
     return _dict
