@@ -3,11 +3,18 @@
 
 """ node 节点 """
 from __future__ import print_function
+from collections import OrderedDict
 
 import maya.cmds as cmds
 import pymel as pm
 
-NODE_ATTR = [ "translateX", 
+NODE_ATTR = [ "rpx",
+              "rpy",
+              "rpz",
+              "spx",
+              "spy",
+              "spz",
+              "translateX", 
               "translateY", 
               "translateZ",
               "rotateX", 
@@ -52,7 +59,7 @@ class Node(object):
     def get_attr(self, attrs = NODE_ATTR, extra_attrs = []):
         """ return node attrs
         """
-        _attr_data = {}
+        _attr_data = OrderedDict()
         for _attr in attrs:
             _attr_data[_attr] = {}
             # is animation
