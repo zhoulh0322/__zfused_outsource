@@ -241,6 +241,16 @@ def assembly_file(link_object, link_id, project_step_id):
                 "input_attr_id": _input_script["Id"] 
             }
             exec( _input_script["Script"], _argvs)
+
+    # frame
+    # _link_handle = zfused_api.objects.Objects( _task_handle.data["Object"], _task_handle.data["LinkId"])
+    if isinstance( _object_handle, zfused_api.shot.Shot ):
+        # start frame and end frame
+        _start_frame = _object_handle.start_frame()
+        _end_frame = _object_handle.end_frame()
+        cmds.playbackOptions( min = _start_frame, max = _end_frame )
+        cmds.currentTime(_start_frame)
+
     return
 
     # get input task
