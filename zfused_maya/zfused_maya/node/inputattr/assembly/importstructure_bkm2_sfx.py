@@ -81,8 +81,6 @@ def build_structure(parent_node_list, parent):
                 if name == _parent_name:
                     name = "{}_dup_01".format(name)
                 _node_name = cmds.createNode(node_type, name = name, parent = _parent_name)
-            #_node_name = cmds.createNode(node_type, name = name, parent = parent)
-        # _node_name = 
         for attr_name, attr_info in attr.items():
             attr_value = attr_info['static_data']
             if node_type == "assemblyReference":
