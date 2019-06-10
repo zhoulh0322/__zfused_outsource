@@ -275,9 +275,7 @@ def assembly_file(link_object, link_id, project_step_id):
                 # will do
                 print("========================================")
                 print(_script)
-
                 # 动态创建类
-                
                 exec(_script, _argv)
 
     cmds.file(rename = _file_name)
