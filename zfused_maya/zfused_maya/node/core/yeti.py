@@ -72,13 +72,17 @@ def change_node_path(ori_dict, src, dst):
             if cmds.pgYetiGraph(_node,node = _tex_node,param = "file_name",getParamValue = 1) == _new_file_text_path:
                 break
 
-def _get_yeti_attr(nodeType,attrName):
+def _get_yeti_attr(nodeType,attrName,ignoreReference = True):
     pg_dict = {}
-    for _i in cmds.ls(type = "pgYetiMaya"):
-        selnodes = cmds.pgYetiGraph(_i,listNodes = 1,type = nodeType)
-        for selnode in selnodes:
-            attr_v = cmds.pgYetiGraph(_i,node = selnode,param = attrName,getParamValue = 1)# 查询param命令lsp = 1
-            pg_dict["%s/%s"%(_i,selnode)] = attr_v
+    _pgyetinodes = cmds.ls(type = "pgYetiMaya")
+    if _pgyetinodes:
+        for _i in _pgyetinodes:
+            if ignoreReference and cmds.referenceQuery(_i,inr = 1):
+                continue
+            selnodes = cmds.pgYetiGraph(_i,listNodes = 1,type = nodeType)
+            for selnode in selnodes:
+                attr_v = cmds.pgYetiGraph(_i,node = selnode,param = attrName,getParamValue = 1)# 查询param命令lsp = 1
+                pg_dict["%s/%s"%(_i,selnode)] = attr_v
     return pg_dict
 
 
