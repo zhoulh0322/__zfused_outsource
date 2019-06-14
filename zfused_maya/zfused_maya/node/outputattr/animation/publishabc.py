@@ -25,7 +25,6 @@ logger = logging.getLogger(__name__)
 PREPFRAME = 8
 EXPORTATTR = ["worldSpace", "writeVisibility"]
 
-
 # load abc plugin
 _is_load = cmds.pluginInfo("AbcExport", query=True, loaded = True)
 if not _is_load:
