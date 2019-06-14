@@ -74,9 +74,12 @@ def scene_assemblys():
         _node_data["name"] = _name
         _node_data["namespace"] = _py_node.namespace()
         _node_data["node_type"] = _py_node.type()
+        if _node_type == "assemblyReference":
+            _lrs = cmds.assembly(_node._node, q = True, lr = True)
+            if len(_lrs) == 1:
+                _node_type = "transform"
         _node_data["attr"] = _node.get_attr()
         _node_data["child"] = []
-
         _childs = cmds.listRelatives(_node._node, c = True, typ = ["assemblyReference", "transform"], f = True)
         # get child
         if _childs:
@@ -86,7 +89,6 @@ def scene_assemblys():
                 _node_data["child"].append(_child_data)
         return _node_data
 
-    # 
     # get root name
     _assembly_root = []
     _assemblys = pm.ls(type = "assembly", ap = True, )
@@ -95,7 +97,6 @@ def scene_assemblys():
         if _root not in _assembly_root:
             _assembly_root.append(_root)
 
-    #
     # get data
     _assembly_node = []
     for _root in _assembly_root:
