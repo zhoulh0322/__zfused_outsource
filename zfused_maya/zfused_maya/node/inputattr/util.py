@@ -25,9 +25,10 @@ logger = logging.getLogger(__file__)
 def receive_file(argv_task_id, argv_attr_id, argv_attr_code, argv_attr_type, argv_attr_mode, argv_attr_local):
     """ receive file
         base receive file script
-    
+
     :rtype: bool
     """
+    pass
 
 def receive_file(output_link_object, output_link_id,  output_attr_id, input_link_object, input_link_id, input_attr_id):
     '''import alembic cache
@@ -72,6 +73,7 @@ def receive_file(output_link_object, output_link_id,  output_attr_id, input_link
 
     argv_attr_type = _input_attr_handle.data["Type"]
     argv_attr_local = _input_attr_handle.data["IsLocal"]
+
     # type 
     if argv_attr_type == "reference":
         if argv_attr_local:
@@ -85,9 +87,7 @@ def receive_file(output_link_object, output_link_id,  output_attr_id, input_link
             filefunc.receive_file(_production_file, _local_file)
             rf = cmds.file(_local_file, r = True, ns = _file_code)
             rfn = cmds.referenceQuery(rf, rfn = True)
-            # attr.set_node_attr(rfn, argv_attr_id, _version_id, "true")
         else:
-            # reference server file
             rf = cmds.file(_production_file, r = True, ns = _file_code)
             rfn = cmds.referenceQuery(rf, rfn = True)
             # attr.set_node_attr(rfn, argv_attr_id, _version_id, "false")
