@@ -187,6 +187,10 @@ def import_cache(asset,namespace,node,path,texfile = None):
         abc_trans = list(set(cmds.listRelatives(src,ad = 1,type = "transform")) | set([src]))
         tex_trans = list(set(cmds.listRelatives(dst,ad = 1,type = "transform")) | set([dst]))
         for _s,_d in zip(sorted(abc_trans),sorted(tex_trans)):
+            # set visibility value
+            if cmds.objExists("{}.v".format(_s)) and not cmds.getAttr("{}.v".format(_s)):
+                cmds.setAttr("{}.v".format(_d),0)
+            # set connected attr
             _usedattr = cmds.listConnections(_s,p = 1,c = 1,d = 0)
             if _usedattr:
                 for _i in _usedattr[0::2]:
