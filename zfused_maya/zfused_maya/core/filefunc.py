@@ -56,6 +56,10 @@ def publish_file(src, dst, del_src = False):
 
     :rtype: bool
     """
+    try:
+        os.remove(dst)
+    except:
+        pass
     _dst_path = os.path.dirname(dst)
     if not os.path.isdir(_dst_path):
         os.makedirs(_dst_path)
