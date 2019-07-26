@@ -22,9 +22,10 @@ def publish_file(files, src, dst):
     for _texture_file in _texture_files:
         _texture_file = _texture_file.replace("\\","/")
         #  backup texture file
-        _extend_file = _texture_file.split(src)[-1]
-        if _extend_file.startswith("/"):
-            _extend_file = _extend_file[1::]
+        # _extend_file = _texture_file.split(src)[-1]
+        _extend_file = os.path.basename(_texture_file)
+        while _extend_file.startswith("/"):
+            _extend_file = _extend_file[1:]
         _backup_texture_file = os.path.join(dst, _extend_file)
         #  upload texture file
         logger.info("upload file {} to {}".format(_texture_file, _backup_texture_file))
@@ -42,9 +43,10 @@ def local_file(files, src, dst):
     for _texture_file in _texture_files:
         #  backup texture file
         _texture_file = _texture_file.replace("\\","/")
-        _extend_file = _texture_file.split(src)[-1]
-        if _extend_file.startswith("/"):
-            _extend_file = _extend_file[1::]
+        # _extend_file = _texture_file.split(src)[-1]
+        _extend_file = os.path.basename(_texture_file)
+        while _extend_file.startswith("/"):
+            _extend_file = _extend_file[1:]
         _local_texture_file = os.path.join(dst, _extend_file)
         #  downlocal texture file
         # _result = filefunc.publish_file(_texture_file, _backup_texture_file)
@@ -60,10 +62,10 @@ def change_node_path(ori_dict, src, dst):
     """
     for _k,_v in ori_dict.items():
         _v = _v.replace("\\","/")
-        _extend_file = _v.split(src)[-1]
-        _extend_file = _extend_file.replace("\\","/")
-        if _extend_file.startswith("/"):
-            _extend_file = _extend_file[1::]
+        # _extend_file = _v.split(src)[-1]
+        _extend_file = os.path.basename(_v)
+        while _extend_file.startswith("/"):
+            _extend_file = _extend_file[1:]
         _new_file_text_path = "{}/{}".format(dst,_extend_file)
         # print (_v,_extend_file,_new_file_text_path)
         _node,_tex_node = _k.split("/")
@@ -86,6 +88,26 @@ def _get_yeti_attr(nodeType,attrName,ignoreReference = True):
     return pg_dict
 
 
+def tex_files():
+    import zfused_maya.node.core.texture as texture
+    _texlist = list()
+    _pgnodes = cmds.ls(type = "pgYetiMaya")
+    for _pgnode in _pgnodes:
+        _tex_nodes = cmds.pgYetiGraph(_pgnode,listNodes = 1,type = "texture")
+        if not _tex_nodes:
+            continue
+        for _j in _tex_nodes:
+            _v = cmds.pgYetiGraph(_pgnode,node = _j,param = "file_name",getParamValue = 1)
+            if not _v:
+                continue
+            _filepaths = texture.get_udim_texfile(_v,False)
+            for _filepath in _filepaths:
+                if not os.path.exists(_filepath):
+                    continue
+                _texlist.append(_filepath)
+    return _texlist
+
+
 def paths(text_files):
     """ 获取文件路径交集
 
@@ -98,7 +120,7 @@ def paths(text_files):
     def _get_set(path):
         _list = []
         def _get_path(_path, _list):
-            _path_new = os.path.dirname( _path )
+            _path_new = os.path.dirname(_path)
             if _path_new != _path:
                 _list.append(_path_new)
                 _get_path(_path_new, _list)

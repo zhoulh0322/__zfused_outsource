@@ -136,6 +136,7 @@ class AssetItemDelegate(QtWidgets.QStyledItemDelegate):
         _name_code = u"{}\n{}".format(_name,_code)
         painter.drawText(_name_rect, QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop, _name_code)
 
+        # painter status
 
         if option.state & QtWidgets.QStyle.State_MouseOver:
             bgBrush = QtGui.QBrush(QtGui.QColor(200, 200, 200, 150))

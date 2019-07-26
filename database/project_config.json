@@ -98,7 +98,7 @@
     {
         "Id": 9,
         "ProjectId": 10,
-        "Fps": 24,
+        "Fps": 25,
         "ImageWidth": 1920,
         "ImageHeight": 1080,
         "Root": "P:/ChiFeng",
@@ -166,5 +166,29 @@
         "Review": "P:/island",
         "LocalRoot": "D:/zfused/work/island",
         "LocalPublish": "D:/zfused/publish/island"
+    },
+    {
+        "Id": 15,
+        "ProjectId": 16,
+        "Fps": 24,
+        "ImageWidth": 1080,
+        "ImageHeight": 1920,
+        "Root": "P:/slg",
+        "Publish": "P:/backup/slg",
+        "Review": "P:/slg",
+        "LocalRoot": "D:/zfused/work/slg",
+        "LocalPublish": "D:/zfused/publish/slg"
+    },
+    {
+        "Id": 16,
+        "ProjectId": 17,
+        "Fps": 24,
+        "ImageWidth": 1080,
+        "ImageHeight": 1920,
+        "Root": "P:/skateboard",
+        "Publish": "P:/backup/skateboard",
+        "Review": "P:/skateboard",
+        "LocalRoot": "D:/zfused/work/skateboard",
+        "LocalPublish": "D:/zfused/publish/skateboard"
     }
 ]

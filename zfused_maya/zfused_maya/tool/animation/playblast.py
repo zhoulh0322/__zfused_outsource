@@ -122,8 +122,8 @@ class PlaybastTool(object):
         approved_checkBox = cmds.checkBox(height = 24,label = u'已经通过', changeCommand = self.showHUD)
         approved_text = cmds.text(height = 24,label = u'          通过人:')
         approver_optionMenu = optionMenu(changeCommand = self.showHUD)
-        for _approver in APPROVER_LIST:
-            menuItem(label = _approver, parent = approver_optionMenu)
+        #for _approver in APPROVER_LIST:
+        #    menuItem(label = _approver, parent = approver_optionMenu)
         cmds.setParent('..')
 
         playB = cmds.button(height = 32,label = u'拍屏   最终版需要把界面缩放设置成125%',command = lambda *args: self.check_interface())
@@ -158,6 +158,11 @@ class PlaybastTool(object):
         ScaleSlider_value   = playblast_setup_dict['scale']
         cmds.intSliderGrp(self.qualitySlider, edit = True, value = qualitySlider_value)
         cmds.floatSliderGrp(self.ScaleSlider, edit = True, value = ScaleSlider_value)
+
+        approver_list       = playblast_setup_dict['approver_list']
+        for _approver in approver_list:
+            menuItem(label = _approver, parent = approver_optionMenu)
+        
         cmds.textField(self.file_name_textField, edit = True, text = _name, textChangedCommand = self.showHUD)
         _version = load_version(_name)
         cmds.textField(self.version_textField, edit = True, text = _version, textChangedCommand = self.showHUD)

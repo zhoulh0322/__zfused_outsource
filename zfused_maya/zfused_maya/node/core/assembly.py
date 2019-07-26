@@ -74,6 +74,7 @@ def scene_assemblys():
         _node_data["name"] = _name
         _node_data["namespace"] = _py_node.namespace()
         _node_data["node_type"] = _py_node.type()
+        _node_type = _py_node.type()
         if _node_type == "assemblyReference":
             _lrs = cmds.assembly(_node._node, q = True, lr = True)
             if len(_lrs) == 1:

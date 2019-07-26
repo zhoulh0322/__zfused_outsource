@@ -96,5 +96,19 @@
         "Code": "island",
         "StatusId": 3,
         "IsOutsource": 0
+    },
+    {
+        "Id": 16,
+        "Name": "SLG CG",
+        "Code": "slg",
+        "StatusId": 3,
+        "IsOutsource": 0
+    },
+    {
+        "Id": 17,
+        "Name": "\u6ed1\u677f",
+        "Code": "skateboard",
+        "StatusId": 3,
+        "IsOutsource": 0
     }
 ]

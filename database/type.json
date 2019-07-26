@@ -3,80 +3,80 @@
         "Id": 1,
         "Name": "\u4e3b\u89d2",
         "Code": "char",
-        "Color": "#863131",
         "LinkObject": "asset",
-        "Description": "\u91cd\u8981\u89d2\u8272"
+        "Description": "\u91cd\u8981\u89d2\u8272",
+        "Color": "#863131"
     },
     {
         "Id": 2,
         "Name": "\u6b21\u8981\u89d2\u8272",
         "Code": "char",
-        "Color": "#68A641",
         "LinkObject": "asset",
-        "Description": "\u89d2\u8272"
+        "Description": "\u89d2\u8272",
+        "Color": "#68A641"
     },
     {
         "Id": 3,
         "Name": "\u9053\u5177",
         "Code": "prop",
-        "Color": "#6A5264",
         "LinkObject": "asset",
-        "Description": "\u9053\u5177"
+        "Description": "\u9053\u5177",
+        "Color": "#6A5264"
     },
     {
         "Id": 4,
         "Name": "\u573a\u666f\u5143\u7d20",
         "Code": "env",
-        "Color": "#4EE06D",
         "LinkObject": "asset",
-        "Description": "\u573a\u666f\u5143\u7d20"
+        "Description": "\u573a\u666f\u5143\u7d20",
+        "Color": "#4EE06D"
     },
     {
         "Id": 5,
         "Name": "\u573a\u666f",
         "Code": "scene",
-        "Color": "#2E2E2E",
         "LinkObject": "asset",
-        "Description": "\u573a\u666f"
+        "Description": "\u573a\u666f",
+        "Color": "#2E2E2E"
     },
     {
         "Id": 6,
         "Name": "\u89d2\u8272",
         "Code": "character",
-        "Color": "#863131",
         "LinkObject": "asset",
-        "Description": "\u718a\u51fa\u6ca1\u89d2\u8272"
+        "Description": "\u718a\u51fa\u6ca1\u89d2\u8272",
+        "Color": "#863131"
     },
     {
         "Id": 7,
         "Name": "\u9053\u5177",
         "Code": "prop",
-        "Color": "#6A5264",
         "LinkObject": "asset",
-        "Description": "\u718a\u51fa\u6ca1\u9053\u5177"
+        "Description": "\u718a\u51fa\u6ca1\u9053\u5177",
+        "Color": "#6A5264"
     },
     {
         "Id": 8,
         "Name": "\u573a\u666f\u5143\u7d20",
         "Code": "proxy",
-        "Color": "#4EE06D",
         "LinkObject": "asset",
-        "Description": "\u718a\u51fa\u6ca1\u573a\u666f\u5143\u7d20"
+        "Description": "\u718a\u51fa\u6ca1\u573a\u666f\u5143\u7d20",
+        "Color": "#4EE06D"
     },
     {
         "Id": 9,
         "Name": "\u573a\u666f",
         "Code": "background",
-        "Color": "#2E2E2E",
         "LinkObject": "asset",
-        "Description": "\u718a\u51fa\u6ca1\u573a\u666f"
+        "Description": "\u718a\u51fa\u6ca1\u573a\u666f",
+        "Color": "#2E2E2E"
     },
     {
         "Id": 10,
         "Name": "\u4e34\u65f6\u573a\u666f",
         "Code": "solverscene",
-        "Color": "#2E2E2E",
         "LinkObject": "asset",
-        "Description": "\u4e34\u65f6\u573a\u666f"
+        "Description": "\u4e34\u65f6\u573a\u666f",
+        "Color": "#2E2E2E"
     }
 ]

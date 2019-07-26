@@ -188,7 +188,7 @@ class Project(object):
 
         :rtype: list
         """
-        _project_steps = zfused_api.step.project_steps()
+        _project_steps = zfused_api.step.project_steps([self.id])
         #_steps = self.get("conn_project_step", 
         #                  filter = {"ProjectId": self.id, "Object": object},
         #                  sortby = ["Sort"], order = ["asc"])

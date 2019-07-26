@@ -202,12 +202,14 @@ def import_cache(asset,namespace,node,path,texfile = None):
     # create abc_grp
     if not cmds.objExists(_grp_name):
         _grp = cmds.createNode("transform",n = _grp_name)
-        cmds.setAttr("{}.hiddenInOutliner".format(_grp),1)
+        # cmds.setAttr("{}.hiddenInOutliner".format(_grp),1)
         cmds.setAttr("{}.v".format(_grp),0)
     else:
         _grp = _grp_name
 
     if asset:
+        if not cmds.objExists(texfile):
+            raise 
         # load alembic file
         _newns = "abc_{}".format(namespace)
         # _newns = get_ns(namespace)
@@ -217,8 +219,6 @@ def import_cache(asset,namespace,node,path,texfile = None):
         cmds.setAttr("{}.t".format(_abcnode),lock = 1)
         cmds.setAttr("{}.r".format(_abcnode),lock = 1)
         cmds.setAttr("{}.s".format(_abcnode),lock = 1)
-        if not cmds.objExists(texfile):
-            raise 
         _bsnode = cmds.blendShape(_abcnode,texfile,w = (0,1.0))
         # cmds.setAttr("{}.{}".format(_bsnode[-1],node),1)
         cmds.setAttr("{}.origin".format(_bsnode[-1]),0)
@@ -330,7 +330,7 @@ def load_asset(cacheinfo,step,load = True):
     _assets = assets.get_assets()
     for item in cacheinfo:
         _assetname = item[0]
-        if _assetname in _assets:
+        if _assetname and _assetname in _assets:
             _ns = item[1].split(":")[-1]
             if _assetname in _dict:
                 _dict[_assetname]["namespace"].append(_ns)

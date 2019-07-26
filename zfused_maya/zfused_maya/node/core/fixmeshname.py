@@ -6,12 +6,13 @@
 from __future__ import print_function
 
 import maya.cmds as cmds
-
+import pymel.core as pm
+import maya.api.OpenMaya as om
 import logging
 logger = logging.getLogger(__name__)
 
 
-def fix_mesh_name(post_fix_name, group_list = []):
+def fix_mesh_name(post_fix_name, group_list = [], repair_shader = False):
     """修改shape名
 
     :param post_fix_name: 修改的后缀名称
@@ -22,16 +23,42 @@ def fix_mesh_name(post_fix_name, group_list = []):
 
     # 获取组内transform
 
-    def repair_shader(shape,transform):
+    def get_members(shape,transform):
+        # 速度最快
         meshdict = {}
         _sgs = cmds.listConnections(_shape,d = 1,type = "shadingEngine")
         if _sgs:
             for _sg in _sgs:
-                # mat = cmds.listConnections("%s.surfaceShader"%_sg)
                 cmds.hyperShade(objects = _sg)
                 sel = cmds.ls(sl = 1,l = 1)
-                print ([i for i in sel if transform in i])
                 meshdict[_sg] = [i for i in sel if transform in i]
+        return meshdict
+
+    def get_members1(shape,transform):
+        # 速度最慢
+        meshdict = {}
+        _sgs = cmds.listConnections(_shape,d = 1,type = "shadingEngine")
+        if _sgs:
+            for _sg in _sgs:
+                sel = pm.PyNode(_sg).elements()
+                meshdict[_sg] = [i for i in sel if transform in i]
+        return meshdict
+
+    def get_members2(shape,transform):
+        '''获取材质引擎连接的模型
+            速度较慢，待检查
+        '''
+        meshdict = {}
+        _sgs = cmds.listConnections(_shape,d = 1,type = "shadingEngine")
+        if _sgs:
+            msl = om.MSelectionList()
+            for _sg in _sgs:
+                msl.clear()
+                msl.add(_sg)  
+                mdp = msl.getDependNode(0)  
+                mfs = om.MFnSet(mdp)
+                sel = mfs.getMembers(True)
+                meshdict[_sg] = [i for i in sel.getSelectionStrings() if transform in i]
         return meshdict
 
     _transforms = []
@@ -39,12 +66,11 @@ def fix_mesh_name(post_fix_name, group_list = []):
         _transforms = cmds.ls(group_list, dag = True, type = "transform")
     else:
         _transforms = cmds.ls(type = "transform")
-
     if not _transforms:
         return
 
     shader_dict = {}
-    for _transform in _transforms:
+    for i,_transform in enumerate(_transforms):
         _show_shapes = cmds.listRelatives(_transform, s = True, ni = True, f = True, type = "mesh")
         if not _show_shapes:
             continue
@@ -54,9 +80,10 @@ def fix_mesh_name(post_fix_name, group_list = []):
             for _shape in _other_shapes:
                 if _shape.endswith(post_fix_name):
                     cmds.rename(_shape, "{}_orig".format(_shape.split("|")[-1][0:len(_shape)-len(post_fix_name)]))
+        _dict = {}
         for _shape in _show_shapes:
-            _dict = repair_shader(_shape,_transform)
-
+            if repair_shader:
+                _dict = get_members(_shape,_transform)
             _new_shape = "{}{}".format(_transform, post_fix_name)
             if "|" in "{}{}".format(_transform, post_fix_name):
                 _new_shape = _new_shape.split("|")[-1]
@@ -65,25 +92,11 @@ def fix_mesh_name(post_fix_name, group_list = []):
         if _dict:
             for k,v in _dict.items():
                 _mesh = [i.replace(i.split(".")[0],_transform) for i in v]
-                # print (">>>>>>>>>>>>>>>>>>>>",mesh)
-                # cmds.select(_mesh)
-                # cmds.hyperShade(assign = "lambert1")
-                # cmds.select(cl = 1)
-                # cmds.select(_mesh)haim
-                # cmds.hyperShade(assign = k)
                 if k not in shader_dict:
                     shader_dict[k] = []
                 shader_dict[k].extend(_mesh)
 
-    # if shader_dict:
-    #     for k2,v2 in shader_dict.items():
-    #         cmds.select(v2)
-    #         cmds.hyperShade(assign = "lambert1")
-    #         cmds.hyperShade(assign = k2)
     return shader_dict
-
-
-
 
 
 def fix_deformed_mesh_name(post_fix_name, group_list = []):
@@ -109,8 +122,11 @@ def fix_deformed_mesh_name(post_fix_name, group_list = []):
             if not _shape.endswith(post_fix_name):
                 # 导出abc缓存时会自动补齐shape的空间名
                 _name = "{}{}".format(_transform.split(":")[-1], post_fix_name)
-                cmds.rename(_shape,_name)
-
+                # 节点是 read noly node 会
+                try:
+                    cmds.rename(_shape,_name)
+                except Exception as e:
+                    print(e)
 
 if __name__ == "__main__":
     fix_mesh_name("_rendering", ["c_fengzhiwei_model_GRP"])

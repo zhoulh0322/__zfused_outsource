@@ -30,7 +30,6 @@ class AssetListWidget(widgets.ShowPanelWidget):
 
     def _show_panel(self, model_index):
         """ show panel 
-
         """
         self.show_panel()
 
