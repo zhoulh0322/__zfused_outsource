@@ -1714,5 +1714,18 @@
         "Color": "",
         "Sort": 1,
         "Active": "true"
+    },
+    {
+        "Id": 136,
+        "Name": "\u7ed1\u5b9a-\u5e03\u6599",
+        "Code": "rig/cloth",
+        "ProjectId": 14,
+        "StepId": 3,
+        "Object": "asset",
+        "SoftwareId": 6,
+        "CheckScript": "import zfused_maya.tool.rigging.riggingcheck as riggingcheck\r\nreload(riggingcheck)\r\nui = riggingcheck.RiggingCheck()\r\nui.show()",
+        "Color": "",
+        "Sort": 3,
+        "Active": "true"
     }
 ]

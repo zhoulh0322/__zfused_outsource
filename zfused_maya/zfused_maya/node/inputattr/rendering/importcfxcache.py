@@ -96,22 +96,18 @@ def import_cfx_cache(output_link_object, output_link_id,  output_attr_id, input_
     if not _asset_dict:
         return
         
-    # remove anicache
-    alembiccache.remove_cache()
     # merge alembic cache
     for item in _info:
         _asset,_ns,_node,_path = item
-        # 修正嵌套空间名
-        _ns = item[1].split(":")[-1]
+        print(_asset,_ns,_node,_path)
         try:
             if _asset and _asset in _asset_dict and _asset_dict[_asset]["namespace"]:
                 _tex_ns = _asset_dict[_asset]["namespace"][0]
                 logger.info("load asset:{}".format(_path))
+                # remove anicache
+                alembiccache.remove_cache("{}:{}".format(_tex_ns,_node))
                 alembiccache.import_cache(_asset,_ns,_node,_path,"{}:{}".format(_tex_ns,_node))
                 _asset_dict[_asset]["namespace"].pop(0)
-            else:
-                logger.info("load camera:{}".format(_path))
-                _log = alembiccache.import_cache(_asset,_ns,_node,_path)
         except:
             logger.warning("wrong load cache:{}".format(_path))
     return True

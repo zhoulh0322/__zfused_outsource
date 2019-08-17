@@ -151,6 +151,9 @@ def paths(alembic_files):
 def create_frame_cache(_path,startTime,endTime,grpname,*args):
     '''生成创建缓存命令
     '''
+    _dir = os.path.dirname(_path)
+    if not os.path.isdir(_dir):
+        os.makedirs(_dir)
     if isinstance(grpname,list):
         roots = ''.join(["-root %s "%i for i in grpname])
     else:
@@ -166,20 +169,6 @@ def create_frame_cache(_path,startTime,endTime,grpname,*args):
 def import_cache(asset,namespace,node,path,texfile = None):
     '''导入缓存
     '''
-    # def get_ns(nameSpace):
-    #     # 自动生成空间名序号,暂不使用
-    #     index = 0
-    #     _namespaces = list(set(cmds.namespaceInfo(r = 1, lon = 1)) - set(["shared","UI"]))
-    #     while True:
-    #         if nameSpace in _namespaces:
-    #             if nameSpace[-1].isdigit():
-    #                 _num = re.findall("\d+",nameSpace)[-1]
-    #                 nameSpace = "{}{}".format(nameSpace[:-len(_num)],int(_num)+index)
-    #             else:
-    #                 nameSpace = "{}{}".format(nameSpace,index)
-    #             index += 1
-    #         else:
-    #             return nameSpace
 
     def connect_usedattr(src,dst):
         """connect transform attr
@@ -198,6 +187,18 @@ def import_cache(asset,namespace,node,path,texfile = None):
                     cmds.connectAttr(_i,"{}{}".format(_d,_attrname))
                     print ("connect attr:{} to {}".format(_i,"{}{}".format(_d,_attrname)))
 
+    def blend_shape(src, dst):
+        _src_nums = len(cmds.listRelatives(src, c = True, type = "mesh", ad = True)) 
+        if _src_nums > 999:
+            _src_child = cmds.listRelatives(src, c = True, type = "transform")
+            _dst_child = cmds.listRelatives(dst, c = True, type = "transform")
+            for _src, _dst in zip(_src_child, _dst_child):
+                blend_shape(_src, _dst)
+        else:
+            if _src_nums:
+                _bsnode = cmds.blendShape(src,dst,w = (0,1.0))
+                cmds.setAttr("{}.origin".format(_bsnode[-1]),0)
+
     _grp_name = "abc_hidegrp"
     # create abc_grp
     if not cmds.objExists(_grp_name):
@@ -209,7 +210,7 @@ def import_cache(asset,namespace,node,path,texfile = None):
 
     if asset:
         if not cmds.objExists(texfile):
-            raise 
+            raise
         # load alembic file
         _newns = "abc_{}".format(namespace)
         # _newns = get_ns(namespace)
@@ -219,9 +220,10 @@ def import_cache(asset,namespace,node,path,texfile = None):
         cmds.setAttr("{}.t".format(_abcnode),lock = 1)
         cmds.setAttr("{}.r".format(_abcnode),lock = 1)
         cmds.setAttr("{}.s".format(_abcnode),lock = 1)
-        _bsnode = cmds.blendShape(_abcnode,texfile,w = (0,1.0))
-        # cmds.setAttr("{}.{}".format(_bsnode[-1],node),1)
-        cmds.setAttr("{}.origin".format(_bsnode[-1]),0)
+        # _bsnode = cmds.blendShape(_abcnode,texfile,w = (0,1.0))
+        # # cmds.setAttr("{}.{}".format(_bsnode[-1],node),1)
+        # cmds.setAttr("{}.origin".format(_bsnode[-1]),0)
+        blend_shape(_abcnode,texfile)
         connect_usedattr(_abcnode,texfile)
     else:
         cmds.file(path,i = 1,iv = 1,ra = 1,mergeNamespacesOnClash = 1,ns = ":",pr = 1,ifr = 1,itr = "override",type = "Alembic")
@@ -246,7 +248,7 @@ def remove_cache(*args):
         for _node in nodes:
             _deformednodes = cmds.blendShape(_node,q = 1,g = 1)
             _trans = cmds.listRelatives(_deformednodes,p = 1,type = "transform")
-            _ns = set([cmds.referenceQuery(i,ns = 1) for i in _trans])
+            _ns = list(set([cmds.referenceQuery(i,ns = 1) for i in _trans]))[0]
             if args and _ns not in args:
                 continue
             orishape = set(cmds.listRelatives(_trans,s = 1))-set(cmds.listRelatives(_trans,s = 1,ni = 1))
@@ -278,49 +280,176 @@ def remove_cache(*args):
 
     bsnodes = cmds.ls(type = "blendShape")
     if not bsnodes:
+        if cmds.objExists("abc_hidegrp"):
+            _allabc = cmds.listRelatives("abc_hidegrp",c = 1)
+            if _allabc:
+                cmds.delete(_allabc)
         return
-    bsnodes = [i for i in bsnodes if not cmds.referenceQuery(i,inr = 1)]
-    _filters = []
-    if args:
-        _filters = [cmds.referenceQuery(i,ns = 1) for i in args]
-    _orifiles,_removefiles,_namespacefiles = get_removeinfo(bsnodes,*_filters)
-    if _removefiles:
-        cmds.delete(_removefiles)
-    if _orifiles:
-        for _orifile in _orifiles:
-            cmds.setAttr("{}.intermediateObject".format(_orifile),0)
-    if _namespacefiles:
-        for _namespacefile in _namespacefiles:
-            cmds.namespace(rm = _namespacefile,mnr = 1)
+    bsnodes = cmds.ls(type = "blendShape")
+    if bsnodes:
+        bsnodes = [i for i in bsnodes if not cmds.referenceQuery(i,inr = 1)]
+        _filters = []
+        if args:
+            _filters = [cmds.referenceQuery(i,ns = 1) for i in args]
+        _orifiles,_removefiles,_namespacefiles = get_removeinfo(bsnodes,*_filters)
+        if _removefiles:
+            cmds.delete(_removefiles)
+        if _orifiles:
+            for _orifile in _orifiles:
+                cmds.setAttr("{}.intermediateObject".format(_orifile),0)
+        if _namespacefiles:
+            for _namespacefile in _namespacefiles:
+                cmds.namespace(rm = _namespacefile,mnr = 1)
+    if not args:
+        if cmds.objExists("abc_hidegrp"):
+            _allabc = cmds.listRelatives("abc_hidegrp",c = 1)
+            if _allabc:
+                cmds.delete(_allabc)
 
-def get_meshattr(group):
-    _info = {}
-    _trans = cmds.ls(group, dag = True, type = "transform")
-    if not _trans:
-        return _info
-    for _tran in _trans:
-        shapes = cmds.listRelatives(_tran,s = 1,ni = 1)
-        if shapes:
-            _attrs = cmds.listAttr(shapes[0],fp = 1,o = 1)
-            if _attrs:
-                _info[_tran] = {}
-                for _attr in _attrs:
-                    _info[_tran][_attr] = [cmds.getAttr("{}.{}".format(shapes[0],_attr)),cmds.getAttr("{}.{}".format(shapes[0],_attr),type = 1)]
-                    # print (cmds.getAttr("{}.{}".format(shapes[0],_attr)))
-    return _info
 
-def set_meshattr(group,info):
-    _trans = cmds.ls(group, dag = True, type = "transform")
-    for _tran in _trans:
-        shapes = cmds.listRelatives(_tran,s = 1,ni = 1)
-        if shapes:
-            if _tran in info:
-                attr_info = info[_tran]
-                for k,v in attr_info.items():
-                    _v,_t = v
-                    cmds.setAttr("{}.{}".format(shapes[0],k),_v,type = _t)
+class AlembicCache(object):
+    '''abc操作类，目前只用于切换abc缓存
+    '''
+    @classmethod
+    def get_bsnode(cls,*args):
+        '''获取选择模型的bs节点，不选返回全部非参考的bs节点
+        '''
+        def get_namespace(bsnode):
+            '''获取bs节点关联的材质文件的空间名
+            '''
+            _deformednodes = cmds.blendShape(bsnode,q = 1,g = 1)
+            _trans = cmds.listRelatives(_deformednodes,p = 1,type = "transform")
+            _ns = set([cmds.referenceQuery(i,ns = 1) for i in _trans])
+            return list(_ns)
+        templist = set()
+        bsnodes = set(cmds.ls(type = "blendShape"))-set(cmds.ls(type = "blendShape",ro = 1))
+        if args:
+            _filters = [cmds.referenceQuery(i,ns = 1) for i in args]
+            for bsnode in bsnodes:
+                _ns = get_namespace(bsnode)
+                if _ns[0] not in _filters:
+                    templist.add(bsnode)
+        return list(set(bsnodes)-templist)
+
+    @classmethod
+    def get_connect_info(cls,bsnode,_dict = {}):
+        '''获取bs节点上的模型连入信息
+        '''
+        # _dict = {}
+        targets = cmds.blendShape(bsnode,q = 1,t = 1)
+        for target in targets:
+            targetattr = "{}.worldMesh".format(target)
+            _dict[targetattr] = cmds.listConnections(targetattr,p = 1)[0]
+        return _dict
+
+    @classmethod
+    def get_texfile_grp(cls,bsnode):
+        '''获取bs节点传入的模型大组(材质文件)
+        '''
+        _deformed = cmds.blendShape(bsnode,q = 1,g = 1)
+        if not _deformed:
+            return []
+        _target = cmds.listRelatives(_deformed,p = 1,type = "transform")[0]
+        while True:
+            # if "abc_hidegrp" in cmds.listRelatives(_target,p = 1):
+            if cmds.objExists("{}.rendering".format(_target)):
+                return _target
             else:
-                print (">>>>>>>>>>>>>>>>>>>>>{} is not found".format(_tran))
+                _target = cmds.listRelatives(_target,p = 1)[0]
+
+    @classmethod
+    def get_alembic_grp(cls,bsnode):
+        '''获取传入bs节点的模型大组
+        '''
+        _target = cmds.blendShape(bsnode,q = 1,t = 1)
+        if not _target:
+            return []
+        while True:
+            if "abc_hidegrp" in cmds.listRelatives(_target,p = 1):
+                return _target
+            else:
+                _target = cmds.listRelatives(_target,p = 1)[0]
+
+    @classmethod
+    def get_alembic_namespace(cls,transform):
+        '''获取模型的空间名,最好传入大组名，防止重名
+        '''
+        _ns = transform.split("|")[-1][:-len(transform.split(":")[-1])-1]
+        if cmds.namespace(ex = _ns):
+            return _ns
+        return None
+
+    @classmethod
+    def import_alembic(cls,asset,namespace,node,path):
+        '''导入缓存
+        '''
+        _newns = "abc_{}".format(namespace)
+        # _newns = get_ns(namespace)
+        cmds.file(path,i = 1,iv = 1,ra = 1,mergeNamespacesOnClash = 0,ns = _newns,pr = 1,ifr = 1,itr = "override",type = "Alembic")
+        _abcnode = "{}:{}".format(_newns,node)
+        cmds.parent(_abcnode,"abc_hidegrp")
+        cmds.setAttr("{}.t".format(_abcnode),lock = 1)
+        cmds.setAttr("{}.r".format(_abcnode),lock = 1)
+        cmds.setAttr("{}.s".format(_abcnode),lock = 1)
+        return _newns,_abcnode
+
+    @classmethod
+    def connect_attr(cls,src,dst):
+        """连接abc上有变化的属性
+                src为abc大组
+                dst为材质大组
+        """
+        abc_trans = list(set(cmds.listRelatives(src,ad = 1,type = "transform")) | set([src]))
+        tex_trans = list(set(cmds.listRelatives(dst,ad = 1,type = "transform")) | set([dst]))
+        for _s,_d in zip(sorted(abc_trans),sorted(tex_trans)):
+            # set visibility value
+            if cmds.objExists("{}.v".format(_s)) and not cmds.getAttr("{}.v".format(_s)):
+                cmds.setAttr("{}.v".format(_d),0)
+            # set connected attr
+            _usedattr = cmds.listConnections(_s,p = 1,c = 1,d = 0)
+            if _usedattr:
+                for _i in _usedattr[0::2]:
+                    _attrname = _i.split(_s)[-1]
+                    cmds.connectAttr(_i,"{}{}".format(_d,_attrname))
+                    print ("connect attr:{} to {}".format(_i,"{}{}".format(_d,_attrname)))
+
+    @classmethod
+    def set_namespace(cls,nameSpace):
+        # 自动生成空间名序号,暂不使用
+        index = 0
+        _namespaces = list(set(cmds.namespaceInfo(r = 1, lon = 1)) - set(["shared","UI"]))
+        while True:
+            if nameSpace in _namespaces:
+                if nameSpace[-1].isdigit():
+                    _num = re.findall("\d+",nameSpace)[-1]
+                    nameSpace = "{}{}".format(nameSpace[:-len(_num)],int(_num)+index)
+                else:
+                    nameSpace = "{}{}".format(nameSpace,index)
+                index += 1
+            else:
+                return nameSpace
+
+    @classmethod
+    def switch(cls,bsnodes,*args):
+        '''切换缓存
+            bsnodes传入类型为list
+        '''
+        _info = {}
+        asset,namespace,node,path = args
+        _texgrp = cls.get_texfile_grp(bsnodes[0])
+        _abcgrp = cls.get_alembic_grp(bsnodes[0])
+        for bsnode in bsnodes:
+            cls.get_connect_info(bsnode,_info)
+        if _abcgrp:
+            _ns = cls.get_alembic_namespace(_abcgrp)
+            cmds.delete(_abcgrp)
+            if _ns:
+                cmds.namespace(rm = _ns,mnr = 1)
+        cls.import_alembic(asset,namespace,node,path)
+        cls.connect_attr(_abcgrp,_texgrp)
+        for k,v in _info.items():
+            cmds.connectAttr(k,v)
+
 
 def load_asset(cacheinfo,step,load = True):
     '''资产领取(外包端适用)
