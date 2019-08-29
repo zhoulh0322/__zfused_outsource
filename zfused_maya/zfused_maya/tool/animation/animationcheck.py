@@ -44,8 +44,8 @@ class AnimationCheck(checkwidget.CheckWidget):
         self.add_widget(widget)
 
         # check camera name
-        widget = checkwidget.ItemWidget(u"检查摄像机名", check.camera_name, None, False)
-        self.add_widget(widget)
+        # widget = checkwidget.ItemWidget(u"检查摄像机名", check.camera_name, None, False)
+        # self.add_widget(widget)
 
         widget = checkwidget.ItemWidget(u"检查未知节点", check.unknown_node, clear.unknown_node)
         self.add_widget(widget)
