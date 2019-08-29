@@ -87,6 +87,12 @@ def build_structure(parent_node_list, parent):
                 if attr_name in ["rpx", "rpy", "rpz", "spx", "spy", "spz"]:
                     continue
             cmds.setAttr(_node_name + '.' + attr_name, attr_value)
+
+        # matrix
+        if parent_node.has_key("matrix"):
+            _matrix = parent_node["matrix"]
+            cmds.xform(_node_name, m = _matrix, ws = True)
+
         if child:
             build_structure(child, _node_name)
 
