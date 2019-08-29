@@ -346,7 +346,7 @@ class HUD(object):
 
     @property
     def valuecolor(self):
-        return cmds.displayColor("headsUpDisplayLabels", q = True)
+        return cmds.displayColor("headsUpDisplayValues", q = True)
 
     @valuecolor.setter
     def valuecolor(self, num = 16):
@@ -402,13 +402,14 @@ class HUD(object):
                                         c = dis["c"], atr = dis["atr"],da = dis["da"],lw = dis["lw"],l = dis["l"])
         _mask_json = get_maya_shotmask()
         if _mask_json:
-            shotmask.create_mask()
-            _mask = shotmask.get_mask()
-            with open(_mask_json, 'r') as info:
-                dataInfo = json.load(info)
-                if dataInfo:
-                    for _key, _value in dataInfo.items():
-                        cmds.setAttr("{}.{}".format(_mask, _key), _value)
+            result = shotmask.create_mask()
+            if result:
+                _mask = shotmask.get_mask()
+                with open(_mask_json, 'r') as info:
+                    dataInfo = json.load(info)
+                    if dataInfo:
+                        for _key, _value in dataInfo.items():
+                            cmds.setAttr("{}.{}".format(_mask, _key), _value)
 
     def change_hud_state(self):
         # print (HUD.viewInfoState)
