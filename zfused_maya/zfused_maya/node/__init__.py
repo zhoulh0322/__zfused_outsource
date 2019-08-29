@@ -25,6 +25,7 @@ NODE_ATTR = [ "rpx",
               "scaleZ",
               "visibility" ]
 
+MATRIX = ["matrix"]
 
 class Node(object):
     def __init__(self, node, parent = None):
@@ -80,6 +81,9 @@ class Node(object):
                 _attr_data[_attr]["static_data"] = _value
 
         return _attr_data
+
+    def get_matrix(self):
+        return cmds.xform(self._node, q = True, ws = True, m = True)
 
     def __eq__(self, other):
         if isinstance(other, self.__class__):
