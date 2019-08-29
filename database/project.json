@@ -101,13 +101,20 @@
         "Id": 16,
         "Name": "SLG CG",
         "Code": "slg",
-        "StatusId": 3,
+        "StatusId": 5,
         "IsOutsource": 0
     },
     {
         "Id": 17,
         "Name": "\u6ed1\u677f",
         "Code": "skateboard",
+        "StatusId": 3,
+        "IsOutsource": 0
+    },
+    {
+        "Id": 18,
+        "Name": "\u8d1d\u80af\u718a3",
+        "Code": "BKM3",
         "StatusId": 3,
         "IsOutsource": 0
     }

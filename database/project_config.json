@@ -190,5 +190,17 @@
         "Review": "P:/skateboard",
         "LocalRoot": "D:/zfused/work/skateboard",
         "LocalPublish": "D:/zfused/publish/skateboard"
+    },
+    {
+        "Id": 18,
+        "ProjectId": 18,
+        "Fps": 24,
+        "ImageWidth": 2148,
+        "ImageHeight": 858,
+        "Root": "P:/BKM3",
+        "Publish": "P:/backup/BKM3",
+        "Review": "P:/BKM3",
+        "LocalRoot": "D:/zfused/work/BKM3",
+        "LocalPublish": "D:/zfused/publish/BKM3"
     }
 ]

@@ -1524,5 +1524,110 @@
         "StatusId": 6,
         "Object": "shot",
         "Active": "true"
+    },
+    {
+        "Id": 220,
+        "ProjectId": 18,
+        "StatusId": 6,
+        "Object": "asset",
+        "Active": "true"
+    },
+    {
+        "Id": 221,
+        "ProjectId": 18,
+        "StatusId": 7,
+        "Object": "asset",
+        "Active": "true"
+    },
+    {
+        "Id": 222,
+        "ProjectId": 18,
+        "StatusId": 5,
+        "Object": "asset",
+        "Active": "true"
+    },
+    {
+        "Id": 223,
+        "ProjectId": 18,
+        "StatusId": 2,
+        "Object": "task",
+        "Active": "true"
+    },
+    {
+        "Id": 224,
+        "ProjectId": 18,
+        "StatusId": 3,
+        "Object": "task",
+        "Active": "true"
+    },
+    {
+        "Id": 225,
+        "ProjectId": 18,
+        "StatusId": 4,
+        "Object": "task",
+        "Active": "true"
+    },
+    {
+        "Id": 226,
+        "ProjectId": 18,
+        "StatusId": 5,
+        "Object": "task",
+        "Active": "true"
+    },
+    {
+        "Id": 227,
+        "ProjectId": 18,
+        "StatusId": 6,
+        "Object": "task",
+        "Active": "true"
+    },
+    {
+        "Id": 228,
+        "ProjectId": 18,
+        "StatusId": 8,
+        "Object": "task",
+        "Active": "true"
+    },
+    {
+        "Id": 229,
+        "ProjectId": 18,
+        "StatusId": 7,
+        "Object": "sequence",
+        "Active": "true"
+    },
+    {
+        "Id": 230,
+        "ProjectId": 18,
+        "StatusId": 5,
+        "Object": "sequence",
+        "Active": "true"
+    },
+    {
+        "Id": 231,
+        "ProjectId": 18,
+        "StatusId": 6,
+        "Object": "sequence",
+        "Active": "true"
+    },
+    {
+        "Id": 232,
+        "ProjectId": 18,
+        "StatusId": 7,
+        "Object": "shot",
+        "Active": "true"
+    },
+    {
+        "Id": 233,
+        "ProjectId": 18,
+        "StatusId": 5,
+        "Object": "shot",
+        "Active": "true"
+    },
+    {
+        "Id": 234,
+        "ProjectId": 18,
+        "StatusId": 6,
+        "Object": "shot",
+        "Active": "true"
     }
 ]
