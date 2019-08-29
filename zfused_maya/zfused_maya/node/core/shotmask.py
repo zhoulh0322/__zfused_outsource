@@ -16,11 +16,12 @@ def create_mask():
             cmds.loadPlugin(PLUG_IN_NAME)
         except:
             print("Failed to load ShotMask plug-in: {0}".format(PLUG_IN_NAME))
-            return
+            return False
 
     if not get_mask():
         transform_node = cmds.createNode("transform", name = TRANSFORM_NODE_NAME)
         cmds.createNode(NODE_NAME, name=SHAPE_NODE_NAME, parent=transform_node)
+    return True
 
 def delete_mask():
     mask = get_mask()
