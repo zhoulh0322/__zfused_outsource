@@ -252,6 +252,8 @@ def remove_cache(*args):
             if args and _ns not in args:
                 continue
             orishape = set(cmds.listRelatives(_trans,s = 1))-set(cmds.listRelatives(_trans,s = 1,ni = 1))
+            orishape = [i for i in orishape if "_rendering" in i]
+            # list1.append(orishape[0])
             list1.extend(orishape)
             list2.extend(_deformednodes)
             list2.extend(cmds.blendShape(_node,q = 1,dt = 1))
@@ -263,7 +265,7 @@ def remove_cache(*args):
                 _remove_ns = get_namespace(_grp)
                 if _remove_ns:
                     list3.append(_remove_ns)
-        return list1,list2,list3
+        return list(set(list1)),list(set(list2)),list(set(list3))
 
     def get_cache_grp(node):
         while True:
@@ -459,6 +461,7 @@ def load_asset(cacheinfo,step,load = True):
     _assets = assets.get_assets()
     for item in cacheinfo:
         _assetname = item[0]
+        _assetname = _assetname.split(".")[0]
         if _assetname and _assetname in _assets:
             _ns = item[1].split(":")[-1]
             if _assetname in _dict:

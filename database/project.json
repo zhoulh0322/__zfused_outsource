@@ -59,7 +59,7 @@
         "Id": 10,
         "Name": "\u8d64\u5cf0",
         "Code": "ChiFeng",
-        "StatusId": 3,
+        "StatusId": 5,
         "IsOutsource": 0
     },
     {
@@ -87,14 +87,14 @@
         "Id": 14,
         "Name": "\u95ee\u9053CG",
         "Code": "WDCG",
-        "StatusId": 3,
+        "StatusId": 5,
         "IsOutsource": 0
     },
     {
         "Id": 15,
         "Name": "\u7edd\u5883\u5730\u5e73\u7ebfPV",
         "Code": "island",
-        "StatusId": 3,
+        "StatusId": 2,
         "IsOutsource": 0
     },
     {
@@ -108,13 +108,20 @@
         "Id": 17,
         "Name": "\u6ed1\u677f",
         "Code": "skateboard",
-        "StatusId": 3,
+        "StatusId": 2,
         "IsOutsource": 0
     },
     {
         "Id": 18,
         "Name": "\u8d1d\u80af\u718a3",
         "Code": "BKM3",
+        "StatusId": 3,
+        "IsOutsource": 0
+    },
+    {
+        "Id": 19,
+        "Name": "\u695a\u7559\u9999CG",
+        "Code": "CLXCG",
         "StatusId": 3,
         "IsOutsource": 0
     }

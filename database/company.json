@@ -18,5 +18,10 @@
         "Id": 4,
         "Name": "\u7565\u706b\u52a8\u753b",
         "Code": "LH"
+    },
+    {
+        "Id": 5,
+        "Name": "\u82cf\u5dde\u8367\u5c4f\u4e92\u5a31\u7f51\u7edc\u79d1\u6280\u6709\u9650\u516c\u53f8",
+        "Code": "\u8367\u5c4f\u4e92\u5a31"
     }
 ]

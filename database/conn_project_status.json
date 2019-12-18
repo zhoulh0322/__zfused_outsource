@@ -1629,5 +1629,110 @@
         "StatusId": 6,
         "Object": "shot",
         "Active": "true"
+    },
+    {
+        "Id": 235,
+        "ProjectId": 19,
+        "StatusId": 6,
+        "Object": "asset",
+        "Active": "true"
+    },
+    {
+        "Id": 236,
+        "ProjectId": 19,
+        "StatusId": 7,
+        "Object": "asset",
+        "Active": "true"
+    },
+    {
+        "Id": 237,
+        "ProjectId": 19,
+        "StatusId": 5,
+        "Object": "asset",
+        "Active": "true"
+    },
+    {
+        "Id": 238,
+        "ProjectId": 19,
+        "StatusId": 2,
+        "Object": "task",
+        "Active": "true"
+    },
+    {
+        "Id": 239,
+        "ProjectId": 19,
+        "StatusId": 3,
+        "Object": "task",
+        "Active": "true"
+    },
+    {
+        "Id": 240,
+        "ProjectId": 19,
+        "StatusId": 4,
+        "Object": "task",
+        "Active": "true"
+    },
+    {
+        "Id": 241,
+        "ProjectId": 19,
+        "StatusId": 5,
+        "Object": "task",
+        "Active": "true"
+    },
+    {
+        "Id": 242,
+        "ProjectId": 19,
+        "StatusId": 6,
+        "Object": "task",
+        "Active": "true"
+    },
+    {
+        "Id": 243,
+        "ProjectId": 19,
+        "StatusId": 8,
+        "Object": "task",
+        "Active": "true"
+    },
+    {
+        "Id": 244,
+        "ProjectId": 19,
+        "StatusId": 7,
+        "Object": "shot",
+        "Active": "true"
+    },
+    {
+        "Id": 245,
+        "ProjectId": 19,
+        "StatusId": 5,
+        "Object": "shot",
+        "Active": "true"
+    },
+    {
+        "Id": 246,
+        "ProjectId": 19,
+        "StatusId": 6,
+        "Object": "shot",
+        "Active": "true"
+    },
+    {
+        "Id": 247,
+        "ProjectId": 19,
+        "StatusId": 7,
+        "Object": "sequence",
+        "Active": "true"
+    },
+    {
+        "Id": 248,
+        "ProjectId": 19,
+        "StatusId": 5,
+        "Object": "sequence",
+        "Active": "true"
+    },
+    {
+        "Id": 249,
+        "ProjectId": 19,
+        "StatusId": 6,
+        "Object": "sequence",
+        "Active": "true"
     }
 ]

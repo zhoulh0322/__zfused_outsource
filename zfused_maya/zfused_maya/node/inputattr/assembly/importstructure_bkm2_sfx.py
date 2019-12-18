@@ -116,9 +116,10 @@ def import_structure(output_link_object, output_link_id,  output_attr_id, input_
     _output_link_production_file = "{}/{}/{}/{}/{}{}".format( _output_link_production_path, _step_code, _software_code, _attr_code, _file_code, _suffix )
 
     print(_output_link_production_file)
-    _datas = read_json_file(_output_link_production_file)
-    print(_datas)
-    build_structure(_datas, "")
+    if os.path.isfile(_output_link_production_file):
+        _datas = read_json_file(_output_link_production_file)
+        print(_datas)
+        build_structure(_datas, "")
 
     return
     # get shot info

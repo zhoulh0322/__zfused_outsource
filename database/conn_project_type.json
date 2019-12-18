@@ -558,5 +558,45 @@
         "Object": "asset",
         "Active": "true",
         "Sort": 0
+    },
+    {
+        "Id": 73,
+        "ProjectId": 19,
+        "TypeId": 1,
+        "Object": "asset",
+        "Active": "true",
+        "Sort": 0
+    },
+    {
+        "Id": 74,
+        "ProjectId": 19,
+        "TypeId": 2,
+        "Object": "asset",
+        "Active": "true",
+        "Sort": 0
+    },
+    {
+        "Id": 75,
+        "ProjectId": 19,
+        "TypeId": 3,
+        "Object": "asset",
+        "Active": "true",
+        "Sort": 0
+    },
+    {
+        "Id": 76,
+        "ProjectId": 19,
+        "TypeId": 4,
+        "Object": "asset",
+        "Active": "true",
+        "Sort": 0
+    },
+    {
+        "Id": 77,
+        "ProjectId": 19,
+        "TypeId": 5,
+        "Object": "asset",
+        "Active": "true",
+        "Sort": 0
     }
 ]

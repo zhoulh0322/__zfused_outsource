@@ -202,5 +202,17 @@
         "Review": "P:/BKM3",
         "LocalRoot": "D:/zfused/work/BKM3",
         "LocalPublish": "D:/zfused/publish/BKM3"
+    },
+    {
+        "Id": 19,
+        "ProjectId": 19,
+        "Fps": 24,
+        "ImageWidth": 1920,
+        "ImageHeight": 1080,
+        "Root": "P:/CLXCG",
+        "Publish": "P:/backup/CLXCG",
+        "Review": "P:/CLXCG",
+        "LocalRoot": "D:/zfused/work/CLXCG",
+        "LocalPublish": "D:/zfused/publish/CLXCG"
     }
 ]
